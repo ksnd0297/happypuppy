@@ -35,3 +35,7 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# .gitignore 파일에 추가
+.yarn/cache
+.yarn
