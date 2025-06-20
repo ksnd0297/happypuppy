@@ -14,9 +14,12 @@ const DefaultWebviewScreen = () => {
 
     if (webViewRef.current) {
       // 위치 정보를 웹뷰로 전달
-      // webViewRef.current.injectJavaScript(`
-      //   window.receiveLocation(${JSON.stringify(location.coords)});
-      // `);
+      const locationData = JSON.stringify(location.coords);
+      webViewRef.current.injectJavaScript(`
+        if (window.receiveLocation) {
+          window.receiveLocation(${locationData});
+        }
+      `);
     }
   };
 
@@ -35,11 +38,11 @@ const DefaultWebviewScreen = () => {
     }
   };
 
-
   return (
     <View style={styles.container}>
       {/* url 설정 필요 (임시로 로컬 uri 사용) */}
-      <WebView source={{uri: 'http://192.168.0.254:3000/'}}
+      <WebView
+        source={{ uri: 'http://192.168.0.254:3000/' }}
         ref={webViewRef}
         javaScriptEnabled={true}
         domStorageEnabled={true}
@@ -47,9 +50,12 @@ const DefaultWebviewScreen = () => {
         originWhitelist={['*']}
         onMessage={onMessage} // 웹뷰에서 메시지 받기
       />
+      {/* 위치 버튼 컴포넌트, 위치를 조회하여 웹뷰에 전달 */}
       <LocationButton onLocationRetrieved={sendLocationToWebView} />
+      
+      {/* 위치 정보가 있으면 표시 */}
       {location && (
-        <View >
+        <View>
           <Text>위도: {location.coords.latitude}</Text>
           <Text>경도: {location.coords.longitude}</Text>
         </View>

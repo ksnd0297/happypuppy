@@ -13,9 +13,19 @@ const LocationButton: React.FC<LocationButtonProps> = ({ onLocationRetrieved }) 
       const { status } = await Location.requestForegroundPermissionsAsync();
 
       if (status === 'granted') {
-        // 위치 권한이 있을 경우 위치 정보 조회
-        const location = await Location.getCurrentPositionAsync({});
-        onLocationRetrieved(location); // 위치 조회 후 부모 컴포넌트로 전달
+        // 빠른 위치 조회 (getLastKnownPositionAsync)
+        const fastLocation = await Location.getLastKnownPositionAsync();
+
+        // 빠른 위치가 있으면 먼저 반환
+        if (fastLocation) {
+          onLocationRetrieved(fastLocation); // 빠른 위치 정보 전달
+        }
+
+        // 정확한 위치 조회 (getCurrentPositionAsync)
+        const accurateLocation = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.High, // 높은 정확도로 위치 조회
+        });
+        onLocationRetrieved(accurateLocation); // 정확한 위치 정보 전달
       } else {
         Alert.alert('위치 권한이 필요합니다', '위치 정보를 사용하려면 권한을 허용해야 합니다.');
       }
@@ -26,12 +36,11 @@ const LocationButton: React.FC<LocationButtonProps> = ({ onLocationRetrieved }) 
   };
 
   return (
-     <View style={styles.buttonContainer}>
+    <View style={styles.buttonContainer}>
       <Button title="위치 조회" onPress={getLocation} />
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   buttonContainer: {
