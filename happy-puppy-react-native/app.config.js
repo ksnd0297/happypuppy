@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 export default () => ({
   expo: {
     name: "happy-puppy-react-native",
