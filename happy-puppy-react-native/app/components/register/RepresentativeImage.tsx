@@ -2,9 +2,9 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Label from "../shared/Label";
 import { useController, useFormContext } from "react-hook-form";
-import { REGISTER_FORM_PATH } from "@/src/constants/register/form";
+import { REGISTER_FORM_PATH } from "@/app/constants/register/form";
 
-const cameraImg = require("@/assets/camera.png");
+const cameraImg = require("@/app/assets/camera.png");
 
 const RepresentativeImage = () => {
   const { setError } = useFormContext();

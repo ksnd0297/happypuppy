@@ -1,10 +1,8 @@
-import { getKeyHashAndroid } from "@react-native-kakao/core";
-import { getAccessToken, isLogined, login, me } from "@react-native-kakao/user";
-import { useEffect } from "react";
+import { isLogined, login, me } from "@react-native-kakao/user";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
-const happyPuppyImg = require("@/assets/happypuppy.png");
-const kakaoLoginImg = require("@/assets/kakao-login.png");
+const happyPuppyImg = require("@/app/assets/happypuppy.png");
+const kakaoLoginImg = require("@/app/assets/kakao-login.png");
 
 const LoginPage = () => {
   const handleKakaoLogin = async () => {

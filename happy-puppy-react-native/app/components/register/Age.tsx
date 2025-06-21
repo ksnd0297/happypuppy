@@ -1,6 +1,6 @@
 import { useController } from "react-hook-form";
 import Select from "../shared/Select";
-import { REGISTER_FORM_PATH } from "@/src/constants/register/form";
+import { REGISTER_FORM_PATH } from "@/app/constants/register/form";
 
 const OPTION_LIST = [
   {

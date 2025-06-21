@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 
-const backButtonIcon = require("@/assets/icon/chevron-left.png");
+const backButtonIcon = require("@/app/assets/icon/chevron-left.png");
 
 const ChatHeader = () => {
   return (

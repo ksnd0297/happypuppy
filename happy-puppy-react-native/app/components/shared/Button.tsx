@@ -1,4 +1,4 @@
-import { fontFamily } from "@/src/constants/shared/font";
+import { fontFamily } from "@/app/constants/shared/font";
 import { Pressable, StyleSheet, Text } from "react-native";
 
 export enum ButtonType {

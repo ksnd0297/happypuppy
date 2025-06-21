@@ -1,7 +1,7 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 import { useState } from "react";
 import Label, { LabelType } from "./Label";
-import { fontFamily } from "@/src/constants/shared/font";
+import { fontFamily } from "@/app/constants/shared/font";
 
 export enum TextAreaType {
   TYPE1 = "TYPE1",

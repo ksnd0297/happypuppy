@@ -3,7 +3,7 @@ import Label, { LabelProps } from "./Label";
 import { Dropdown } from "react-native-element-dropdown";
 import { DropdownProps } from "react-native-element-dropdown/lib/typescript/components/Dropdown/model";
 import { useState } from "react";
-import { fontFamily } from "@/src/constants/shared/font";
+import { fontFamily } from "@/app/constants/shared/font";
 
 type OptionType = {
   label: string;

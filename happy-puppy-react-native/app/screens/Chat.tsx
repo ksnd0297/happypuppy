@@ -5,10 +5,10 @@ import ChatInput from "../components/chat/ChatInput";
 import ChatList from "../components/chat/ChatList";
 import { useEffect, useRef, useState } from "react";
 import useSocket from "../hooks/chat/useSocket";
-import { ChatType } from "../types/chat/chat";
+import { ChatType } from "../chat/chat";
 
-const moreButtonIcon = require("@/assets/icon/chevron-right.png");
-const sendButtonIcon = require("@/assets/icon/send-icon.png");
+const moreButtonIcon = require("@/app/assets/icon/chevron-right.png");
+const sendButtonIcon = require("@/app/assets/icon/send-icon.png");
 
 const ChatPage = () => {
   const userId = useRef(Platform.OS === "android" ? 2 : 1); // Mock user ID for demonstration purposes

@@ -1,5 +1,5 @@
-import { fontFamily } from "@/src/constants/shared/font";
-import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
+import { fontFamily } from "@/app/constants/shared/font";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 type Props = {
   avatarImage: string;
