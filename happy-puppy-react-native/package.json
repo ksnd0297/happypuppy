@@ -6,7 +6,9 @@
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "prepare": "cd .. && husky happy-puppy-react-native/.husky",
+    "check-all": "eslint . --fix && tsc --noEmit"
   },
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
@@ -38,6 +40,7 @@
     "@types/react-dom": "^19",
     "@types/react-native-web": "^0",
     "eslint": "^9.29.0",
+    "husky": "^9.1.7",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1"
   },

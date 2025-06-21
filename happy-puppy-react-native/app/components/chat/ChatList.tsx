@@ -1,4 +1,4 @@
-import { ChatType } from "@/src/types/chat/chat";
+import { ChatType } from "@/app/chat/chat";
 import Chat from "./Chat";
 
 type Props = {
