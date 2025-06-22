@@ -1,3 +1,4 @@
+import { fontFamily } from "@/app/constants/shared/font";
 import { Text as RNText, StyleSheet } from "react-native";
 
 type Type = "small" | "medium" | "large";
@@ -27,7 +28,7 @@ const Text = (props: Props) => {
   Object.entries(props).forEach(([key, value]) => {
     if (key in styles) {
       if (value) {
-        style = { ...style, ...styles[key as Type] };
+        style = { ...style, ...styles[key as Type], ...styles["default"] };
       }
     }
   });
@@ -38,6 +39,8 @@ const Text = (props: Props) => {
 export default Text;
 
 const styles = StyleSheet.create({
+  default: { fontFamily },
+
   xxsmall: {
     fontSize: 8,
   },
