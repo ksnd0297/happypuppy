@@ -53,6 +53,7 @@ export default function App() {
         flex: 1,
         backgroundColor: "#FCF5EE",
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        paddingBottom: Platform.OS === "android" ? StatusBar.currentHeight : 0,
       }}
     >
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
