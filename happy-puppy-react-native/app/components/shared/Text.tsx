@@ -18,6 +18,7 @@ type Props = {
   bold?: boolean;
 
   gray?: boolean;
+  white?: boolean;
 };
 
 const Text = (props: Props) => {
@@ -67,10 +68,13 @@ const styles = StyleSheet.create({
   },
 
   bold: {
-    fontWeight: "bold",
+    fontWeight: 700,
   },
 
   gray: {
     color: "#7C7C7C",
+  },
+  white: {
+    color: "#FFFFFF",
   },
 });
