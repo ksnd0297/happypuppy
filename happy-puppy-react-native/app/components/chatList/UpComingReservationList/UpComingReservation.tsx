@@ -1,5 +1,5 @@
 import { Image, StyleSheet, View } from "react-native";
-import Text from "../shared/Text";
+import Text from "../../shared/Text";
 
 type Props = {
   imageUri: string;
