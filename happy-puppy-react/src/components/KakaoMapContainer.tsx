@@ -24,7 +24,6 @@ const KakaoMapContainer = ({ center, markers }: Props) => {
       console.error('❌ Kakao API Key is missing');
       return;
     }
-    console.error('Kakao API Key Check');
 
     if (document.getElementById('kakao-script')) {
       if (window.kakao && window.kakao.maps) {
@@ -37,7 +36,6 @@ const KakaoMapContainer = ({ center, markers }: Props) => {
     script.id = 'kakao-script';
     script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoKey}&autoload=false&libraries=services`;
     script.async = true;
-    console.log(script.src)
     script.onload = () => {
       window.kakao.maps.load(() => setLoaded(true));
     };
