@@ -27,7 +27,11 @@ export class KakaoMapService {
     return KakaoMapService.instance;
   }
 
-  public initialize(container: HTMLElement, center: { lat: number; lng: number }) {
+  public initialize(
+    container: HTMLElement,
+    center: { lat: number; lng: number },
+    onMapClick?: () => void
+  ) {
     if (this.marker) {
       this.marker.setMap(null);
       this.marker = null;
@@ -35,21 +39,21 @@ export class KakaoMapService {
 
     this.map = new window.kakao.maps.Map(container, {
       center: new window.kakao.maps.LatLng(center.lat, center.lng),
-      level: 3,
+      level: 6,
     });
 
-    // ✅ 지도 클릭 시 선택된 마커 초기화
     window.kakao.maps.event.addListener(this.map, 'click', () => {
       if (this.selectedMarker) {
         this.selectedMarker.setImage(this.defaultImage);
         this.selectedMarker = null;
       }
+      if (onMapClick) onMapClick();
     });
 
-    // 위치 마커 수신용 (초기 위치 마커 아님)
     window.receiveLocation = ({ latitude, longitude }) => {
       const latLng = new window.kakao.maps.LatLng(latitude, longitude);
       this.map.setCenter(latLng);
+
       this.marker?.setMap(null);
       this.marker = new window.kakao.maps.Marker({
         position: latLng,
@@ -59,12 +63,16 @@ export class KakaoMapService {
     };
   }
 
-  public setMarkers(markerList: { lat: number; lng: number; title?: string }[]) {
-    // 기존 마커 제거
+  public setMarkers(
+    markerList: { lat: number; lng: number; title: string; imageUrl?: string }[],
+    onClickMarker?: (data: { lat: number; lng: number; title: string; imageUrl?: string }) => void
+  ) {
     this.markers.forEach(marker => marker.setMap(null));
     this.markers = [];
 
-    markerList.forEach(({ lat, lng, title }) => {
+    markerList.forEach((data) => {
+      const { lat, lng, title } = data;
+
       const marker = new window.kakao.maps.Marker({
         position: new window.kakao.maps.LatLng(lat, lng),
         map: this.map,
@@ -72,19 +80,23 @@ export class KakaoMapService {
         image: this.defaultImage,
       });
 
-      // ✅ 마커 클릭 시 해당 마커만 선택 이미지로 설정
       window.kakao.maps.event.addListener(marker, 'click', () => {
         if (this.selectedMarker) {
           this.selectedMarker.setImage(this.defaultImage);
         }
         marker.setImage(this.selectedImage);
         this.selectedMarker = marker;
+
+        this.map.panTo(marker.getPosition()); // ✅ 클릭 시 지도 중심 이동
+
+        if (onClickMarker) {
+          onClickMarker(data);
+        }
       });
 
       this.markers.push(marker);
     });
 
-    // 선택 마커 초기화
     this.selectedMarker = null;
   }
 

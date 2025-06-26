@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import KakaoMap from './KakaoMap';
 
 type Props = {
@@ -9,7 +9,8 @@ type Props = {
   markers?: {
     lat: number;
     lng: number;
-    title?: string;
+    title: string;
+    imageUrl?: string;
   }[];
 };
 
@@ -18,6 +19,7 @@ const KakaoMapContainer = ({ center, markers }: Props) => {
 
   useEffect(() => {
     const kakaoKey = process.env.REACT_APP_KAKAO_JS_KEY;
+
     if (!kakaoKey) {
       console.error('❌ Kakao API Key is missing');
       return;
