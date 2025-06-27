@@ -53,13 +53,6 @@ export class KakaoMapService {
     window.receiveLocation = ({ latitude, longitude }) => {
       const latLng = new window.kakao.maps.LatLng(latitude, longitude);
       this.map.setCenter(latLng);
-
-      this.marker?.setMap(null);
-      this.marker = new window.kakao.maps.Marker({
-        position: latLng,
-        map: this.map,
-        title: '내 위치',
-      });
     };
   }
 
