@@ -42,7 +42,7 @@ const DefaultWebviewScreen = () => {
     <View style={styles.container}>
       {/* url 설정 필요 (임시로 로컬 uri 사용) */}
       <WebView
-        source={{ uri: 'http://192.168.0.254:3000/' }}
+        source={{ uri: 'https://happy-puppy-two.vercel.app' }}
         ref={webViewRef}
         javaScriptEnabled={true}
         domStorageEnabled={true}
