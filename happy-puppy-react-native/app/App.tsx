@@ -10,6 +10,7 @@ import { initializeKakaoSDK } from "@react-native-kakao/core";
 import { useCallback, useEffect } from "react";
 import { KAKAO_NATIVE_APP_KEY } from "@env";
 import { Platform, SafeAreaView, StatusBar, View } from "react-native";
+import ChatListPage from "./screens/ChatList";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -52,11 +53,13 @@ export default function App() {
         flex: 1,
         backgroundColor: "#FCF5EE",
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        paddingBottom: Platform.OS === "android" ? StatusBar.currentHeight : 0,
       }}
     >
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="ChatList" component={ChatListPage} />
             <Stack.Screen name="Chat" component={ChatPage} />
             <Stack.Screen name="Register" component={RegisterPage} />
             <Stack.Screen name="Login" component={LoginPage} />
