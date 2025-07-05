@@ -1,8 +1,16 @@
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import Footer from "../components/shared/Footer";
 import HomeImage from "../components/home/HomeImage";
+import Text from "../components/shared/Text";
+import Divider from "../components/shared/Divider";
 
 const HomePage = () => {
+  const handleNavigationInfo = () => {};
+
+  const handleNavigationNotice = () => {};
+
+  const handleNavigationSetting = () => {};
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -10,7 +18,27 @@ const HomePage = () => {
       </View>
       <View style={styles.homeContainer}>
         <View style={styles.calendarContainer}>캘린더 영역</View>
-        <View style={styles.bottomButtonContainer}>바텀 버튼 영역</View>
+        <View style={styles.bottomButtonContainer}>
+          <View style={styles.bottomButtonWrapper}>
+            <Pressable style={styles.bottomButton} onPress={handleNavigationInfo}>
+              <View>
+                <Text bold>내 정보 수정</Text>
+              </View>
+            </Pressable>
+            <Divider color="#FCF5EE" />
+            <Pressable style={styles.bottomButton} onPress={handleNavigationNotice}>
+              <View>
+                <Text bold>공지사항</Text>
+              </View>
+            </Pressable>
+            <Divider color="#FCF5EE" />
+            <Pressable style={styles.bottomButton} onPress={handleNavigationSetting}>
+              <View>
+                <Text bold>이용관리</Text>
+              </View>
+            </Pressable>
+          </View>
+        </View>
       </View>
       <Footer />
     </View>
@@ -48,6 +76,25 @@ const styles = StyleSheet.create({
   },
   bottomButtonContainer: {
     flex: 0.3,
-    backgroundColor: "green",
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  bottomButtonWrapper: {
+    flex: 0.4,
+    width: "80%",
+
+    backgroundColor: "#F7DDDE",
+
+    borderRadius: 10,
+
+    flexDirection: "row",
+  },
+  bottomButton: {
+    flex: 1,
+
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
