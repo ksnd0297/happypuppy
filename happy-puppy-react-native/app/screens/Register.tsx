@@ -8,8 +8,12 @@ import Button from "../components/shared/Button";
 import { FormProvider, useForm } from "react-hook-form";
 import { ON_SUBMIT } from "../constants/shared/form";
 import { REGISTER_FROM_DEFAULT_VALUES } from "../constants/register/form";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackNavigationProp } from "../App";
 
 const RegisterPage = () => {
+  const navigation = useNavigation<RootStackNavigationProp>();
+
   const form = useForm({
     defaultValues: REGISTER_FROM_DEFAULT_VALUES,
     mode: ON_SUBMIT,
@@ -17,6 +21,9 @@ const RegisterPage = () => {
   });
 
   const handleSubmit = form.handleSubmit((data) => {
+    // 회원가입 완료 시 홈으로 이동
+    navigation.navigate("Home");
+
     console.log("Form Data:", data);
   });
 
