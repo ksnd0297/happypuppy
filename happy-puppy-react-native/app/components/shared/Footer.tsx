@@ -1,26 +1,48 @@
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import Icon from "./Icon";
 import Text from "./Text";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackNavigationProp } from "@/app/App";
 
 const Footer = () => {
+  const navigation = useNavigation<RootStackNavigationProp>();
+
+  const handleNavigationMap = () => {
+    navigation.navigate("Webview");
+  };
+
+  const handleNavigationChatList = () => {
+    navigation.navigate("ChatList");
+  };
+
+  const handleNavigationHome = () => {
+    navigation.navigate("Home");
+  };
+
   return (
     <View style={styles.footerContainer}>
       <View style={styles.footerWrapper}>
-        <Icon source={require("@/app/assets/icon/bottom-pin.png")}>
-          <Text small bold>
-            지도
-          </Text>
-        </Icon>
-        <Icon source={require("@/app/assets/icon/bottom-message.png")}>
-          <Text small bold>
-            채팅
-          </Text>
-        </Icon>
-        <Icon source={require("@/app/assets/icon/bottom-user.png")}>
-          <Text small bold>
-            마이
-          </Text>
-        </Icon>
+        <Pressable onPress={handleNavigationMap}>
+          <Icon source={require("@/app/assets/icon/bottom-pin.png")}>
+            <Text small bold>
+              지도
+            </Text>
+          </Icon>
+        </Pressable>
+        <Pressable onPress={handleNavigationChatList}>
+          <Icon source={require("@/app/assets/icon/bottom-message.png")}>
+            <Text small bold>
+              채팅
+            </Text>
+          </Icon>
+        </Pressable>
+        <Pressable onPress={handleNavigationHome}>
+          <Icon source={require("@/app/assets/icon/bottom-user.png")}>
+            <Text small bold>
+              마이
+            </Text>
+          </Icon>
+        </Pressable>
       </View>
     </View>
   );
