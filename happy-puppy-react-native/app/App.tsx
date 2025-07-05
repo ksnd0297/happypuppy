@@ -12,6 +12,7 @@ import { KAKAO_NATIVE_APP_KEY } from "@env";
 import { Platform, SafeAreaView, StatusBar, View } from "react-native";
 import ChatListPage from "./screens/ChatList";
 import { RouteId } from "./types/route";
+import HomePage from "./screens/Home";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -74,6 +75,7 @@ export default function App() {
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Home" component={HomePage} />
             <Stack.Screen name="ChatList" component={ChatListPage} />
             <Stack.Screen name="Login" component={LoginPage} />
             <Stack.Screen name="Register" component={RegisterPage} />
