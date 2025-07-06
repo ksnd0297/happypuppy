@@ -3,6 +3,7 @@ import Footer from "../components/shared/Footer";
 import HomeImage from "../components/home/HomeImage";
 import Text from "../components/shared/Text";
 import Divider from "../components/shared/Divider";
+import { Calendar } from "react-native-calendars";
 
 const HomePage = () => {
   const handleNavigationInfo = () => {};
@@ -14,10 +15,19 @@ const HomePage = () => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <HomeImage title="행복한 치와와" uri="https://fastly.picsum.photos/id/212/200/300.jpg?hmac=2PUnX8vk476_x3NwjUExdYhPxVyP1Qd17BLvvBYTONQ" />
+        <HomeImage title="행복한 치와와" uri="https://happypuppy-bucket.s3.ap-northeast-2.amazonaws.com/dog.png" />
       </View>
       <View style={styles.homeContainer}>
-        <View style={styles.calendarContainer}>캘린더 영역</View>
+        <View style={styles.calendarContainer}>
+          <View style={styles.calendarWrapper}>
+            <Calendar
+              style={styles.calendar}
+              onDayPress={(day) => {
+                console.log("selected day", day);
+              }}
+            />
+          </View>
+        </View>
         <View style={styles.bottomButtonContainer}>
           <View style={styles.bottomButtonWrapper}>
             <Pressable style={styles.bottomButton} onPress={handleNavigationInfo}>
@@ -72,8 +82,18 @@ const styles = StyleSheet.create({
 
   calendarContainer: {
     flex: 0.7,
-    backgroundColor: "blue",
+
+    alignItems: "center",
+    justifyContent: "center",
   },
+  calendarWrapper: {
+    flex: 1,
+    width: "80%",
+  },
+  calendar: {
+    borderRadius: 10,
+  },
+
   bottomButtonContainer: {
     flex: 0.3,
 
