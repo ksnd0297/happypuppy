@@ -23,11 +23,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
 
-    gap: 5,
+    gap: 8,
   },
 
   icon: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
   },
 });
