@@ -1,43 +1,48 @@
-import { Image, ImageSourcePropType, StyleSheet, View } from "react-native";
+import { Image, ImageSourcePropType, Pressable, StyleSheet, View } from "react-native";
 import Text from "../shared/Text";
+import { RouteId } from "@/app/types/route";
 
 type Props = {
   memberCount: number;
   notReadMessageCount: number;
   promiseDateTime: string;
   recentlyMessage: string;
+  roomId: RouteId;
   roomImage: ImageSourcePropType;
   title: string;
+  handleEnterChat: (id: RouteId) => void;
 };
 
 const ChatInfo = (props: Props) => {
-  const { memberCount, notReadMessageCount, promiseDateTime, recentlyMessage, roomImage, title } = props;
+  const { roomId, memberCount, notReadMessageCount, promiseDateTime, recentlyMessage, roomImage, title, handleEnterChat } = props;
 
   return (
-    <View style={styles.chatInfoContainer}>
-      <View style={styles.chatInfoImageWrapper}>
-        <Image source={roomImage} style={styles.chatInfoImage} />
-      </View>
-      <View style={styles.chatInfoWrapper}>
-        <View style={styles.chatInfoTitleWrapper}>
-          <Text bold>{title}</Text>
-          <Text gray bold>
-            {memberCount}
-          </Text>
+    <Pressable onPress={() => handleEnterChat(roomId)}>
+      <View style={styles.chatInfoContainer}>
+        <View style={styles.chatInfoImageWrapper}>
+          <Image source={roomImage} style={styles.chatInfoImage} />
         </View>
-        <Text gray small>
-          {promiseDateTime}
-        </Text>
-        <Text small>{recentlyMessage}</Text>
-      </View>
-      <View style={styles.notReadMessageCountWrapper}>
-        <View style={styles.notReadMessageCount}>
-          <Text small bold white>
-            {notReadMessageCount}
+        <View style={styles.chatInfoWrapper}>
+          <View style={styles.chatInfoTitleWrapper}>
+            <Text bold>{title}</Text>
+            <Text gray bold>
+              {memberCount}
+            </Text>
+          </View>
+          <Text gray small>
+            {promiseDateTime}
           </Text>
+          <Text small>{recentlyMessage}</Text>
+        </View>
+        <View style={styles.notReadMessageCountWrapper}>
+          <View style={styles.notReadMessageCount}>
+            <Text small bold white>
+              {notReadMessageCount}
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

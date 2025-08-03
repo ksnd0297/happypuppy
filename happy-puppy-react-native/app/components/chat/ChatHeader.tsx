@@ -1,14 +1,26 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { RootStackNavigationProp } from "@/app/App";
+import { useNavigation } from "@react-navigation/native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 const backButtonIcon = require("@/app/assets/icon/chevron-left.png");
 
 const ChatHeader = () => {
+  const navigation = useNavigation<RootStackNavigationProp>();
+
+  const handleClickBackButton = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
+  };
+
   return (
     <View style={styles.headerWrapper}>
       <View style={styles.headerLeftArea}>
-        <View style={styles.titleBackButtonArea}>
-          <Image source={backButtonIcon} />
-        </View>
+        <Pressable style={styles.titleBackButtonArea} onPress={handleClickBackButton}>
+          <View>
+            <Image source={backButtonIcon} />
+          </View>
+        </Pressable>
         <View style={styles.titleArea}>
           <Text style={styles.title}>동천역 강아지 산책</Text>
           <Text style={styles.description}>2025. 05. 20. 18:00 · 동천역</Text>

@@ -1,32 +1,37 @@
-import { Image, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import Text from "../../shared/Text";
+import { RouteId } from "@/app/types/route";
 
 type Props = {
+  roomId: string;
   imageUri: string;
   title: string;
   dateTime: string;
+  handleEnterChat: (roomId: RouteId) => void;
 };
 
 const UpComingReservation = (props: Props) => {
-  const { imageUri, title, dateTime } = props;
+  const { roomId, imageUri, title, dateTime, handleEnterChat } = props;
 
   return (
-    <View style={styles.upComingReservation}>
-      <Image
-        source={{
-          uri: imageUri,
-        }}
-        style={styles.image}
-      />
-      <View style={styles.textContentWrapper}>
-        <Text small bold>
-          {title}
-        </Text>
-        <Text xsmall bold gray>
-          {dateTime}
-        </Text>
+    <Pressable onPress={() => handleEnterChat(roomId)}>
+      <View style={styles.upComingReservation}>
+        <Image
+          source={{
+            uri: imageUri,
+          }}
+          style={styles.image}
+        />
+        <View style={styles.textContentWrapper}>
+          <Text small bold>
+            {title}
+          </Text>
+          <Text xsmall bold gray>
+            {dateTime}
+          </Text>
+        </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

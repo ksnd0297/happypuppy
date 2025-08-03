@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import DefaultWebviewScreen from "./screens/DefaultWebviewScreen";
@@ -11,6 +11,7 @@ import { useCallback, useEffect } from "react";
 import { KAKAO_NATIVE_APP_KEY } from "@env";
 import { Platform, SafeAreaView, StatusBar, View } from "react-native";
 import ChatListPage from "./screens/ChatList";
+import { RouteId } from "./types/route";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -21,7 +22,21 @@ SplashScreen.setOptions({
   fade: true,
 });
 
-const Stack = createNativeStackNavigator();
+// TODO : useRouter 로 랩핑해서 제작
+export type RootStackParamList = {
+  Login: undefined;
+  Register: undefined;
+  ChatList: undefined;
+  Chat: {
+    id: RouteId;
+  };
+  Webview: undefined;
+  Home: undefined;
+};
+
+export type RootStackNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   useEffect(() => {
@@ -60,9 +75,9 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="ChatList" component={ChatListPage} />
-            <Stack.Screen name="Chat" component={ChatPage} />
-            <Stack.Screen name="Register" component={RegisterPage} />
             <Stack.Screen name="Login" component={LoginPage} />
+            <Stack.Screen name="Register" component={RegisterPage} />
+            <Stack.Screen name="Chat" component={ChatPage} />
             <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
           </Stack.Navigator>
         </NavigationContainer>
