@@ -53,6 +53,7 @@ const Select = (props: Props) => {
           {...rest}
           labelField="label"
           valueField="value"
+          dropdownPosition="top"
         />
       </View>
       <View>{isError && !!errorMessage && <Text style={{ color: "red", fontSize: 12 }}>{errorMessage}</Text>}</View>

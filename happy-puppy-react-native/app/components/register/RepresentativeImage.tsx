@@ -3,6 +3,7 @@ import * as ImagePicker from "expo-image-picker";
 import Label from "../shared/Label";
 import { useController, useFormContext } from "react-hook-form";
 import { REGISTER_FORM_PATH } from "@/app/constants/register/form";
+import ImageResizer from "@bam.tech/react-native-image-resizer";
 
 const cameraImg = require("@/app/assets/camera.png");
 
@@ -28,14 +29,14 @@ const RepresentativeImage = () => {
         mediaTypes: ["images"],
       });
 
-      if (!result.canceled) {
-        const selectedUri = result.assets?.[0]?.uri;
-        if (selectedUri) {
-          onChange(selectedUri);
-        }
+      if (result?.assets?.[0]) {
+        const response = await ImageResizer.createResizedImage(result.assets[0].uri, 300, 300, "JPEG", 75);
+
+        onChange(response.uri);
       }
     } catch (e) {
       if (e instanceof Error) {
+        console.log("error : ", e);
         setError(REGISTER_FORM_PATH.IMAGE_URL, {
           message: "알 수 없는 오류가 발생했습니다. 다시 시도해 주세요.",
         });
