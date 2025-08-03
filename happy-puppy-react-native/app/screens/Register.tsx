@@ -15,6 +15,8 @@ import awsS3Config from "@/awsS3.config";
 import { S3 } from "../utils/aws/s3";
 
 import { Buffer } from "buffer";
+import { postUsers } from "../services/users/users";
+import { Gender, Region } from "../services/users/types";
 
 const RegisterPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -42,11 +44,21 @@ const RegisterPage = () => {
         ContentType: "image/jpeg",
       };
 
-      S3.upload(params);
+      const image = S3.upload(params);
 
-      // 회원가입 체크
+      const promise = await image.promise();
 
-      // 회원가입 완료 시 홈으로 이동
+      const { Location } = promise;
+
+      await postUsers({
+        nickname: data.nickname,
+        age: +data.age,
+        address: data.address as Region,
+        introduce: data.introduce,
+        gender: Gender.MALE,
+        profileImageUrl: Location, // S3에 업로드된 이미지 URL
+      });
+
       navigation.navigate("Home");
     } catch (error) {
       console.error("파일 읽는 도중 발생하는 에러 예외처리, error: ", error);
