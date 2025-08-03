@@ -2,6 +2,8 @@ import { isLogined, login, me } from "@react-native-kakao/user";
 import { useNavigation } from "@react-navigation/native";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { RootStackNavigationProp } from "../App";
+import useAuth from "../hooks/auth/useAuth";
+import { useEffect } from "react";
 
 const happyPuppyImg = require("@/app/assets/happypuppy.png");
 const kakaoLoginImg = require("@/app/assets/kakao-login.png");
@@ -9,23 +11,28 @@ const kakaoLoginImg = require("@/app/assets/kakao-login.png");
 const LoginPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
 
+  const { token, handleLogin, isLoading } = useAuth();
+
   const handleKakaoLogin = async () => {
     try {
       const isLoggedIn = await isLogined();
-      console.log("isLoggedIn : ", isLoggedIn);
 
       if (!isLoggedIn) {
-        await login();
+        await handleLogin();
       }
 
       const userInfo = await me();
-      console.log("userInfo : ", userInfo);
 
-      // TODO : 가입이 되지 않은 경우 회원가입으로 이동
+      const { id } = userInfo;
+
+      // * 회원가입이 되어있는 경우
+      if (id === 4290865477) {
+        navigation.navigate("Home");
+      }
+      // * 회원가입이 되어있지 않은 경우
+      else {
       navigation.navigate("Register");
-
-      // TODO : 가입이 된 경우 홈으로 이동
-      // navigation.navigate("Home");
+      }
     } catch (error) {
       console.error("Kakao login failed:", error);
     }
