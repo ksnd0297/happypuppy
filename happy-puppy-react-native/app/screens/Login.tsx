@@ -2,8 +2,9 @@ import { isLogined, me } from "@react-native-kakao/user";
 import { useNavigation } from "@react-navigation/native";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { RootStackNavigationProp } from "../App";
-import useAuth from "../hooks/auth/useAuth";
+import useAuth, { KAKAO_TOKEN_KEY } from "../hooks/auth/useAuth";
 import { useEffect } from "react";
+import { removeItem } from "../utils/storage/storage";
 
 const happyPuppyImg = require("@/app/assets/happypuppy.png");
 const kakaoLoginImg = require("@/app/assets/kakao-login.png");
@@ -41,16 +42,19 @@ const LoginPage = () => {
   useEffect(() => {
     if (isLoading || !token) return;
 
-    const { accessToken, accessTokenExpiresAt } = token;
+    const { accessToken, refreshToken, refreshTokenExpiresAt } = token;
 
-    const isAccessTokenValid = accessToken && new Date(accessTokenExpiresAt * 1000).getTime() > new Date().getTime();
+    const isRefreshTokenValid = refreshToken && new Date(refreshTokenExpiresAt * 1000).getTime() > new Date().getTime();
 
-    // * Access Token 이 존재하고 만료되지 않은 경우
-    if (accessToken && isAccessTokenValid) {
+    // * Access Token 이 존재하고 Refresh Token 이 만료되지 않은 경우
+    if (accessToken && isRefreshTokenValid) {
       (async () => {
         const isLoggedIn = await isLogined();
 
-        if (!isLoggedIn) return;
+        if (!isLoggedIn) {
+          removeItem(KAKAO_TOKEN_KEY);
+          return;
+        }
 
         const userInfo = await me();
         const { id } = userInfo;
@@ -66,6 +70,9 @@ const LoginPage = () => {
       })();
 
       return;
+    } else {
+      // * Access Token 이 존재하지 않거나 Refresh Token 이 만료된 경우
+      removeItem(KAKAO_TOKEN_KEY);
     }
   }, [isLoading]);
 
