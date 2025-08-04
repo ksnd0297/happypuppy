@@ -2,7 +2,7 @@ import { getItem, setItem } from "@/app/utils/storage/storage";
 import { KakaoLoginToken, login } from "@react-native-kakao/user";
 import { useEffect, useState } from "react";
 
-const KAKAO_TOKEN_KEY = "kakaoToken";
+export const KAKAO_TOKEN_KEY = "kakaoToken";
 
 const useAuth = () => {
   const [token, setToken] = useState<KakaoLoginToken | null>(null);
@@ -28,7 +28,7 @@ const useAuth = () => {
     }
 
     fetchToken();
-  });
+  }, []);
 
   return { token, isLoading, handleLogin };
 };
