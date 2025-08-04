@@ -27,7 +27,7 @@ const LoginPage = () => {
       const { id } = userInfo;
 
       // * 회원가입이 되어있는 경우
-      if (id === 4290865477) {
+      if (id === 4290865471) {
         navigation.navigate("Home");
       }
       // * 회원가입이 되어있지 않은 경우
@@ -60,12 +60,8 @@ const LoginPage = () => {
         const { id } = userInfo;
 
         // * 회원가입이 되어있는 경우
-        if (id === 4290865477) {
+        if (id === 4290865471) {
           navigation.navigate("Home");
-        }
-        // * 회원가입이 되어있지 않은 경우
-        else {
-          navigation.navigate("Register");
         }
       })();
 
