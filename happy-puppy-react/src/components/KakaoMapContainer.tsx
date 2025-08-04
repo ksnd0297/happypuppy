@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import KakaoMap from './KakaoMap';
+import {KakaoMapPlaceInfo} from 'src/services/types';
+import {KakaoMapPosition} from '@mapTypes/kakaoMap';
 
-type Props = {
-  center: {
-    lat: number;
-    lng: number;
-  };
-  markers?: {
-    lat: number;
-    lng: number;
-    title: string;
-    imageUrl?: string;
-  }[];
+type Props<T> = {
+  center: KakaoMapPosition;
+  placeList: KakaoMapPlaceInfo<T>[];
 };
 
-const KakaoMapContainer = ({ center, markers }: Props) => {
+const KakaoMapContainer = <T extends unknown>({center, placeList}: Props<T>) => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -42,7 +36,11 @@ const KakaoMapContainer = ({ center, markers }: Props) => {
     document.head.appendChild(script);
   }, []);
 
-  return loaded ? <KakaoMap center={center} markers={markers} /> : <div>지도를 불러오는 중입니다...</div>;
+  return loaded ? (
+    <KakaoMap centerPosition={center} placeList={placeList} />
+  ) : (
+    <div>지도를 불러오는 중입니다...</div>
+  );
 };
 
 export default KakaoMapContainer;
