@@ -100,8 +100,7 @@ const KakaoMapFrom = <T extends unknown>({centerPosition, placeList = []}: Props
   };
 
   const handleClickGoToMyAround = () => {
-    //TODO: 네이티브에서 내 위치 조회 후 이동되게 해야함
-    setIsSearchAround(true);
+    window.ReactNativeWebView?.postMessage('locationRequest');
   };
 
   return (
@@ -132,6 +131,7 @@ const KakaoMapFrom = <T extends unknown>({centerPosition, placeList = []}: Props
               boxSizing: 'border-box',
               borderColor: 'gray',
               borderWidth: 1,
+              transform: 'translateX(-50%)',
             }}
             onClick={handleSearchAround}
           >
