@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import DefaultWebviewScreen from "./screens/DefaultWebviewScreen";
@@ -10,6 +10,19 @@ import { initializeKakaoSDK } from "@react-native-kakao/core";
 import { useCallback, useEffect } from "react";
 import { KAKAO_NATIVE_APP_KEY } from "@env";
 import { Platform, SafeAreaView, StatusBar, View } from "react-native";
+import ChatListPage from "./screens/ChatList";
+import { RouteId } from "./types/route";
+import HomePage from "./screens/Home";
+import { LocaleConfig } from "react-native-calendars";
+
+LocaleConfig.locales["ko"] = {
+  monthNames: ["01월", "02월", "03월", "04월", "05월", "06월", "07월", "08월", "09월", "10월", "11월", "12월"],
+  monthNamesShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+  dayNames: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+  dayNamesShort: ["일", "월", "화", "수", "목", "금", "토"],
+  today: "오늘",
+};
+LocaleConfig.defaultLocale = "ko";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -20,7 +33,21 @@ SplashScreen.setOptions({
   fade: true,
 });
 
-const Stack = createNativeStackNavigator();
+// TODO : useRouter 로 랩핑해서 제작
+export type RootStackParamList = {
+  Login: undefined;
+  Register: undefined;
+  ChatList: undefined;
+  Chat: {
+    id: RouteId;
+  };
+  Webview: undefined;
+  Home: undefined;
+};
+
+export type RootStackNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   useEffect(() => {
@@ -52,14 +79,17 @@ export default function App() {
         flex: 1,
         backgroundColor: "#FCF5EE",
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        paddingBottom: Platform.OS === "android" ? StatusBar.currentHeight : 0,
       }}
     >
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="Chat" component={ChatPage} />
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Register" component={RegisterPage} />
+            <Stack.Screen name="Home" component={HomePage} />
+            <Stack.Screen name="ChatList" component={ChatListPage} />
             <Stack.Screen name="Login" component={LoginPage} />
+            <Stack.Screen name="Chat" component={ChatPage} />
             <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
           </Stack.Navigator>
         </NavigationContainer>

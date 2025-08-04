@@ -8,16 +8,49 @@ import Button from "../components/shared/Button";
 import { FormProvider, useForm } from "react-hook-form";
 import { ON_SUBMIT } from "../constants/shared/form";
 import { REGISTER_FROM_DEFAULT_VALUES } from "../constants/register/form";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackNavigationProp } from "../App";
+import RNFS from "react-native-fs";
+import awsS3Config from "@/awsS3.config";
+import { S3 } from "../utils/aws/s3";
+
+import { Buffer } from "buffer";
 
 const RegisterPage = () => {
+  const navigation = useNavigation<RootStackNavigationProp>();
+
   const form = useForm({
     defaultValues: REGISTER_FROM_DEFAULT_VALUES,
     mode: ON_SUBMIT,
     reValidateMode: ON_SUBMIT,
   });
 
-  const handleSubmit = form.handleSubmit((data) => {
-    console.log("Form Data:", data);
+  const handleSubmit = form.handleSubmit(async (data) => {
+    const { imageUrl } = data;
+
+    try {
+      const fileData = await RNFS.readFile(imageUrl, "base64");
+
+      const formData = Buffer.from(fileData, "base64");
+
+      const imageName = data.nickname + "image.jpg";
+
+      const params = {
+        Bucket: awsS3Config.bucket,
+        Key: imageName,
+        Body: formData,
+        ContentType: "image/jpeg",
+      };
+
+      S3.upload(params);
+
+      // 회원가입 체크
+
+      // 회원가입 완료 시 홈으로 이동
+      navigation.navigate("Home");
+    } catch (error) {
+      console.error("파일 읽는 도중 발생하는 에러 예외처리, error: ", error);
+    }
   });
 
   const disabled = form.formState.isSubmitting;
