@@ -11,10 +11,13 @@ import { WebView, WebViewMessageEvent } from "react-native-webview";
 import * as Location from "expo-location";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SearchInput from "../components/map/SearchInput";
+import Modal from "../components/modal/Modal";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 const DefaultWebviewScreen = () => {
   const webViewRef = useRef<WebView>(null);
   const inputRef = useRef<TextInput>(null);
+  const modalRef = useRef<BottomSheetModal>(null);
   const [query, setQuery] = useState("");
   const insets = useSafeAreaInsets(); // 안전 영역 정보 가져오기
 
@@ -84,6 +87,9 @@ const DefaultWebviewScreen = () => {
   const handleSearch = () => {
     inputRef.current?.blur();
     console.log("search query", query);
+
+    //TODO: 테스트용 임시 모달 오픈 로직
+    modalRef.current?.present();
   };
 
   const handleChangeQuery = (text: string) => {
@@ -98,12 +104,6 @@ const DefaultWebviewScreen = () => {
       }}
     >
       <SafeAreaView style={styles.container}>
-        <SearchInput
-          ref={inputRef}
-          query={query}
-          onChangeQuery={handleChangeQuery}
-          onSubmit={handleSearch}
-        />
         <WebView
           source={{ uri: "https://happy-puppy-react.vercel.app" }}
           style={[styles.webview, { marginTop: insets.top }]}
@@ -114,6 +114,13 @@ const DefaultWebviewScreen = () => {
           originWhitelist={["*"]}
           onMessage={onMessage}
         />
+        <SearchInput
+          ref={inputRef}
+          query={query}
+          onChangeQuery={handleChangeQuery}
+          onSubmit={handleSearch}
+        />
+        <Modal ref={modalRef} />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

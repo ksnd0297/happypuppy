@@ -39,8 +39,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 4,
     alignItems: "center",
-    zIndex: 1000,
-    elevation: 10,
   },
   input: {
     flex: 1,
