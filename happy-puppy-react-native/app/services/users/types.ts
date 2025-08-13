@@ -41,3 +41,11 @@ export type UserResponse = {
 export type GetUsersParams = {
   id: number;
 };
+
+export type GetUsersCheckParams = {
+  appUserId: number;
+};
+
+export type UserCheckResponse = {
+  isMember: boolean;
+};
