@@ -3639,6 +3639,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "date-fns@npm:4.1.0"
+  checksum: 10/d5f6e9de5bbc52310f786099e18609289ed5e30af60a71e0646784c8185ddd1d0eebcf7c96b7faaaefc4a8366f3a3a4244d099b6d0866ee2bec80d1361e64342
+  languageName: node
+  linkType: hard
+
 "debug@npm:2.6.9, debug@npm:^2.2.0, debug@npm:^2.6.9":
   version: 2.6.9
   resolution: "debug@npm:2.6.9"
@@ -4846,6 +4853,7 @@ __metadata:
     aws-sdk: "npm:^2.1692.0"
     axios: "npm:^1.11.0"
     buffer: "npm:^6.0.3"
+    date-fns: "npm:^4.1.0"
     eslint: "npm:^9.29.0"
     expo: "npm:~53.0.12"
     expo-build-properties: "npm:~0.14.6"
@@ -4860,6 +4868,7 @@ __metadata:
     react-hook-form: "npm:^7.58.1"
     react-native: "npm:0.79.5"
     react-native-calendars: "npm:^1.1313.0"
+    react-native-date-picker: "npm:^5.0.13"
     react-native-dotenv: "npm:^3.4.11"
     react-native-element-dropdown: "npm:^2.12.4"
     react-native-fs: "npm:^2.20.0"
@@ -7057,6 +7066,16 @@ __metadata:
     moment:
       optional: true
   checksum: 10/b5e66144f044ea2a41bc0b3346d5390e20bcddeaed4a1f2c6f604f0e95b091ee6a6f49d10756348da2e052b71d666bf8ca7a2c8f436c21a2aa5968339d8c1447
+  languageName: node
+  linkType: hard
+
+"react-native-date-picker@npm:^5.0.13":
+  version: 5.0.13
+  resolution: "react-native-date-picker@npm:5.0.13"
+  peerDependencies:
+    react: ">= 17.0.1"
+    react-native: ">= 0.64.3"
+  checksum: 10/3a61bc300e005f9f0dc64bb8de10ea2aa0b53a430d259a615d7aa393d88c9b82c5967b393c0e0eb15a4d61cd210d7b529a526a92cb40645dddec822f305b7ace
   languageName: node
   linkType: hard
 
