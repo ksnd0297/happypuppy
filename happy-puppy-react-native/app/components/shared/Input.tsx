@@ -39,13 +39,13 @@ const Input = (props: Props) => {
   };
 
   return (
-    <View>
+    <>
       <View style={{ display: "flex", gap: 10 }}>
         <Label essential={essential} label={label} labelType={labelType} />
         <TextInput onFocus={handleFocus} onBlur={handleBlur} style={inputStyle} placeholderTextColor="#808080" {...rest} />
       </View>
       <View>{isError && !!errorMessage && <Text style={{ color: "red", fontSize: 12 }}>{errorMessage}</Text>}</View>
-    </View>
+    </>
   );
 };
 

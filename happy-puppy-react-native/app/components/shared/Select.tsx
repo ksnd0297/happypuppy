@@ -10,14 +10,21 @@ type OptionType = {
   value: string;
 };
 
+export enum SelectType {
+  TYPE1 = "TYPE1",
+  TYPE2 = "TYPE2",
+  TYPE3 = "TYPE3",
+}
+
 type Props = {
   isError?: boolean;
   errorMessage?: string;
+  selectType: SelectType;
 } & LabelProps &
   Omit<DropdownProps<OptionType>, "labelField" | "valueField">;
 
 const Select = (props: Props) => {
-  const { essential, isError, errorMessage, label, labelType, value, ...rest } = props;
+  const { essential, selectType, isError, errorMessage, label, labelType, value, ...rest } = props;
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -33,6 +40,7 @@ const Select = (props: Props) => {
 
   const selectStyle = {
     ...SELECT_STYLE["DEFAULT"],
+    ...SELECT_STYLE[selectType],
     ...(isSelected && SELECT_STYLE["SELECTED"]),
     ...(isFocused && SELECT_STYLE["FOCUS"]),
     ...(isError && SELECT_STYLE["ERROR"]),
@@ -70,12 +78,26 @@ const SELECT_STYLE = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0.5,
     fontSize: 15,
-    height: 45,
-    minWidth: 240,
+
     paddingLeft: 10,
     paddingRight: 10,
-    width: 341,
+
     fontFamily,
+  },
+
+  TYPE1: {
+    width: 341,
+    height: 45,
+  },
+
+  TYPE2: {
+    width: 100,
+    height: 45,
+  },
+
+  TYPE3: {
+    width: 241,
+    height: 45,
   },
 
   OPTION: {

@@ -1,5 +1,5 @@
 import { useController } from "react-hook-form";
-import Select from "../shared/Select";
+import Select, { SelectType } from "../shared/Select";
 import { REGISTER_FORM_PATH } from "@/app/constants/register/form";
 import { Region } from "@/app/services/users/types";
 
@@ -76,12 +76,9 @@ const Address = () => {
     fieldState: { error },
   } = useController({
     name: REGISTER_FORM_PATH.ADDRESS,
-    rules: {
-      required: "거주지는 필수 입력입니다.",
-    },
   });
 
-  return <Select label="거주지" value={value} isError={!!error?.message} errorMessage={error?.message} essential={true} onChange={({ value }) => onChange(value)} placeholder="사는 곳을 선택해 주세요" data={OPTION_LIST} />;
+  return <Select selectType={SelectType.TYPE1} label="거주지" value={value} isError={!!error?.message} errorMessage={error?.message} onChange={({ value }) => onChange(value)} placeholder="사는 곳을 선택해 주세요" data={OPTION_LIST} />;
 };
 
 export default Address;
