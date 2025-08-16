@@ -4,19 +4,48 @@ import HomeImage from "../components/home/HomeImage";
 import Text from "../components/shared/Text";
 import Divider from "../components/shared/Divider";
 import { Calendar } from "react-native-calendars";
+import { useEffect, useState } from "react";
+import { UserResponse } from "../services/users/types";
+import { me } from "@react-native-kakao/user";
+import { getUsers, getUsersCheck } from "../services/users/users";
 
 const HomePage = () => {
+  const [info, setInfo] = useState<UserResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const { id } = await me();
+
+      const {
+        data: { userId },
+      } = await getUsersCheck({
+        appUserId: id,
+      });
+
+      const { data } = await getUsers({
+        id: userId,
+      });
+
+      setInfo(data);
+
+      setIsLoading(false);
+    })();
+  }, []);
+
   const handleNavigationInfo = () => {};
 
   const handleNavigationNotice = () => {};
 
   const handleNavigationSetting = () => {};
 
+  if (isLoading) {
+    return <></>;
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <HomeImage title="행복한 치와와" uri="https://happypuppy-bucket.s3.ap-northeast-2.amazonaws.com/dog.png" />
-      </View>
+      <View style={styles.imageContainer}>{info && <HomeImage title={info?.nickname} uri={info?.profileImageUrl} />}</View>
       <View style={styles.homeContainer}>
         <View style={styles.calendarContainer}>
           <View style={styles.calendarWrapper}>
