@@ -18,7 +18,7 @@ interface Coordinate {
   latitude: number;
   longitude: number;
 }
-interface PlaceInfo extends Coordinate {
+export interface PlaceInfo extends Coordinate {
   id: number;
   title: string;
   imageUrl: string;
@@ -29,7 +29,7 @@ const DefaultWebviewScreen = () => {
   const inputRef = useRef<TextInput>(null);
   const modalRef = useRef<BottomSheetModal>(null);
 
-  const [selectedPlaceId, setSelectedPlaceId] = useState<string>();
+  const [selectedPlace, setSelectedPlace] = useState<PlaceInfo>();
   const [placeList, setPlaceList] = useState<PlaceInfo[]>([]);
   const [query, setQuery] = useState("");
   const insets = useSafeAreaInsets(); // 안전 영역 정보 가져오기
@@ -146,7 +146,7 @@ const DefaultWebviewScreen = () => {
         //TODO: 테스트용 임시 모달 오픈 로직
         console.log("selectPlace", place, place?.id);
         if (place?.id) {
-          setSelectedPlaceId(place.id);
+          setSelectedPlace(placeList.find(({ id }) => id === place.id));
           modalRef.current?.present();
         }
         return;
@@ -202,7 +202,7 @@ const DefaultWebviewScreen = () => {
           onChangeQuery={handleChangeQuery}
           onSubmit={handleSearch}
         />
-        <Modal ref={modalRef} />
+        <Modal ref={modalRef} selectedPlace={selectedPlace} />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

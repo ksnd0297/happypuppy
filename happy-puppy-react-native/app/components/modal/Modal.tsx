@@ -1,3 +1,4 @@
+import { PlaceInfo } from "@/app/screens/DefaultWebviewScreen";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -6,13 +7,18 @@ import {
 import {
   forwardRef,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
 } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-const Modal = forwardRef<BottomSheetModal>(({}, ref) => {
+interface Props {
+  selectedPlace: PlaceInfo | undefined;
+}
+
+const Modal = forwardRef<BottomSheetModal, Props>(({ selectedPlace }, ref) => {
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -27,6 +33,14 @@ const Modal = forwardRef<BottomSheetModal>(({}, ref) => {
     ref,
     () => bottomSheetModalRef.current as BottomSheetModal
   );
+
+  useEffect(() => {
+    if (selectedPlace) {
+      bottomSheetModalRef.current?.present();
+    } else {
+      bottomSheetModalRef.current?.close();
+    }
+  }, [selectedPlace]);
 
   const renderBackdrop = useCallback(
     (props: any) => (
@@ -51,7 +65,7 @@ const Modal = forwardRef<BottomSheetModal>(({}, ref) => {
         backdropComponent={renderBackdrop}
       >
         <View style={styles.contentContainer}>
-          <Text>Awesome 🎉</Text>
+          <Text>{JSON.stringify(selectedPlace)}</Text>
         </View>
       </BottomSheetModal>
     </BottomSheetModalProvider>
