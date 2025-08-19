@@ -147,7 +147,7 @@ const DefaultWebviewScreen = () => {
         console.log("selectPlace", place, place?.id);
         if (place?.id) {
           setSelectedPlaceId(place.id);
-          // modalRef.current?.present();
+          modalRef.current?.present();
         }
         return;
     }
