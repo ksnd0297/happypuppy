@@ -5,23 +5,61 @@ import DatePicker from "react-native-date-picker";
 import { useState } from "react";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { useController } from "react-hook-form";
+import { APPOINTMENT_FORM_PATH } from "@/app/constants/appointment/form";
 
 const AppointmentDate = () => {
   const [openDateModal, setOpenDateModal] = useState(false);
   const [openTimeModal, setOpenTimeModal] = useState(false);
 
-  const [date, setDate] = useState<Date | undefined>();
-  const [time, setTime] = useState<Date | undefined>();
+  const {
+    field: { value: dateValue, onChange: onChangeDate },
+  } = useController({
+    name: APPOINTMENT_FORM_PATH.DATE,
+    rules: {
+      required: "약속 날짜는 필수 입력입니다.",
+    },
+  });
+
+  const {
+    field: { value: timeValue, onChange: onChangeTime },
+  } = useController({
+    name: APPOINTMENT_FORM_PATH.TIME,
+    rules: {
+      required: "약속 시간은 필수 입력입니다.",
+    },
+  });
+
+  const handleChangeDate = (selectedDate: Date) => {
+    onChangeDate(formatToYmd(selectedDate));
+  };
+
+  const handleChangeTime = (selectedTime: Date) => {
+    onChangeTime(formatToHms(selectedTime));
+  };
+
+  const formatToYmd = (value: Date) => {
+    if (value) {
+      return format(value, "yyyy-MM-dd", { locale: ko });
+    }
+  };
+
+  const formatToHms = (value: Date) => {
+    if (value) {
+      return format(value, "HH:mm:ss", { locale: ko });
+    }
+  };
 
   const formatToYmdWithDate = () => {
-    if (date) {
-      return format(date, "yy. M. d. (E)", { locale: ko });
+    if (dateValue) {
+      return format(dateValue, "yy. M. d. (E)", { locale: ko });
     }
   };
 
   const formatToAMPMTime = () => {
-    if (time) {
-      return format(time, "a h시 m분", { locale: ko });
+    if (timeValue) {
+      const dateTime = new Date(`1970-01-01T${timeValue}`);
+      return format(dateTime, "a h시 m분", { locale: ko });
     }
   };
 
@@ -30,11 +68,11 @@ const AppointmentDate = () => {
       <View style={styles.container}>
         <View style={styles.buttonWrapper}>
           <Pressable style={styles.buttonContainer} onPress={() => setOpenDateModal(true)}>
-            <Text gray={!date}>{date ? formatToYmdWithDate() : "날짜 선택 (필수)"}</Text>
+            <Text gray={!dateValue}>{dateValue ? formatToYmdWithDate() : "날짜 선택 (필수)"}</Text>
           </Pressable>
 
           <Pressable style={styles.buttonContainer} onPress={() => setOpenTimeModal(true)}>
-            <Text gray={!time}>{time ? formatToAMPMTime() : "시간 선택 (필수)"}</Text>
+            <Text gray={!timeValue}>{timeValue ? formatToAMPMTime() : "시간 선택 (필수)"}</Text>
           </Pressable>
         </View>
       </View>
@@ -42,9 +80,9 @@ const AppointmentDate = () => {
         modal
         mode="date"
         open={openDateModal}
-        date={date ? date : new Date()}
+        date={dateValue ? new Date(dateValue) : new Date()}
         onConfirm={(date) => {
-          setDate(date);
+          handleChangeDate(date);
           setOpenDateModal(false);
         }}
         onCancel={() => {
@@ -55,9 +93,9 @@ const AppointmentDate = () => {
         modal
         mode="time"
         open={openTimeModal}
-        date={time ? time : new Date()}
+        date={timeValue ? new Date(`1970-01-01T${timeValue}`) : new Date()}
         onConfirm={(date) => {
-          setTime(date);
+          handleChangeTime(date);
           setOpenTimeModal(false);
         }}
         onCancel={() => {

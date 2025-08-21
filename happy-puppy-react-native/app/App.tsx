@@ -15,6 +15,7 @@ import { RouteId } from "./types/route";
 import HomePage from "./screens/Home";
 import { LocaleConfig } from "react-native-calendars";
 import AppointmentPage from "./screens/Appointment";
+import Toast from "react-native-toast-message";
 
 LocaleConfig.locales["ko"] = {
   monthNames: ["01월", "02월", "03월", "04월", "05월", "06월", "07월", "08월", "09월", "10월", "11월", "12월"],
@@ -76,27 +77,30 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: "#FCF5EE",
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-        paddingBottom: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-      }}
-    >
-      <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Appointment" component={AppointmentPage} />
-            <Stack.Screen name="Register" component={RegisterPage} />
-            <Stack.Screen name="Login" component={LoginPage} />
-            <Stack.Screen name="Home" component={HomePage} />
-            <Stack.Screen name="ChatList" component={ChatListPage} />
-            <Stack.Screen name="Chat" component={ChatPage} />
-            <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </View>
-    </SafeAreaView>
+    <>
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: "#FCF5EE",
+          paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+          paddingBottom: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        }}
+      >
+        <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+          <NavigationContainer>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Appointment" component={AppointmentPage} />
+              <Stack.Screen name="Register" component={RegisterPage} />
+              <Stack.Screen name="Login" component={LoginPage} />
+              <Stack.Screen name="Home" component={HomePage} />
+              <Stack.Screen name="ChatList" component={ChatListPage} />
+              <Stack.Screen name="Chat" component={ChatPage} />
+              <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
+      </SafeAreaView>
+      <Toast />
+    </>
   );
 }
