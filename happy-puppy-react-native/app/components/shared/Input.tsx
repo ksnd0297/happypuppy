@@ -5,6 +5,8 @@ import { fontFamily } from "@/app/constants/shared/font";
 
 export enum InputType {
   TYPE1 = "TYPE1",
+  TYPE2 = "TYPE2",
+  TYPE3 = "TYPE3",
 }
 
 type Props = {
@@ -40,7 +42,7 @@ const Input = (props: Props) => {
     <View>
       <View style={{ display: "flex", gap: 10 }}>
         <Label essential={essential} label={label} labelType={labelType} />
-        <TextInput onFocus={handleFocus} onBlur={handleBlur} style={inputStyle} {...rest} />
+        <TextInput onFocus={handleFocus} onBlur={handleBlur} style={inputStyle} placeholderTextColor="#808080" {...rest} />
       </View>
       <View>{isError && !!errorMessage && <Text style={{ color: "red", fontSize: 12 }}>{errorMessage}</Text>}</View>
     </View>
@@ -64,6 +66,17 @@ const INPUT_STYLE = StyleSheet.create({
 
   TYPE1: {
     width: 341,
+    height: 45,
+  },
+
+  TYPE2: {
+    width: 341,
+    height: 45,
+    fontSize: 14,
+  },
+
+  TYPE3: {
+    width: 20,
     height: 45,
   },
 

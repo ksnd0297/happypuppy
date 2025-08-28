@@ -5,6 +5,7 @@ import { fontFamily } from "@/app/constants/shared/font";
 
 export enum TextAreaType {
   TYPE1 = "TYPE1",
+  TYPE2 = "TYPE2",
 }
 
 type Props = {
@@ -39,7 +40,7 @@ const Textarea = (props: Props) => {
     <>
       <View style={{ display: "flex", gap: 10 }}>
         <Label essential={essential} label={label} labelType={labelType} />
-        <TextInput onFocus={handleFocus} onBlur={handleBlur} style={textAreaStyle} {...rest} multiline={true} />
+        <TextInput onFocus={handleFocus} onBlur={handleBlur} style={textAreaStyle} placeholderTextColor="#808080" {...rest} multiline={true} />
       </View>
     </>
   );
@@ -55,14 +56,20 @@ const TEXTAREA_STYLE = StyleSheet.create({
     borderWidth: 1,
     fontSize: 15,
     minWidth: 240,
-    paddingLeft: 10,
     verticalAlign: "top",
     fontFamily,
+
+    padding: 10,
   },
 
   TYPE1: {
     width: 341,
     height: 80,
+  },
+
+  TYPE2: {
+    width: 341,
+    height: 160,
   },
 
   FOCUS: {

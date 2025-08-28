@@ -5,6 +5,7 @@ import { RootStackNavigationProp } from "../App";
 import useAuth, { KAKAO_TOKEN_KEY } from "../hooks/auth/useAuth";
 import { useEffect } from "react";
 import { removeItem } from "../utils/storage/storage";
+import { getUsersCheck } from "../services/users/users";
 
 const happyPuppyImg = require("@/app/assets/happypuppy.png");
 const kakaoLoginImg = require("@/app/assets/kakao-login.png");
@@ -13,6 +14,8 @@ const LoginPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const { token, handleLogin, isLoading } = useAuth();
+
+  console.log("token : ", token);
 
   const handleKakaoLogin = async () => {
     try {
@@ -26,8 +29,14 @@ const LoginPage = () => {
 
       const { id } = userInfo;
 
+      const {
+        data: { isMember },
+      } = await getUsersCheck({
+        appUserId: id,
+      });
+
       // * 회원가입이 되어있는 경우
-      if (id === 4290865471) {
+      if (isMember) {
         navigation.navigate("Home");
       }
       // * 회원가입이 되어있지 않은 경우
@@ -59,9 +68,19 @@ const LoginPage = () => {
         const userInfo = await me();
         const { id } = userInfo;
 
+        const {
+          data: { isMember },
+        } = await getUsersCheck({
+          appUserId: id,
+        });
+
         // * 회원가입이 되어있는 경우
-        if (id === 4290865471) {
+        if (isMember) {
           navigation.navigate("Home");
+        }
+        // * 회원가입이 되어있지 않은 경우
+        else {
+          navigation.navigate("Register");
         }
       })();
 

@@ -14,6 +14,7 @@ import ChatListPage from "./screens/ChatList";
 import { RouteId } from "./types/route";
 import HomePage from "./screens/Home";
 import { LocaleConfig } from "react-native-calendars";
+import AppointmentPage from "./screens/Appointment";
 
 LocaleConfig.locales["ko"] = {
   monthNames: ["01월", "02월", "03월", "04월", "05월", "06월", "07월", "08월", "09월", "10월", "11월", "12월"],
@@ -43,6 +44,7 @@ export type RootStackParamList = {
   };
   Webview: undefined;
   Home: undefined;
+  Appointment: undefined;
 };
 
 export type RootStackNavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -85,6 +87,7 @@ export default function App() {
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Appointment" component={AppointmentPage} />
             <Stack.Screen name="Register" component={RegisterPage} />
             <Stack.Screen name="Login" component={LoginPage} />
             <Stack.Screen name="Home" component={HomePage} />
