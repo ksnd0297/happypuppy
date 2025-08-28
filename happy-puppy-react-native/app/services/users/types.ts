@@ -23,19 +23,38 @@ export enum Region {
   JEJU = "JEJU",
 }
 
+export enum AgeType {
+  TEENS = "TEENS",
+  TWENTIES = "TWENTIES",
+  THIRTIES = "THIRTIES",
+  FORTIES = "FORTIES",
+  FIFTIES = "FIFTIES",
+  SIXTIES = "SIXTIES",
+}
+
 export type UserRegisterRequest = {
+  address?: Region;
+  ageType?: AgeType;
+  appUserId: number;
+  gender?: Gender;
+  introduce?: string;
   nickname: string;
+  phoneNumber?: string;
   profileImageUrl: string;
-  gender: Gender;
-  age: number;
-  address: Region;
-  introduce: string;
+  showPhoneNumber?: boolean;
 };
 
 export type UserResponse = {
+  address?: Region;
+  ageType?: AgeType;
+  appUserId: number;
+  gender?: Gender;
   id: number;
+  introduce?: string;
   nickname: string;
-  gender: Gender;
+  phoneNumber?: string;
+  profileImageUrl: string;
+  showPhoneNumber?: boolean;
 };
 
 export type GetUsersParams = {
@@ -47,5 +66,6 @@ export type GetUsersCheckParams = {
 };
 
 export type UserCheckResponse = {
+  userId: number;
   isMember: boolean;
 };
