@@ -1,5 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-navigation/native-stack";
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from "@react-navigation/native-stack";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import DefaultWebviewScreen from "./screens/DefaultWebviewScreen";
@@ -14,13 +17,48 @@ import ChatListPage from "./screens/ChatList";
 import { RouteId } from "./types/route";
 import HomePage from "./screens/Home";
 import { LocaleConfig } from "react-native-calendars";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import AppointmentPage from "./screens/Appointment";
 import Toast from "react-native-toast-message";
 
 LocaleConfig.locales["ko"] = {
-  monthNames: ["01월", "02월", "03월", "04월", "05월", "06월", "07월", "08월", "09월", "10월", "11월", "12월"],
-  monthNamesShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-  dayNames: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+  monthNames: [
+    "01월",
+    "02월",
+    "03월",
+    "04월",
+    "05월",
+    "06월",
+    "07월",
+    "08월",
+    "09월",
+    "10월",
+    "11월",
+    "12월",
+  ],
+  monthNamesShort: [
+    "1월",
+    "2월",
+    "3월",
+    "4월",
+    "5월",
+    "6월",
+    "7월",
+    "8월",
+    "9월",
+    "10월",
+    "11월",
+    "12월",
+  ],
+  dayNames: [
+    "일요일",
+    "월요일",
+    "화요일",
+    "수요일",
+    "목요일",
+    "금요일",
+    "토요일",
+  ],
   dayNamesShort: ["일", "월", "화", "수", "목", "금", "토"],
   today: "오늘",
 };
@@ -48,7 +86,8 @@ export type RootStackParamList = {
   Appointment: undefined;
 };
 
-export type RootStackNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+export type RootStackNavigationProp =
+  NativeStackNavigationProp<RootStackParamList>;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -77,30 +116,32 @@ export default function App() {
   }
 
   return (
-    <>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: "#FCF5EE",
-          paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-          paddingBottom: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-        }}
-      >
-        <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-          <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Appointment" component={AppointmentPage} />
+          style={{
+            flex: 1,
+            backgroundColor: "#FCF5EE",
+            paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+            paddingBottom:
+            Platform.OS === "android" ? StatusBar.currentHeight : 0,
+          }}
+        >
+          <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+            <NavigationContainer>
+              <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Appointment" component={AppointmentPage} />
               <Stack.Screen name="Register" component={RegisterPage} />
-              <Stack.Screen name="Login" component={LoginPage} />
+                <Stack.Screen name="Login" component={LoginPage} />
               <Stack.Screen name="Home" component={HomePage} />
-              <Stack.Screen name="ChatList" component={ChatListPage} />
-              <Stack.Screen name="Chat" component={ChatPage} />
-              <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </View>
-      </SafeAreaView>
+                <Stack.Screen name="ChatList" component={ChatListPage} />
+                  <Stack.Screen name="Chat" component={ChatPage} />
+                <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </View>
+        </SafeAreaView>
       <Toast />
-    </>
+
+    </GestureHandlerRootView>
   );
 }
