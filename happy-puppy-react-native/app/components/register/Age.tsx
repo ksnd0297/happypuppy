@@ -1,46 +1,43 @@
 import { useController } from "react-hook-form";
-import Select from "../shared/Select";
+import Select, { SelectType } from "../shared/Select";
 import { REGISTER_FORM_PATH } from "@/app/constants/register/form";
+import { AgeType } from "@/app/services/users/types";
 
 const OPTION_LIST = [
   {
     label: "10대",
-    value: "10",
+    value: AgeType.TEENS,
   },
   {
     label: "20대",
-    value: "20",
+    value: AgeType.TWENTIES,
   },
   {
     label: "30대",
-    value: "30",
+    value: AgeType.THIRTIES,
   },
   {
     label: "40대",
-    value: "40",
+    value: AgeType.FORTIES,
   },
   {
     label: "50대",
-    value: "50",
+    value: AgeType.FIFTIES,
   },
   {
     label: "60대",
-    value: "60",
+    value: AgeType.SIXTIES,
   },
 ];
 
 const Age = () => {
   const {
     field: { value, onChange },
-    fieldState: { error },
   } = useController({
     name: REGISTER_FORM_PATH.AGE,
-    rules: {
-      required: "연령대는 필수 입력입니다.",
-    },
   });
 
-  return <Select label="연령대" value={value} essential={true} isError={!!error?.message} errorMessage={error?.message} onChange={({ value }) => onChange(value)} placeholder="연령대를 선택해 주세요" data={OPTION_LIST} />;
+  return <Select selectType={SelectType.TYPE3} label="연령대" value={value} onChange={({ value }) => onChange(value)} placeholder="연령대를 선택해 주세요" data={OPTION_LIST} />;
 };
 
 export default Age;

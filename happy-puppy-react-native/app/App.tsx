@@ -18,6 +18,8 @@ import { RouteId } from "./types/route";
 import HomePage from "./screens/Home";
 import { LocaleConfig } from "react-native-calendars";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import AppointmentPage from "./screens/Appointment";
+import Toast from "react-native-toast-message";
 
 LocaleConfig.locales["ko"] = {
   monthNames: [
@@ -81,6 +83,7 @@ export type RootStackParamList = {
   };
   Webview: undefined;
   Home: undefined;
+  Appointment: undefined;
 };
 
 export type RootStackNavigationProp =
@@ -115,27 +118,30 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: "#FCF5EE",
-          paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-          paddingBottom:
+          style={{
+            flex: 1,
+            backgroundColor: "#FCF5EE",
+            paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+            paddingBottom:
             Platform.OS === "android" ? StatusBar.currentHeight : 0,
-        }}
-      >
-        <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-          <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
+          }}
+        >
+          <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+            <NavigationContainer>
+              <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Appointment" component={AppointmentPage} />
               <Stack.Screen name="Register" component={RegisterPage} />
+                <Stack.Screen name="Login" component={LoginPage} />
               <Stack.Screen name="Home" component={HomePage} />
-              <Stack.Screen name="ChatList" component={ChatListPage} />
-              <Stack.Screen name="Login" component={LoginPage} />
-              <Stack.Screen name="Chat" component={ChatPage} />
-              <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </View>
-      </SafeAreaView>
+                <Stack.Screen name="ChatList" component={ChatListPage} />
+                  <Stack.Screen name="Chat" component={ChatPage} />
+                <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </View>
+        </SafeAreaView>
+      <Toast />
+
     </GestureHandlerRootView>
   );
 }

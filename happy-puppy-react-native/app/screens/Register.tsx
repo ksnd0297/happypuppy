@@ -15,6 +15,11 @@ import awsS3Config from "@/awsS3.config";
 import { S3 } from "../utils/aws/s3";
 
 import { Buffer } from "buffer";
+import { postUsers } from "../services/users/users";
+import { AgeType, Gender, Region } from "../services/users/types";
+import Phone from "../components/register/Phone";
+import Sex from "../components/register/Sex";
+import { me } from "@react-native-kakao/user";
 
 const RegisterPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -29,6 +34,8 @@ const RegisterPage = () => {
     const { imageUrl } = data;
 
     try {
+      const { id } = await me();
+
       const fileData = await RNFS.readFile(imageUrl, "base64");
 
       const formData = Buffer.from(fileData, "base64");
@@ -42,11 +49,24 @@ const RegisterPage = () => {
         ContentType: "image/jpeg",
       };
 
-      S3.upload(params);
+      const image = S3.upload(params);
 
-      // 회원가입 체크
+      const promise = await image.promise();
 
-      // 회원가입 완료 시 홈으로 이동
+      const { Location } = promise;
+
+      await postUsers({
+        nickname: data.nickname,
+        appUserId: id,
+        ageType: data.age as AgeType,
+        phoneNumber: data.phone,
+        showPhoneNumber: true,
+        address: data.address as Region,
+        introduce: data.introduce,
+        gender: data.gender as Gender,
+        profileImageUrl: Location, // S3에 업로드된 이미지 URL
+      });
+
       navigation.navigate("Home");
     } catch (error) {
       console.error("파일 읽는 도중 발생하는 에러 예외처리, error: ", error);
@@ -63,7 +83,11 @@ const RegisterPage = () => {
         </View>
         <View style={styles.formArea}>
           <Nickname />
-          <Age />
+          <Phone />
+          <View style={{ flexDirection: "row", gap: 10 }}>
+            <Sex />
+            <Age />
+          </View>
           <Address />
           <Introduce />
         </View>
@@ -86,7 +110,7 @@ const styles = StyleSheet.create({
   },
 
   imageArea: {
-    flex: 0.35,
+    flex: 0.3,
 
     justifyContent: "center",
     alignItems: "center",
@@ -115,7 +139,7 @@ const styles = StyleSheet.create({
   },
 
   formArea: {
-    flex: 0.5,
+    flex: 0.6,
 
     justifyContent: "space-around",
     alignItems: "center",

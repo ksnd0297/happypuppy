@@ -1,71 +1,72 @@
 import { useController } from "react-hook-form";
-import Select from "../shared/Select";
+import Select, { SelectType } from "../shared/Select";
 import { REGISTER_FORM_PATH } from "@/app/constants/register/form";
+import { Region } from "@/app/services/users/types";
 
 const OPTION_LIST = [
   {
     label: "서울",
-    value: "서울",
+    value: Region.SEOUL,
   },
   {
     label: "경기",
-    value: "경기",
+    value: Region.GYEONGGI,
   },
   {
     label: "인천",
-    value: "인천",
+    value: Region.INCHEON,
   },
   {
     label: "대전",
-    value: "대전",
+    value: Region.DAEJEON,
   },
   {
     label: "대구",
-    value: "대구",
+    value: Region.DAEGU,
   },
   {
     label: "광주",
-    value: "광주",
+    value: Region.GWANGJU,
   },
   {
     label: "부산",
-    value: "부산",
+    value: Region.BUSAN,
   },
   {
     label: "세종",
-    value: "세종",
+    value: Region.SEJONG,
   },
   {
     label: "강원",
-    value: "강원",
+    value: Region.GANGWON,
   },
   {
     label: "충북",
-    value: "충북",
+    value: Region.CHUNGBUK,
   },
   {
     label: "충남",
-    value: "충남",
+    value: Region.CHUNGNAM,
   },
   {
     label: "경북",
-    value: "경북",
+    value: Region.GYEONGBUK,
   },
   {
     label: "경남",
-    value: "경남",
+    value: Region.GYEONGNAM,
   },
   {
     label: "전북",
-    value: "전북",
+    value: Region.JEONBUK,
   },
   {
     label: "전남",
-    value: "전남",
+    value: Region.JEONNAM,
   },
   {
     label: "제주",
-    value: "제주",
+    value: Region.JEJU,
   },
 ];
 
@@ -75,12 +76,9 @@ const Address = () => {
     fieldState: { error },
   } = useController({
     name: REGISTER_FORM_PATH.ADDRESS,
-    rules: {
-      required: "거주지는 필수 입력입니다.",
-    },
   });
 
-  return <Select label="거주지" value={value} isError={!!error?.message} errorMessage={error?.message} essential={true} onChange={({ value }) => onChange(value)} placeholder="사는 곳을 선택해 주세요" data={OPTION_LIST} />;
+  return <Select selectType={SelectType.TYPE1} label="거주지" value={value} isError={!!error?.message} errorMessage={error?.message} onChange={({ value }) => onChange(value)} placeholder="사는 곳을 선택해 주세요" data={OPTION_LIST} />;
 };
 
 export default Address;
