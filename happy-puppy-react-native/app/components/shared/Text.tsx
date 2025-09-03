@@ -15,6 +15,8 @@ type Props = {
   xxlarge?: boolean;
   xxxlarge?: boolean;
 
+  lh24?: boolean;
+
   bold?: boolean;
 
   gray?: boolean;
@@ -76,5 +78,9 @@ const styles = StyleSheet.create({
   },
   white: {
     color: "#FFFFFF",
+  },
+
+  lh24: {
+    lineHeight: 24,
   },
 });
