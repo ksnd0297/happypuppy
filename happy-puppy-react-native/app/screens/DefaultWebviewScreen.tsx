@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   Alert,
@@ -14,10 +14,23 @@ import SearchInput from "../components/map/SearchInput";
 import Modal from "../components/modal/Modal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
+interface Coordinate {
+  latitude: number;
+  longitude: number;
+}
+export interface PlaceInfo extends Coordinate {
+  id: number;
+  title: string;
+  imageUrl: string;
+}
+
 const DefaultWebviewScreen = () => {
   const webViewRef = useRef<WebView>(null);
   const inputRef = useRef<TextInput>(null);
   const modalRef = useRef<BottomSheetModal>(null);
+
+  const [selectedPlace, setSelectedPlace] = useState<PlaceInfo>();
+  const [placeList, setPlaceList] = useState<PlaceInfo[]>([]);
   const [query, setQuery] = useState("");
   const insets = useSafeAreaInsets(); // 안전 영역 정보 가져오기
 
@@ -56,14 +69,10 @@ const DefaultWebviewScreen = () => {
   // WebView에 위치 정보 전달
   const sendLocationToWebView = (location: Location.LocationObject) => {
     if (webViewRef.current) {
-      // // 위치 정보를 웹뷰로 전달
-      const data = {
-        type: "location",
-        data: location,
-      };
+      // 위치 정보를 웹뷰로 전달
       console.log(
         "웹뷰에 전달",
-        JSON.stringify(data),
+        JSON.stringify(location.coords),
         webViewRef.current.postMessage
       );
       webViewRef.current.injectJavaScript(`
@@ -74,30 +83,103 @@ const DefaultWebviewScreen = () => {
     }
   };
 
+  const getPlace = () => {
+    // TODO: 위치 조회 필요, 현재 더미 데이터
+    const placeList: PlaceInfo[] = [
+      {
+        id: 1,
+        latitude: 37.5665,
+        longitude: 126.978,
+        title: "서울 시청",
+        imageUrl: "https://picsum.photos/id/237/200/200",
+      },
+      {
+        id: 2,
+        latitude: 37.5665,
+        longitude: 126.973,
+        title: "서울 시청2",
+        imageUrl: "https://picsum.photos/id/237/200/200",
+      },
+      {
+        id: 3,
+        latitude: 37.566,
+        longitude: 126.973,
+        title: "서울 시청2",
+        imageUrl: "https://picsum.photos/id/237/200/200",
+      },
+    ];
+
+    setPlaceList(placeList);
+
+    if (webViewRef.current) {
+      // 위치 정보를 웹뷰로 전달
+
+      console.log(
+        "웹뷰에 전달",
+        JSON.stringify(placeList),
+        webViewRef.current.postMessage
+      );
+      webViewRef.current.injectJavaScript(`
+        if (window.receivePlaceList) {
+          window.receivePlaceList(${JSON.stringify(placeList)});
+        }
+      `);
+    }
+  };
+
   // 웹뷰에서 메시지를 받았을 때 처리하는 함수
   const onMessage = (event: WebViewMessageEvent) => {
     const message = event.nativeEvent.data;
     console.log("웹뷰에서 받은 메시지:", message);
 
-    if (message === "locationRequest") {
-      getLocation();
+    const { type, ...messageProps } = JSON.parse(message);
+
+    switch (type) {
+      case "locationRequest":
+        getLocation();
+        return;
+      case "init":
+        // TODO: 위치 조회 + 장소 조회 후 전달 필요
+        getPlace();
+      case "selectPlace":
+        const { place } = messageProps;
+        //TODO: 테스트용 임시 모달 오픈 로직
+        console.log("selectPlace", place, place?.id);
+        if (place?.id) {
+          setSelectedPlace(placeList.find(({ id }) => id === place.id));
+          modalRef.current?.present();
+        }
+        return;
     }
   };
 
   const handleSearch = () => {
     inputRef.current?.blur();
     console.log("search query", query);
-
-    //TODO: 테스트용 임시 모달 오픈 로직
-    modalRef.current?.present();
   };
 
   const handleChangeQuery = (text: string) => {
     setQuery(text);
   };
 
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const showSub = Keyboard.addListener("keyboardDidShow", () =>
+      setIsKeyboardVisible(true)
+    );
+    const hideSub = Keyboard.addListener("keyboardDidHide", () =>
+      setIsKeyboardVisible(false)
+    );
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
+
   return (
     <TouchableWithoutFeedback
+      disabled={!isKeyboardVisible}
       onPress={() => {
         inputRef.current?.blur();
         Keyboard.dismiss();
@@ -120,7 +202,7 @@ const DefaultWebviewScreen = () => {
           onChangeQuery={handleChangeQuery}
           onSubmit={handleSearch}
         />
-        <Modal ref={modalRef} />
+        <Modal ref={modalRef} selectedPlace={selectedPlace} />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
