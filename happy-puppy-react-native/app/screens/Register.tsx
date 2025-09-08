@@ -68,28 +68,33 @@ const RegisterPage = () => {
   }, [id]);
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const { imageUrl } = data;
-
     const { id } = await me();
 
-    const fileData = await RNFS.readFile(imageUrl, "base64");
+    let profileImageUrl = data.profileImageUrl;
 
-    const formData = Buffer.from(fileData, "base64");
+    // * 닉네임(필수 필드), 대표 이미지가 있고, 변경된 적이 있는 경우에만 S3 업로드 후 값 변경
+    if (!!data.nickname && !!profileImageUrl && form.getFieldState("profileImageUrl").isDirty) {
+      const fileData = await RNFS.readFile(profileImageUrl, "base64");
 
-    const imageName = data.nickname + "image.jpg";
+      const formData = Buffer.from(fileData, "base64");
 
-    const params = {
-      Bucket: awsS3Config.bucket,
-      Key: imageName,
-      Body: formData,
-      ContentType: "image/jpeg",
-    };
+      const imageName = data.nickname + "image.jpg";
 
-    const image = S3.upload(params);
+      const params = {
+        Bucket: awsS3Config.bucket,
+        Key: imageName,
+        Body: formData,
+        ContentType: "image/jpeg",
+      };
 
-    const promise = await image.promise();
+      const image = S3.upload(params);
 
-    const { Location } = promise;
+      const promise = await image.promise();
+
+      const { Location } = promise;
+
+      profileImageUrl = Location;
+    }
 
     if (editMode) {
       await putUsers({
@@ -102,7 +107,7 @@ const RegisterPage = () => {
           address: data.address as Region,
           introduce: data.introduce,
           gender: data.gender as Gender,
-          profileImageUrl: Location, // S3에 업로드된 이미지 URL
+          profileImageUrl,
         },
       });
       return;
@@ -118,7 +123,7 @@ const RegisterPage = () => {
         address: data.address as Region,
         introduce: data.introduce,
         gender: data.gender as Gender,
-        profileImageUrl: Location, // S3에 업로드된 이미지 URL
+        profileImageUrl,
       });
 
       navigation.navigate("Home");
