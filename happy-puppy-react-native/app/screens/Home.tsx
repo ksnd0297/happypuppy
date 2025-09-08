@@ -8,8 +8,12 @@ import { useEffect, useState } from "react";
 import { UserResponse } from "../services/users/types";
 import { me } from "@react-native-kakao/user";
 import { getUsers, getUsersCheck } from "../services/users/users";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackNavigationProp } from "../App";
 
 const HomePage = () => {
+  const { navigate } = useNavigation<RootStackNavigationProp>();
+
   const [info, setInfo] = useState<UserResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -33,7 +37,11 @@ const HomePage = () => {
     })();
   }, []);
 
-  const handleNavigationInfo = () => {};
+  const handleNavigationInfo = () => {
+    if (!info?.id) return;
+
+    navigate("Register", { id: info.id });
+  };
 
   const handleNavigationNotice = () => {};
 
@@ -45,7 +53,7 @@ const HomePage = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>{info && <HomeImage title={info?.nickname} uri={info?.profileImageUrl} />}</View>
+      <View style={styles.imageContainer}>{info && <HomeImage title={info?.nickname} uri={info?.profileImageUrl} handlePress={handleNavigationInfo} />}</View>
       <View style={styles.homeContainer}>
         <View style={styles.calendarContainer}>
           <View style={styles.calendarWrapper}>

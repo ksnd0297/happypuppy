@@ -1,19 +1,20 @@
-import { Image, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet } from "react-native";
 import Label from "../shared/Label";
 
 type Props = {
   title: string;
   uri: string;
+  handlePress: () => void;
 };
 
 const HomeImage = (props: Props) => {
-  const { title, uri } = props;
+  const { title, uri, handlePress } = props;
 
   return (
     <>
-      <View style={styles.imageContainer}>
+      <Pressable style={styles.imageContainer} onPress={handlePress}>
         <Image source={{ uri }} style={styles.image} />
-      </View>
+      </Pressable>
       <Label label={title} />
     </>
   );

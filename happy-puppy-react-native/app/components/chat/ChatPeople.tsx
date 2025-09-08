@@ -1,18 +1,22 @@
-import { Image, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import Text from "../shared/Text";
 import { ScrollView } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackNavigationProp } from "@/app/App";
 
 const dogImage = require("@/app/assets/dog.png");
 
 const ChatPeople = () => {
+  const navigation = useNavigation<RootStackNavigationProp>();
+
   return (
     <View style={styles.chatPeopleContainer}>
       <ScrollView style={styles.chatPeopleScrollContainer} contentContainerStyle={styles.chatPeopleContentContainer}>
         {[...Array(10)].map((_, i) => (
-          <View key={i} style={styles.personContainer}>
+          <Pressable key={i} style={styles.personContainer} onPress={() => navigation.navigate("Register", { id: i + 1 })}>
             <Image source={dogImage} style={styles.personImage} />
             <Text bold>조이</Text>
-          </View>
+          </Pressable>
         ))}
       </ScrollView>
     </View>
