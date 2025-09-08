@@ -1,5 +1,5 @@
 export const REGISTER_FROM_DEFAULT_VALUES = {
-  imageUrl: "",
+  profileImageUrl: "",
   phone: "",
   nickname: "",
   age: "",
@@ -9,7 +9,7 @@ export const REGISTER_FROM_DEFAULT_VALUES = {
 };
 
 export const REGISTER_FORM_PATH = {
-  IMAGE_URL: "imageUrl",
+  IMAGE_URL: "profileImageUrl",
   NICKNAME: "nickname",
   PHONE: "phone",
   AGE: "age",
