@@ -15,9 +15,6 @@ const RepresentativeImage = () => {
     fieldState: { error },
   } = useController({
     name: REGISTER_FORM_PATH.IMAGE_URL,
-    rules: {
-      required: "대표 이미지는 필수 입력입니다.",
-    },
   });
 
   const isError = !!error?.message;

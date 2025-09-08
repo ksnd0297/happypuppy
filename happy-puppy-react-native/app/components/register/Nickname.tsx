@@ -11,7 +11,6 @@ const Nickname = () => {
     fieldState: { error },
   } = useController({
     name: REGISTER_FORM_PATH.NICKNAME,
-    disabled: true,
     rules: {
       required: "닉네임은 필수 입력입니다.",
       minLength: {
