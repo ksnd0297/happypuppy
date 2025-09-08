@@ -1,7 +1,6 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import Text from "../components/shared/Text";
 import Footer from "../components/shared/Footer";
-import UpComingReservationList from "../components/chatList/UpComingReservationList";
 import ChatInfo from "../components/chatList/ChatInfo";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "../App";
@@ -21,11 +20,7 @@ const ChatListPage = () => {
           약속 목록
         </Text>
       </View>
-      <UpComingReservationList handleEnterChat={handleEnterChat} />
       <View style={styles.chatListContainer}>
-        <Text xlarge bold>
-          채팅
-        </Text>
         <ScrollView showsVerticalScrollIndicator={false}>
           <ChatInfo
             roomId={"1"}
@@ -59,7 +54,7 @@ const styles = StyleSheet.create({
   },
 
   chatListContainer: {
-    flex: 0.65,
+    flex: 0.95,
 
     padding: 10,
 
