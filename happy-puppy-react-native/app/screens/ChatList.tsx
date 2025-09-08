@@ -5,9 +5,22 @@ import ChatInfo from "../components/chatList/ChatInfo";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "../App";
 import { RouteId } from "../types/route";
+import { ChatResponse } from "../services/chat/types";
+import { useEffect, useState } from "react";
+import { getChats } from "../services/chat/chat";
 
 const ChatListPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
+
+  const [chatList, setChatList] = useState<ChatResponse[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await getChats({ placeId: 1 });
+
+      setChatList(data);
+    })();
+  }, []);
 
   const handleEnterChat = (roomId: RouteId) => {
     navigation.navigate("Chat", { id: roomId });
@@ -22,16 +35,15 @@ const ChatListPage = () => {
       </View>
       <View style={styles.chatListContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <ChatInfo
-            roomId={"1"}
-            promiseDateTime="2025. 6. 22. (일) 18:00"
-            recentlyMessage="그러면 우리 10시에 모이기로 할까요 ?"
-            notReadMessageCount={10}
-            memberCount={7}
-            roomImage={require("@/app/assets/happypuppy.png")}
-            title="동천역 강아지 산책하실 분 모아요!"
-            handleEnterChat={handleEnterChat}
-          />
+          <>
+            {chatList.map((chat, index) => {
+              const { id, meetAt, imageUrl, name, tags } = chat;
+
+              console.log("chat : ", chat);
+
+              return <ChatInfo key={index} roomId={id} promiseDateTime={meetAt} roomImage={imageUrl} title={name} handleEnterChat={handleEnterChat} tags={tags?.[0]} />;
+            })}
+          </>
         </ScrollView>
       </View>
       <Footer />

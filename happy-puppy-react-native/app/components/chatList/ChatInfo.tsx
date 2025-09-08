@@ -1,45 +1,44 @@
-import { Image, ImageSourcePropType, Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import Text from "../shared/Text";
 import { RouteId } from "@/app/types/route";
 
 type Props = {
-  memberCount: number;
-  notReadMessageCount: number;
   promiseDateTime: string;
-  recentlyMessage: string;
   roomId: RouteId;
-  roomImage: ImageSourcePropType;
+  roomImage?: string;
   title: string;
+  tags?: string;
   handleEnterChat: (id: RouteId) => void;
 };
 
 const ChatInfo = (props: Props) => {
-  const { roomId, memberCount, notReadMessageCount, promiseDateTime, recentlyMessage, roomImage, title, handleEnterChat } = props;
+  const { roomId, promiseDateTime, roomImage, title, tags, handleEnterChat } = props;
 
   return (
     <Pressable onPress={() => handleEnterChat(roomId)}>
       <View style={styles.chatInfoContainer}>
         <View style={styles.chatInfoImageWrapper}>
-          <Image source={roomImage} style={styles.chatInfoImage} />
+          <Image
+            source={{
+              uri: roomImage,
+            }}
+            style={styles.chatInfoImage}
+          />
         </View>
         <View style={styles.chatInfoWrapper}>
           <View style={styles.chatInfoTitleWrapper}>
-            <Text bold>{title}</Text>
-            <Text gray bold>
-              {memberCount}
+            <Text medium bold>
+              {title}
             </Text>
           </View>
+          {tags && (
+            <Text gray small>
+              {tags}
+            </Text>
+          )}
           <Text gray small>
             {promiseDateTime}
           </Text>
-          <Text small>{recentlyMessage}</Text>
-        </View>
-        <View style={styles.notReadMessageCountWrapper}>
-          <View style={styles.notReadMessageCount}>
-            <Text small bold white>
-              {notReadMessageCount}
-            </Text>
-          </View>
         </View>
       </View>
     </Pressable>
@@ -63,7 +62,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderWidth: 1,
-    borderRadius: 50,
+    borderRadius: 25,
   },
 
   chatInfoWrapper: {
