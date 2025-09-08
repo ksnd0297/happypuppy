@@ -69,3 +69,19 @@ export type UserCheckResponse = {
   userId: number;
   isMember: boolean;
 };
+
+export type UpdateUserRequest = {
+  id: number;
+  // TODO : 필드 수정 필요
+  params: {
+    nickname: string;
+    profileImageUrl?: string;
+    age?: number;
+    address?: Region;
+    ageType?: AgeType;
+    gender?: Gender;
+    introduce: string;
+    phoneNumber?: string;
+    showPhoneNumber?: boolean;
+  };
+};

@@ -1,12 +1,7 @@
+/* eslint-disable no-case-declarations */
+/* eslint-disable no-fallthrough */
 import React, { useEffect, useRef, useState } from "react";
-import {
-  StyleSheet,
-  Alert,
-  SafeAreaView,
-  TouchableWithoutFeedback,
-  TextInput,
-  Keyboard,
-} from "react-native";
+import { StyleSheet, Alert, SafeAreaView, TouchableWithoutFeedback, TextInput, Keyboard } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import * as Location from "expo-location";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -55,10 +50,7 @@ const DefaultWebviewScreen = () => {
         });
         sendLocationToWebView(accurateLocation); // 정확한 위치 정보 전달
       } else {
-        Alert.alert(
-          "위치 권한이 필요합니다",
-          "위치 정보를 사용하려면 권한을 허용해야 합니다."
-        );
+        Alert.alert("위치 권한이 필요합니다", "위치 정보를 사용하려면 권한을 허용해야 합니다.");
       }
     } catch (error) {
       console.error("위치 조회 중 오류 발생:", error);
@@ -70,11 +62,7 @@ const DefaultWebviewScreen = () => {
   const sendLocationToWebView = (location: Location.LocationObject) => {
     if (webViewRef.current) {
       // 위치 정보를 웹뷰로 전달
-      console.log(
-        "웹뷰에 전달",
-        JSON.stringify(location.coords),
-        webViewRef.current.postMessage
-      );
+      console.log("웹뷰에 전달", JSON.stringify(location.coords), webViewRef.current.postMessage);
       webViewRef.current.injectJavaScript(`
         if (window.receiveLocation) {
           window.receiveLocation(${JSON.stringify(location.coords)});
@@ -114,11 +102,7 @@ const DefaultWebviewScreen = () => {
     if (webViewRef.current) {
       // 위치 정보를 웹뷰로 전달
 
-      console.log(
-        "웹뷰에 전달",
-        JSON.stringify(placeList),
-        webViewRef.current.postMessage
-      );
+      console.log("웹뷰에 전달", JSON.stringify(placeList), webViewRef.current.postMessage);
       webViewRef.current.injectJavaScript(`
         if (window.receivePlaceList) {
           window.receivePlaceList(${JSON.stringify(placeList)});
@@ -165,12 +149,8 @@ const DefaultWebviewScreen = () => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   useEffect(() => {
-    const showSub = Keyboard.addListener("keyboardDidShow", () =>
-      setIsKeyboardVisible(true)
-    );
-    const hideSub = Keyboard.addListener("keyboardDidHide", () =>
-      setIsKeyboardVisible(false)
-    );
+    const showSub = Keyboard.addListener("keyboardDidShow", () => setIsKeyboardVisible(true));
+    const hideSub = Keyboard.addListener("keyboardDidHide", () => setIsKeyboardVisible(false));
     return () => {
       showSub.remove();
       hideSub.remove();
@@ -196,12 +176,7 @@ const DefaultWebviewScreen = () => {
           originWhitelist={["*"]}
           onMessage={onMessage}
         />
-        <SearchInput
-          ref={inputRef}
-          query={query}
-          onChangeQuery={handleChangeQuery}
-          onSubmit={handleSearch}
-        />
+        <SearchInput ref={inputRef} query={query} onChangeQuery={handleChangeQuery} onSubmit={handleSearch} />
         <Modal ref={modalRef} selectedPlace={selectedPlace} />
       </SafeAreaView>
     </TouchableWithoutFeedback>

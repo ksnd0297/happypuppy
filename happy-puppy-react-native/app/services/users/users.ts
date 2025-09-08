@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { GetUsersCheckParams, GetUsersParams, UserCheckResponse, UserRegisterRequest, UserResponse } from "./types";
+import { GetUsersCheckParams, GetUsersParams, UpdateUserRequest, UserCheckResponse, UserRegisterRequest, UserResponse } from "./types";
 
 export function postUsers(params: UserRegisterRequest): Promise<AxiosResponse<UserResponse>> {
   return axios.post<UserResponse>(`http://localhost:8080/users`, params);
@@ -13,4 +13,8 @@ export function getUsersCheck(params: GetUsersCheckParams): Promise<AxiosRespons
   return axios.get<UserCheckResponse>(`http://localhost:8080/users/check`, {
     params,
   });
+}
+
+export function putUsers(params: UpdateUserRequest): Promise<AxiosResponse<UserResponse>> {
+  return axios.put<UserResponse>(`http://localhost:8080/users/${params.id}`, params.params);
 }
