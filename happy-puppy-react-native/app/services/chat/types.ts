@@ -43,3 +43,16 @@ export type ChatResponse = {
 export type GetChatsParams = {
   placeId: number;
 };
+
+export type GetChatMembersParams = {
+  chatId: number;
+};
+
+export type ChatMemberResponse = {
+  id: number;
+  status: "JOINED" | "LEFT" | "KICKED";
+  chatId: number;
+  userId: number;
+  owner: boolean;
+  createdAt: boolean;
+};

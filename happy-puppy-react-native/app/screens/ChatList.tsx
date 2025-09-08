@@ -7,7 +7,9 @@ import { RootStackNavigationProp } from "../App";
 import { RouteId } from "../types/route";
 import { ChatResponse } from "../services/chat/types";
 import { useEffect, useState } from "react";
-import { getChats } from "../services/chat/chat";
+import { getMyChat } from "../services/chat/chat";
+import { me } from "@react-native-kakao/user";
+import { getUsersCheck } from "../services/users/users";
 
 const ChatListPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -16,7 +18,13 @@ const ChatListPage = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await getChats({ placeId: 1 });
+      const { id } = await me();
+
+      const {
+        data: { userId },
+      } = await getUsersCheck({ appUserId: id });
+
+      const { data } = await getMyChat({ userId });
 
       setChatList(data);
     })();
@@ -38,8 +46,6 @@ const ChatListPage = () => {
           <>
             {chatList.map((chat, index) => {
               const { id, meetAt, imageUrl, name, tags } = chat;
-
-              console.log("chat : ", chat);
 
               return <ChatInfo key={index} roomId={id} promiseDateTime={meetAt} roomImage={imageUrl} title={name} handleEnterChat={handleEnterChat} tags={tags?.[0]} />;
             })}

@@ -6,13 +6,12 @@ import ChatPeople from "../components/chat/ChatPeople";
 import ChatButton from "../components/chat/ChatButton";
 import ChatCloseButton from "../components/chat/ChatCloseButton";
 import ChatImage from "../components/chat/ChatImage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { chatJoin, chatLeave } from "../services/chat/chat";
+import { chatJoin, chatLeave, getChatMembers, getMyChat } from "../services/chat/chat";
 import { me } from "@react-native-kakao/user";
-import { getUsers } from "../services/users/users";
-
-const dogImage = require("@/app/assets/dog.png");
+import { getUsers, getUsersCheck } from "../services/users/users";
+import { ChatResponse } from "../services/chat/types";
 
 const SNAP_POINTS = ["55%", "80%"];
 
@@ -20,12 +19,39 @@ const ChatPage = () => {
   const route = useRoute();
   const { id: chatId } = route.params as { id: number };
 
-  const navigation = useNavigation();
-
+  const [chatInfo, setChatInfo] = useState<ChatResponse>();
   const [isJoined, setIsJoined] = useState(false);
 
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (!chatId) return;
+
+    (async () => {
+      const { id: appUserId } = await me();
+
+      const {
+        data: { userId },
+      } = await getUsersCheck({ appUserId });
+
+      // TODO : 방 상세 조회 API 로 변경
+      const { data: myChatList } = await getMyChat({ userId });
+
+      // TODO : 500 에러 해결 필요
+      const { data: chatMembers } = await getChatMembers({ chatId });
+
+      setIsJoined(chatMembers.some((member) => member.userId === userId));
+
+      setChatInfo(myChatList[0]);
+    })();
+  }, [chatId]);
+
   const handleClickChatButton = async () => {
-    const { id: userId } = await me();
+    const { id: appUserId } = await me();
+
+    const {
+      data: { userId },
+    } = await getUsersCheck({ appUserId });
 
     const {
       data: { id },
@@ -53,11 +79,11 @@ const ChatPage = () => {
   return (
     <View style={styles.container}>
       <ChatCloseButton onPress={() => navigation.goBack()} />
-      <ChatImage chatImageUrl={dogImage.source} />
+      <ChatImage chatImageUrl={chatInfo?.imageUrl || ""} />
       <BottomSheet snapPoints={SNAP_POINTS} animateOnMount={false} index={0} enableDynamicSizing={false} backgroundStyle={styles.bottomSheet}>
         <BottomSheetView style={styles.contentContainer}>
-          <ChatTitle title="동천역 강아지 산책방" date="동천역 · 25. 05. 17. (토) 18:00" />
-          <ChatDescription description={"동천역 앞 탄천에서 저녁에\n소형, 중형견 산책하실 견주 분 구해요 !\n저희 진돗개랑 친구해요 ~"} tags="#산책 #소형견 #중형견 #반려견 #동천 #강아지" />
+          <ChatTitle title={chatInfo?.name || ""} date="동천역 · 25. 05. 17. (토) 18:00" />
+          <ChatDescription description={chatInfo?.introduce || ""} tags={chatInfo?.tags?.[0] || ""} />
           <ChatPeople />
         </BottomSheetView>
       </BottomSheet>
