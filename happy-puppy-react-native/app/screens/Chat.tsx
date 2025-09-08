@@ -6,24 +6,62 @@ import ChatPeople from "../components/chat/ChatPeople";
 import ChatButton from "../components/chat/ChatButton";
 import ChatCloseButton from "../components/chat/ChatCloseButton";
 import ChatImage from "../components/chat/ChatImage";
+import { useState } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { chatJoin, chatLeave } from "../services/chat/chat";
+import { me } from "@react-native-kakao/user";
+import { getUsers } from "../services/users/users";
 
 const dogImage = require("@/app/assets/dog.png");
 
 const SNAP_POINTS = ["55%", "80%"];
 
 const ChatPage = () => {
+  const route = useRoute();
+  const { id: chatId } = route.params as { id: number };
+
+  const navigation = useNavigation();
+
+  const [isJoined, setIsJoined] = useState(false);
+
+  const handleClickChatButton = async () => {
+    const { id: userId } = await me();
+
+    const {
+      data: { id },
+    } = await getUsers({
+      id: userId,
+    });
+
+    if (isJoined) {
+      await chatLeave({
+        userId: id,
+        chatId,
+      });
+
+      setIsJoined(false);
+    } else {
+      await chatJoin({
+        userId: id,
+        chatId,
+      });
+
+      setIsJoined(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <ChatCloseButton onPress={() => {}} />
+      <ChatCloseButton onPress={() => navigation.goBack()} />
       <ChatImage chatImageUrl={dogImage.source} />
-      <BottomSheet snapPoints={SNAP_POINTS} animateOnMount={false} backgroundStyle={styles.bottomSheet}>
+      <BottomSheet snapPoints={SNAP_POINTS} animateOnMount={false} index={0} enableDynamicSizing={false} backgroundStyle={styles.bottomSheet}>
         <BottomSheetView style={styles.contentContainer}>
           <ChatTitle title="동천역 강아지 산책방" date="동천역 · 25. 05. 17. (토) 18:00" />
           <ChatDescription description={"동천역 앞 탄천에서 저녁에\n소형, 중형견 산책하실 견주 분 구해요 !\n저희 진돗개랑 친구해요 ~"} tags="#산책 #소형견 #중형견 #반려견 #동천 #강아지" />
           <ChatPeople />
         </BottomSheetView>
       </BottomSheet>
-      <ChatButton isJoined={true} onPress={() => {}} />
+      <ChatButton isJoined={isJoined} onPress={handleClickChatButton} />
     </View>
   );
 };

@@ -15,8 +15,6 @@ const LoginPage = () => {
 
   const { token, handleLogin, isLoading } = useAuth();
 
-  console.log("token : ", token);
-
   const handleKakaoLogin = async () => {
     try {
       const isLoggedIn = await isLogined();

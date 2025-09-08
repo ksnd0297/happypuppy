@@ -14,8 +14,12 @@ import awsS3Config from "@/awsS3.config";
 import { S3 } from "../utils/aws/s3";
 import { postChat } from "../services/chat/chat";
 import { Buffer } from "buffer";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackNavigationProp } from "../App";
 
 const AppointmentPage = () => {
+  const navigation = useNavigation<RootStackNavigationProp>();
+
   const form = useForm({
     defaultValues: APPOINTMENT_FORM_DEFAULT_VALUES,
     mode: ON_SUBMIT,
@@ -24,8 +28,6 @@ const AppointmentPage = () => {
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const { imageUrl } = data;
-
-    console.log("CALL");
 
     try {
       const { id } = await me();
@@ -49,7 +51,9 @@ const AppointmentPage = () => {
 
       const { Location } = promise;
 
-      const response = await postChat({
+      const {
+        data: { chatId },
+      } = await postChat({
         imageUrl: Location,
         name: data.title,
         userId: id,
@@ -59,7 +63,8 @@ const AppointmentPage = () => {
         introduce: data.introduce,
         tags: [data.tag],
       });
-      console.log("response : ", response.data);
+
+      navigation.navigate("Chat", { id: chatId });
     } catch (error) {
       console.error("error : ", error);
     }
