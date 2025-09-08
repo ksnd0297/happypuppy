@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { ChatJoinParams, ChatLeaveParams, ChatResponse, CreateChatResponse, GetChatsParams, GetMyChatParams, PostChatParams } from "./types";
+import { ChatJoinParams, ChatLeaveParams, ChatMemberResponse, ChatResponse, CreateChatResponse, GetChatMembersParams, GetChatsParams, GetMyChatParams, PostChatParams } from "./types";
 
 export function postChat(params: PostChatParams): Promise<AxiosResponse<CreateChatResponse>> {
   return axios.post<CreateChatResponse>(`http://localhost:8080/chat`, params);
@@ -19,4 +19,8 @@ export function getMyChat(params: GetMyChatParams): Promise<AxiosResponse<ChatRe
 
 export function getChats(params: GetChatsParams): Promise<AxiosResponse<ChatResponse[]>> {
   return axios.get<ChatResponse[]>(`http://localhost:8080/chats`, { params });
+}
+
+export function getChatMembers(params: GetChatMembersParams): Promise<AxiosResponse<ChatMemberResponse[]>> {
+  return axios.get<ChatMemberResponse[]>(`http://localhost:8000/chat/${params.chatId}/member`);
 }

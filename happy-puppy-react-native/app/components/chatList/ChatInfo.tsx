@@ -1,6 +1,8 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import Text from "../shared/Text";
 import { RouteId } from "@/app/types/route";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 
 type Props = {
   promiseDateTime: string;
@@ -27,17 +29,13 @@ const ChatInfo = (props: Props) => {
         </View>
         <View style={styles.chatInfoWrapper}>
           <View style={styles.chatInfoTitleWrapper}>
-            <Text medium bold>
+            <Text large bold>
               {title}
             </Text>
           </View>
-          {tags && (
-            <Text gray small>
-              {tags}
-            </Text>
-          )}
+          {tags && <Text gray>{tags}</Text>}
           <Text gray small>
-            {promiseDateTime}
+            {format(promiseDateTime, "yy. MM. dd. (E) HH:MM", { locale: ko })}
           </Text>
         </View>
       </View>

@@ -66,6 +66,8 @@ const LoginPage = () => {
         const userInfo = await me();
         const { id } = userInfo;
 
+        console.log("id : ", id);
+
         const {
           data: { isMember },
         } = await getUsersCheck({
