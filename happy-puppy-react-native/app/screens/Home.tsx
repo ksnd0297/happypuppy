@@ -10,12 +10,21 @@ import { me } from "@react-native-kakao/user";
 import { getUsers, getUsersCheck } from "../services/users/users";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "../App";
+import { getMyChat } from "../services/chat/chat";
+import { ChatResponse } from "../services/chat/types";
 
 const HomePage = () => {
   const { navigate } = useNavigation<RootStackNavigationProp>();
 
   const [info, setInfo] = useState<UserResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [mySchedule, setMySchedule] = useState<ChatResponse[]>([]);
+
+  const markedDates = mySchedule.reduce<Record<string, { marked: boolean; dotColor: string }>>((acc, cur) => {
+    acc[cur.meetDate] = { marked: true, dotColor: "#FF4141" };
+    return acc;
+  }, {});
 
   useEffect(() => {
     (async () => {
@@ -37,6 +46,16 @@ const HomePage = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    if (!info) return;
+
+    (async () => {
+      const { data } = await getMyChat({ userId: info.id });
+
+      setMySchedule(data);
+    })();
+  }, [info]);
+
   const handleNavigationInfo = () => {
     if (!info?.id) return;
 
@@ -57,12 +76,7 @@ const HomePage = () => {
       <View style={styles.homeContainer}>
         <View style={styles.calendarContainer}>
           <View style={styles.calendarWrapper}>
-            <Calendar
-              style={styles.calendar}
-              onDayPress={(day) => {
-                console.log("selected day", day);
-              }}
-            />
+            <Calendar hideArrows={true} style={styles.calendar} disableAllTouchEventsForDisabledDays={true} markedDates={markedDates} />
           </View>
         </View>
         <View style={styles.bottomButtonContainer}>
