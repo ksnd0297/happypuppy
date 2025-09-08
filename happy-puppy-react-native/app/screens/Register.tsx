@@ -147,7 +147,7 @@ const RegisterPage = () => {
           <>
             {viewMode && (
               <>
-                <Button small buttonType={ButtonType.TYPE2} onPress={navigation.goBack} disabled={disabled}>
+                <Button small buttonType={ButtonType.TYPE1} onPress={navigation.goBack} disabled={disabled}>
                   뒤로가기
                 </Button>
                 <Button small buttonType={ButtonType.TYPE2} onPress={navigation.goBack} disabled={disabled}>
