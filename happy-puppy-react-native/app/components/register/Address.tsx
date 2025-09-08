@@ -72,13 +72,15 @@ const OPTION_LIST = [
 
 const Address = () => {
   const {
-    field: { value, onChange },
+    field: { value, onChange, disabled },
     fieldState: { error },
   } = useController({
     name: REGISTER_FORM_PATH.ADDRESS,
   });
 
-  return <Select selectType={SelectType.TYPE1} label="거주지" value={value} isError={!!error?.message} errorMessage={error?.message} onChange={({ value }) => onChange(value)} placeholder="사는 곳을 선택해 주세요" data={OPTION_LIST} />;
+  return (
+    <Select editable={!disabled} selectType={SelectType.TYPE1} label="거주지" value={value} isError={!!error?.message} errorMessage={error?.message} onChange={({ value }) => onChange(value)} placeholder="사는 곳을 선택해 주세요" data={OPTION_LIST} />
+  );
 };
 
 export default Address;

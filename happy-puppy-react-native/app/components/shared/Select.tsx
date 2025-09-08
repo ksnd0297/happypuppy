@@ -20,11 +20,12 @@ type Props = {
   isError?: boolean;
   errorMessage?: string;
   selectType: SelectType;
+  editable?: boolean;
 } & LabelProps &
   Omit<DropdownProps<OptionType>, "labelField" | "valueField">;
 
 const Select = (props: Props) => {
-  const { essential, selectType, isError, errorMessage, label, labelType, value, ...rest } = props;
+  const { essential, selectType, isError, errorMessage, label, labelType, value, editable = true, ...rest } = props;
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -36,7 +37,7 @@ const Select = (props: Props) => {
     setIsFocused(false);
   };
 
-  const isSelected = !!value;
+  const isSelected = !!value && editable;
 
   const selectStyle = {
     ...SELECT_STYLE["DEFAULT"],
@@ -52,6 +53,7 @@ const Select = (props: Props) => {
         <Label essential={essential} label={label} labelType={labelType} />
         <Dropdown
           style={selectStyle}
+          disable={!editable}
           selectedTextStyle={SELECT_STYLE["OPTION"]}
           itemTextStyle={SELECT_STYLE["OPTION"]}
           placeholderStyle={SELECT_STYLE["PLACEHOLDER"]}

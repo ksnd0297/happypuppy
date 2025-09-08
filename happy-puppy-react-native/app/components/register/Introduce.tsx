@@ -6,7 +6,7 @@ const MAX_LENGTH = 20;
 
 const Introduce = () => {
   const {
-    field: { value, onChange },
+    field: { value, onChange, disabled },
     fieldState: { error },
   } = useController({
     name: REGISTER_FORM_PATH.INTRODUCE,
@@ -18,7 +18,7 @@ const Introduce = () => {
     },
   });
 
-  return <Textarea value={value} onChangeText={onChange} isError={!!error?.message} label="한 줄 소개" placeholder="나는 리트리버를 키우는 애견인이에요." maxLength={30} />;
+  return <Textarea editable={!disabled} value={value} onChangeText={onChange} isError={!!error?.message} label="한 줄 소개" placeholder="나는 리트리버를 키우는 애견인이에요." maxLength={30} />;
 };
 
 export default Introduce;

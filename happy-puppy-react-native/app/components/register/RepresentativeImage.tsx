@@ -11,7 +11,7 @@ const RepresentativeImage = () => {
   const { setError } = useFormContext();
 
   const {
-    field: { value, onChange },
+    field: { value, onChange, disabled },
     fieldState: { error },
   } = useController({
     name: REGISTER_FORM_PATH.IMAGE_URL,
@@ -24,6 +24,8 @@ const RepresentativeImage = () => {
   const errorMessage = error?.message;
 
   const pickImage = async () => {
+    if (disabled) return;
+
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ["images"],
@@ -36,7 +38,6 @@ const RepresentativeImage = () => {
       }
     } catch (e) {
       if (e instanceof Error) {
-        console.log("error : ", e);
         setError(REGISTER_FORM_PATH.IMAGE_URL, {
           message: "알 수 없는 오류가 발생했습니다. 다시 시도해 주세요.",
         });
@@ -56,7 +57,7 @@ const RepresentativeImage = () => {
           <Image source={value ? { uri: value } : cameraImg} style={value ? IMAGE_STYLE.IMAGE : IMAGE_STYLE.PLACEHOLDER} />
         </View>
       </Pressable>
-      <Label essential={true} label="대표 이미지" />
+      <Label label="대표 이미지" />
       <View>{isError && !!errorMessage && <Text style={{ color: "red", fontSize: 12 }}>{errorMessage}</Text>}</View>
     </>
   );
