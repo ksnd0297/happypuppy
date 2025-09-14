@@ -191,32 +191,12 @@ const styles = StyleSheet.create({
   },
 
   imageArea: {
-    flex: 0.3,
+    flex: 0.25,
 
     justifyContent: "center",
     alignItems: "center",
 
-    gap: 5,
-  },
-  image: {
-    width: 200,
-    height: 200,
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 100,
-
-    justifyContent: "center",
-    alignItems: "center",
-
-    backgroundColor: "white",
-  },
-  imagePressable: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  imageText: {
-    fontWeight: 700,
-    fontSize: 16,
+    gap: 10,
   },
 
   formArea: {

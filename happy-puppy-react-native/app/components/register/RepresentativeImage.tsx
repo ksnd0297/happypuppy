@@ -54,7 +54,7 @@ const RepresentativeImage = () => {
           <Image source={value ? { uri: value } : cameraImg} style={value ? IMAGE_STYLE.IMAGE : IMAGE_STYLE.PLACEHOLDER} />
         </View>
       </Pressable>
-      <Label label="대표 이미지" />
+      <Label label="강아지 사진" />
       <View>{isError && !!errorMessage && <Text style={{ color: "red", fontSize: 12 }}>{errorMessage}</Text>}</View>
     </>
   );
@@ -64,8 +64,8 @@ export default RepresentativeImage;
 
 const IMAGE_STYLE = StyleSheet.create({
   DEFAULT: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
     borderWidth: 0.5,
     borderColor: "#D9D9D9",
     borderRadius: 100,
@@ -82,8 +82,8 @@ const IMAGE_STYLE = StyleSheet.create({
     borderRadius: 100,
   },
   PLACEHOLDER: {
-    width: 80,
-    height: 80,
+    width: 50,
+    height: 50,
     resizeMode: "contain",
   },
 
