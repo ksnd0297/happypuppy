@@ -44,7 +44,7 @@ const ChatListPage = () => {
       <View style={styles.chatListContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <>
-            {chatList.map((chat, index) => {
+            {[{ id: 1, meetAt: "2025-09-14T00:00:00", imageUrl: "abc", name: "abc", tags: ["abc"] }].map((chat, index) => {
               const { id, meetAt, imageUrl, name, tags } = chat;
 
               return <ChatInfo key={index} roomId={id} promiseDateTime={meetAt} roomImage={imageUrl} title={name} handleEnterChat={handleEnterChat} tags={tags?.[0]} />;
