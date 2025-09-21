@@ -56,13 +56,11 @@ const RegisterPage = () => {
     if (registerMode) return;
 
     (async () => {
-      const { data } = await getUsers({ id });
+      const data = await getUsers({ id });
 
       const { id: appUserId } = await me();
 
-      const {
-        data: { userId },
-      } = await getUsersCheck({ appUserId });
+      const { userId } = await getUsersCheck({ appUserId });
 
       if (userId === id) {
         setIsMe(true);
@@ -102,7 +100,7 @@ const RegisterPage = () => {
     }
 
     if (editMode) {
-      const { data: userInfo } = await getUsersCheck({ appUserId: id });
+      const userInfo = await getUsersCheck({ appUserId: id });
       const { userId } = userInfo || {};
 
       await putUsers({

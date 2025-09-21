@@ -27,9 +27,7 @@ const LoginPage = () => {
 
       const { id } = userInfo;
 
-      const {
-        data: { isMember },
-      } = await getUsersCheck({
+      const { isMember } = await getUsersCheck({
         appUserId: id,
       });
 
@@ -66,11 +64,7 @@ const LoginPage = () => {
         const userInfo = await me();
         const { id } = userInfo;
 
-        console.log("id : ", id);
-
-        const {
-          data: { isMember },
-        } = await getUsersCheck({
+        const { isMember } = await getUsersCheck({
           appUserId: id,
         });
 

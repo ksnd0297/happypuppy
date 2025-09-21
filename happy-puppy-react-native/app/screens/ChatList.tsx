@@ -20,9 +20,7 @@ const ChatListPage = () => {
     (async () => {
       const { id } = await me();
 
-      const {
-        data: { userId },
-      } = await getUsersCheck({ appUserId: id });
+      const { userId } = await getUsersCheck({ appUserId: id });
 
       const { data } = await getMyChat({ userId });
 
