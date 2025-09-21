@@ -16,6 +16,7 @@ type Props = {
   errorMessage?: string;
   label?: string;
   labelType?: LabelType;
+  disabled?: boolean;
 } & TextInput["props"];
 
 const Input = (props: Props) => {

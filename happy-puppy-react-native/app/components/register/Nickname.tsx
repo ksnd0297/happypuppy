@@ -7,7 +7,7 @@ const MAX_LENGTH = 10;
 
 const Nickname = () => {
   const {
-    field: { value, onChange },
+    field: { value, onChange, disabled },
     fieldState: { error },
   } = useController({
     name: REGISTER_FORM_PATH.NICKNAME,
@@ -24,7 +24,7 @@ const Nickname = () => {
     },
   });
 
-  return <Input label="닉네임" isError={!!error?.message} errorMessage={error?.message} value={value} onChangeText={onChange} maxLength={MAX_LENGTH} essential={true} placeholder="행복한 리트리버" />;
+  return <Input editable={!disabled} label="닉네임" isError={!!error?.message} errorMessage={error?.message} value={value} onChangeText={onChange} maxLength={MAX_LENGTH} essential={true} placeholder="행복한 리트리버" />;
 };
 
 export default Nickname;

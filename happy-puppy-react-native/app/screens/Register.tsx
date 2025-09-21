@@ -4,39 +4,77 @@ import Nickname from "../components/register/Nickname";
 import Age from "../components/register/Age";
 import Address from "../components/register/Address";
 import Introduce from "../components/register/Introduce";
-import Button from "../components/shared/Button";
+import Button, { ButtonType } from "../components/shared/Button";
 import { FormProvider, useForm } from "react-hook-form";
 import { ON_SUBMIT } from "../constants/shared/form";
 import { REGISTER_FROM_DEFAULT_VALUES } from "../constants/register/form";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { RootStackNavigationProp } from "../App";
 import RNFS from "react-native-fs";
 import awsS3Config from "@/awsS3.config";
 import { S3 } from "../utils/aws/s3";
 
 import { Buffer } from "buffer";
-import { postUsers } from "../services/users/users";
+import { getUsers, getUsersCheck, postUsers, putUsers } from "../services/users/users";
 import { AgeType, Gender, Region } from "../services/users/types";
 import Phone from "../components/register/Phone";
 import Sex from "../components/register/Sex";
 import { me } from "@react-native-kakao/user";
+import { useEffect, useState } from "react";
 
 const RegisterPage = () => {
+  const { params } = useRoute();
+
+  const { id } = (params || {}) as { id?: number };
+
   const navigation = useNavigation<RootStackNavigationProp>();
+
+  const [isMe, setIsMe] = useState(false);
+
+  // * 회원가입 모드
+  const registerMode = id === undefined;
+
+  // * 수정 모드
+  const editMode = isMe && !!id;
+
+  // * 뷰어 모드
+  const viewMode = !isMe && !!id;
 
   const form = useForm({
     defaultValues: REGISTER_FROM_DEFAULT_VALUES,
     mode: ON_SUBMIT,
     reValidateMode: ON_SUBMIT,
+    disabled: viewMode,
   });
 
+  useEffect(() => {
+    if (registerMode) return;
+
+    (async () => {
+      const { data } = await getUsers({ id });
+
+      const { id: appUserId } = await me();
+
+      const {
+        data: { userId },
+      } = await getUsersCheck({ appUserId });
+
+      if (userId === id) {
+        setIsMe(true);
+      }
+
+      form.reset({ ...data });
+    })();
+  }, [id]);
+
   const handleSubmit = form.handleSubmit(async (data) => {
-    const { imageUrl } = data;
+    const { id } = await me();
 
-    try {
-      const { id } = await me();
+    let profileImageUrl = data.profileImageUrl;
 
-      const fileData = await RNFS.readFile(imageUrl, "base64");
+    // * 닉네임(필수 필드), 대표 이미지가 있고, 변경된 적이 있는 경우에만 S3 업로드 후 값 변경
+    if (!!data.nickname && !!profileImageUrl && form.getFieldState("profileImageUrl").isDirty) {
+      const fileData = await RNFS.readFile(profileImageUrl, "base64");
 
       const formData = Buffer.from(fileData, "base64");
 
@@ -55,6 +93,27 @@ const RegisterPage = () => {
 
       const { Location } = promise;
 
+      profileImageUrl = Location;
+    }
+
+    if (editMode) {
+      await putUsers({
+        id,
+        params: {
+          nickname: data.nickname,
+          ageType: data.age as AgeType,
+          phoneNumber: data.phone,
+          showPhoneNumber: true,
+          address: data.address as Region,
+          introduce: data.introduce,
+          gender: data.gender as Gender,
+          profileImageUrl,
+        },
+      });
+      return;
+    }
+
+    if (registerMode) {
       await postUsers({
         nickname: data.nickname,
         appUserId: id,
@@ -64,12 +123,10 @@ const RegisterPage = () => {
         address: data.address as Region,
         introduce: data.introduce,
         gender: data.gender as Gender,
-        profileImageUrl: Location, // S3에 업로드된 이미지 URL
+        profileImageUrl,
       });
 
       navigation.navigate("Home");
-    } catch (error) {
-      console.error("파일 읽는 도중 발생하는 에러 예외처리, error: ", error);
     }
   });
 
@@ -91,10 +148,34 @@ const RegisterPage = () => {
           <Address />
           <Introduce />
         </View>
-        <View style={styles.buttonArea}>
-          <Button onPress={handleSubmit} disabled={disabled}>
-            입장하기
-          </Button>
+        <View style={{ ...styles.buttonArea }}>
+          <>
+            {viewMode && (
+              <>
+                <Button small buttonType={ButtonType.TYPE1} onPress={navigation.goBack} disabled={disabled}>
+                  뒤로가기
+                </Button>
+                <Button small buttonType={ButtonType.TYPE2} onPress={navigation.goBack} disabled={disabled}>
+                  신고하기
+                </Button>
+              </>
+            )}
+            {registerMode && (
+              <Button buttonType={ButtonType.TYPE1} onPress={handleSubmit} disabled={disabled}>
+                입장하기
+              </Button>
+            )}
+            {editMode && (
+              <>
+                <Button small buttonType={ButtonType.TYPE2} onPress={navigation.goBack} disabled={disabled}>
+                  뒤로가기
+                </Button>
+                <Button small buttonType={ButtonType.TYPE1} onPress={handleSubmit} disabled={disabled}>
+                  수정하기
+                </Button>
+              </>
+            )}
+          </>
         </View>
       </View>
     </FormProvider>
@@ -110,32 +191,12 @@ const styles = StyleSheet.create({
   },
 
   imageArea: {
-    flex: 0.3,
+    flex: 0.25,
 
     justifyContent: "center",
     alignItems: "center",
 
-    gap: 5,
-  },
-  image: {
-    width: 200,
-    height: 200,
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 100,
-
-    justifyContent: "center",
-    alignItems: "center",
-
-    backgroundColor: "white",
-  },
-  imagePressable: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  imageText: {
-    fontWeight: 700,
-    fontSize: 16,
+    gap: 10,
   },
 
   formArea: {
@@ -150,18 +211,9 @@ const styles = StyleSheet.create({
 
     justifyContent: "center",
     alignItems: "center",
-  },
-  button: {
-    width: 211,
-    height: 55,
-    backgroundColor: "#F7DDDE",
-    borderRadius: 5,
 
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonText: {
-    fontWeight: 700,
-    fontSize: 16,
+    flexDirection: "row",
+
+    gap: 15,
   },
 });

@@ -39,7 +39,9 @@ SplashScreen.setOptions({
 // TODO : useRouter 로 랩핑해서 제작
 export type RootStackParamList = {
   Login: undefined;
-  Register: undefined;
+  Register?: {
+    id: RouteId;
+  };
   ChatList: undefined;
   Chat: {
     id: RouteId;
@@ -90,14 +92,12 @@ export default function App() {
         <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
           <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Register" component={RegisterPage} />
+              <Stack.Screen name="Home" component={HomePage} />
               <Stack.Screen name="ChatList" component={ChatListPage} />
               <Stack.Screen name="Appointment" component={AppointmentPage} />
-              <Stack.Screen name="Home" component={HomePage} />
               <Stack.Screen name="Login" component={LoginPage} />
               <Stack.Screen name="Chat" component={ChatPage} />
-
-              <Stack.Screen name="Register" component={RegisterPage} />
-
               <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
             </Stack.Navigator>
           </NavigationContainer>

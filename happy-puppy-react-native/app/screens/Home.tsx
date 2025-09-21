@@ -8,10 +8,23 @@ import { useEffect, useState } from "react";
 import { UserResponse } from "../services/users/types";
 import { me } from "@react-native-kakao/user";
 import { getUsers, getUsersCheck } from "../services/users/users";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackNavigationProp } from "../App";
+import { getMyChat } from "../services/chat/chat";
+import { ChatResponse } from "../services/chat/types";
 
 const HomePage = () => {
+  const { navigate } = useNavigation<RootStackNavigationProp>();
+
   const [info, setInfo] = useState<UserResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [mySchedule, setMySchedule] = useState<ChatResponse[]>([]);
+
+  const markedDates = mySchedule.reduce<Record<string, { marked: boolean; dotColor: string }>>((acc, cur) => {
+    acc[cur.meetDate] = { marked: true, dotColor: "#FF4141" };
+    return acc;
+  }, {});
 
   useEffect(() => {
     (async () => {
@@ -33,7 +46,21 @@ const HomePage = () => {
     })();
   }, []);
 
-  const handleNavigationInfo = () => {};
+  useEffect(() => {
+    if (!info) return;
+
+    (async () => {
+      const { data } = await getMyChat({ userId: info.id });
+
+      setMySchedule(data);
+    })();
+  }, [info]);
+
+  const handleNavigationInfo = () => {
+    if (!info?.id) return;
+
+    navigate("Register", { id: info.id });
+  };
 
   const handleNavigationNotice = () => {};
 
@@ -45,16 +72,11 @@ const HomePage = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>{info && <HomeImage title={info?.nickname} uri={info?.profileImageUrl} />}</View>
+      <View style={styles.imageContainer}>{info && <HomeImage title={info?.nickname} uri={info?.profileImageUrl} handlePress={handleNavigationInfo} />}</View>
       <View style={styles.homeContainer}>
         <View style={styles.calendarContainer}>
           <View style={styles.calendarWrapper}>
-            <Calendar
-              style={styles.calendar}
-              onDayPress={(day) => {
-                console.log("selected day", day);
-              }}
-            />
+            <Calendar hideArrows={true} style={styles.calendar} disableAllTouchEventsForDisabledDays={true} markedDates={markedDates} />
           </View>
         </View>
         <View style={styles.bottomButtonContainer}>

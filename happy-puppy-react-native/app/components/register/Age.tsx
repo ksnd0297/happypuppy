@@ -32,12 +32,12 @@ const OPTION_LIST = [
 
 const Age = () => {
   const {
-    field: { value, onChange },
+    field: { value, onChange, disabled },
   } = useController({
     name: REGISTER_FORM_PATH.AGE,
   });
 
-  return <Select selectType={SelectType.TYPE3} label="연령대" value={value} onChange={({ value }) => onChange(value)} placeholder="연령대를 선택해 주세요" data={OPTION_LIST} />;
+  return <Select editable={!disabled} selectType={SelectType.TYPE3} label="연령대" value={value} onChange={({ value }) => onChange(value)} placeholder="연령대를 선택해 주세요" data={OPTION_LIST} />;
 };
 
 export default Age;

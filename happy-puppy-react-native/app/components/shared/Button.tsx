@@ -3,22 +3,25 @@ import { Pressable, StyleSheet, Text } from "react-native";
 
 export enum ButtonType {
   TYPE1 = "TYPE1",
+  TYPE2 = "TYPE2",
 }
 
 type Props = {
   children?: React.ReactNode;
   buttonType?: ButtonType;
   disabled?: boolean;
+  small?: boolean;
   onPress?: () => void;
 };
 
 const Button = (props: Props) => {
-  const { children, buttonType = ButtonType.TYPE1, disabled, onPress } = props;
+  const { children, buttonType = ButtonType.TYPE1, disabled, onPress, small } = props;
 
   const buttonStyle = {
     ...BUTTON_STYLE["DEFAULT"],
     ...BUTTON_STYLE[buttonType],
     ...(disabled && BUTTON_STYLE["DISABLED"]),
+    ...(small && BUTTON_STYLE["SMALL"]),
   };
 
   return (
@@ -41,6 +44,16 @@ const BUTTON_STYLE = StyleSheet.create({
     width: 211,
     height: 55,
     backgroundColor: "#F7DDDE",
+  },
+
+  TYPE2: {
+    width: 211,
+    height: 55,
+    backgroundColor: "#FF4141",
+  },
+
+  SMALL: {
+    width: 130,
   },
 
   DISABLED: {
