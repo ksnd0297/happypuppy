@@ -3,29 +3,16 @@ import Text from "../components/shared/Text";
 import Footer from "../components/shared/Footer";
 import ChatInfo from "../components/chatList/ChatInfo";
 import { useNavigation } from "@react-navigation/native";
-import { ChatResponse } from "../services/chat/types";
-import { useEffect, useState } from "react";
-import { getMyChat } from "../services/chat/chat";
-import { me } from "@react-native-kakao/user";
-import { getUsersCheck } from "../services/users/users";
 import { RootStackNavigationProp } from "../RootStack";
+import useUserInfo from "../hooks/auth/useUserInfo";
+import useMyChat from "../hooks/chat/useMyChat";
 
 const ChatListPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
 
-  const [chatList, setChatList] = useState<ChatResponse[]>([]);
+  const { userInfo } = useUserInfo();
 
-  useEffect(() => {
-    (async () => {
-      const { id } = await me();
-
-      const { userId } = await getUsersCheck({ appUserId: id });
-
-      const data = await getMyChat({ userId });
-
-      setChatList(data);
-    })();
-  }, []);
+  const { data: chatList } = useMyChat({ userId: userInfo?.userId });
 
   const handleEnterChat = (roomId: number) => {
     navigation.navigate("Chat", { id: roomId });
@@ -41,7 +28,7 @@ const ChatListPage = () => {
       <View style={styles.chatListContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <>
-            {chatList.map((chat, index) => {
+            {chatList?.map((chat, index) => {
               const { id, meetAt, imageUrl, name, tags } = chat;
 
               return <ChatInfo key={index} roomId={id} promiseDateTime={meetAt} roomImage={imageUrl} title={name} handleEnterChat={handleEnterChat} tags={tags?.[0]} />;
