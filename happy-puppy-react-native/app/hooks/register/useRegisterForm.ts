@@ -39,7 +39,7 @@ const useRegisterForm = () => {
     disabled: mode === REGISTER_MODE.VIEW,
   });
 
-  const { data, isFetching } = useGetUser({
+  const { data, isFetching, refetch } = useGetUser({
     id,
     options: {
       enabled: !!id,
@@ -123,6 +123,8 @@ const useRegisterForm = () => {
 
       navigation.navigate("Home");
     }
+
+    refetch();
   });
 
   return { form, mode, handleSubmit };

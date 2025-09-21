@@ -79,7 +79,7 @@ const BOTTOM_NAVIGATION_BAR_HEIGHT = SCREEN_HEIGHT - WINDOW_HEIGHT;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: "#FCF5EE",
     paddingTop: STATUS_BAR_HEIGHT,
     paddingBottom: BOTTOM_NAVIGATION_BAR_HEIGHT,
   },

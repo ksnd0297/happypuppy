@@ -33,10 +33,10 @@ const ChatPage = () => {
       const { userId } = await getUsersCheck({ appUserId });
 
       // TODO : 방 상세 조회 API 로 변경
-      const { data: myChatList } = await getMyChat({ userId });
+      const myChatList = await getMyChat({ userId });
 
       // TODO : 500 에러 해결 필요
-      const { data: chatMembers } = await getChatMembers({ chatId });
+      const chatMembers = await getChatMembers({ chatId });
 
       setIsJoined(chatMembers.some((member) => member.userId === userId));
 

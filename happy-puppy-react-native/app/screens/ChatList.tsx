@@ -21,7 +21,7 @@ const ChatListPage = () => {
 
       const { userId } = await getUsersCheck({ appUserId: id });
 
-      const { data } = await getMyChat({ userId });
+      const data = await getMyChat({ userId });
 
       setChatList(data);
     })();

@@ -51,9 +51,7 @@ const AppointmentPage = () => {
 
       const { Location } = promise;
 
-      const {
-        data: { chatId },
-      } = await postChat({
+      const { chatId } = await postChat({
         imageUrl: Location,
         name: data.title,
         userId: id,
