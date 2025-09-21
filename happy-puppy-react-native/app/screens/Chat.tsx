@@ -30,9 +30,7 @@ const ChatPage = () => {
     (async () => {
       const { id: appUserId } = await me();
 
-      const {
-        data: { userId },
-      } = await getUsersCheck({ appUserId });
+      const { userId } = await getUsersCheck({ appUserId });
 
       // TODO : 방 상세 조회 API 로 변경
       const { data: myChatList } = await getMyChat({ userId });
@@ -49,13 +47,9 @@ const ChatPage = () => {
   const handleClickChatButton = async () => {
     const { id: appUserId } = await me();
 
-    const {
-      data: { userId },
-    } = await getUsersCheck({ appUserId });
+    const { userId } = await getUsersCheck({ appUserId });
 
-    const {
-      data: { id },
-    } = await getUsers({
+    const { id } = await getUsers({
       id: userId,
     });
 

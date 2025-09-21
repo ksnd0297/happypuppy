@@ -30,13 +30,11 @@ const HomePage = () => {
     (async () => {
       const { id } = await me();
 
-      const {
-        data: { userId },
-      } = await getUsersCheck({
+      const { userId } = await getUsersCheck({
         appUserId: id,
       });
 
-      const { data } = await getUsers({
+      const data = await getUsers({
         id: userId,
       });
 

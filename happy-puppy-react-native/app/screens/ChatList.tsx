@@ -20,9 +20,7 @@ const ChatListPage = () => {
     (async () => {
       const { id } = await me();
 
-      const {
-        data: { userId },
-      } = await getUsersCheck({ appUserId: id });
+      const { userId } = await getUsersCheck({ appUserId: id });
 
       const { data } = await getMyChat({ userId });
 
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
   },
 
   chatListContainer: {
-    flex: 0.95,
+    flex: 0.85,
 
     padding: 10,
 
