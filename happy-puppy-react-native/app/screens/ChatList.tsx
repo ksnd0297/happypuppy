@@ -3,12 +3,12 @@ import Text from "../components/shared/Text";
 import Footer from "../components/shared/Footer";
 import ChatInfo from "../components/chatList/ChatInfo";
 import { useNavigation } from "@react-navigation/native";
-import { RootStackNavigationProp } from "../App";
 import { ChatResponse } from "../services/chat/types";
 import { useEffect, useState } from "react";
 import { getMyChat } from "../services/chat/chat";
 import { me } from "@react-native-kakao/user";
 import { getUsersCheck } from "../services/users/users";
+import { RootStackNavigationProp } from "../RootStack";
 
 const ChatListPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();

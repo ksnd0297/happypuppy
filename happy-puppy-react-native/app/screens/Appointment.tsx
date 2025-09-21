@@ -15,7 +15,7 @@ import { S3 } from "../utils/aws/s3";
 import { postChat } from "../services/chat/chat";
 import { Buffer } from "buffer";
 import { useNavigation } from "@react-navigation/native";
-import { RootStackNavigationProp } from "../App";
+import { RootStackNavigationProp } from "../RootStack";
 
 const AppointmentPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();

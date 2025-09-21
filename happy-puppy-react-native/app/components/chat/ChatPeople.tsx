@@ -2,7 +2,7 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 import Text from "../shared/Text";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { RootStackNavigationProp } from "@/app/App";
+import { RootStackNavigationProp } from "@/app/RootStack";
 
 const dogImage = require("@/app/assets/dog.png");
 

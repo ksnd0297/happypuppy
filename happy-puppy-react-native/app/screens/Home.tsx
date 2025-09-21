@@ -9,9 +9,9 @@ import { UserResponse } from "../services/users/types";
 import { me } from "@react-native-kakao/user";
 import { getUsers, getUsersCheck } from "../services/users/users";
 import { useNavigation } from "@react-navigation/native";
-import { RootStackNavigationProp } from "../App";
 import { getMyChat } from "../services/chat/chat";
 import { ChatResponse } from "../services/chat/types";
+import { RootStackNavigationProp } from "../RootStack";
 
 const HomePage = () => {
   const { navigate } = useNavigation<RootStackNavigationProp>();

@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import useUserInfo from "../auth/useUserInfo";
 import useGetUser from "../useGetUser";
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { RootStackParamList } from "@/app/App";
 import { REGISTER_MODE } from "@/app/enums/register";
 import RNFS from "react-native-fs";
 import { postUsers, putUsers } from "@/app/services/users/users";
@@ -13,6 +12,7 @@ import { AgeType, Gender, Region } from "@/app/services/users/types";
 import { me } from "@react-native-kakao/user";
 import awsS3Config from "@/awsS3.config";
 import { S3 } from "@/app/utils/aws/s3";
+import { RootStackParamList } from "@/app/RootStack";
 
 const getMode = ({ id, isMe }: { id?: number; isMe: boolean }) => {
   if (id === undefined) return REGISTER_MODE.REGISTER;
