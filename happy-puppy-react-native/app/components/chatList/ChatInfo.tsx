@@ -1,16 +1,15 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import Text from "../shared/Text";
-import { RouteId } from "@/app/types/route";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 
 type Props = {
   promiseDateTime: string;
-  roomId: RouteId;
+  roomId: number;
   roomImage?: string;
   title: string;
   tags?: string;
-  handleEnterChat: (id: RouteId) => void;
+  handleEnterChat: (id: number) => void;
 };
 
 const ChatInfo = (props: Props) => {

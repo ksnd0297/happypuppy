@@ -11,7 +11,6 @@ import { useCallback, useEffect } from "react";
 import { KAKAO_NATIVE_APP_KEY } from "@env";
 import { Platform, SafeAreaView, StatusBar, View } from "react-native";
 import ChatListPage from "./screens/ChatList";
-import { RouteId } from "./types/route";
 import HomePage from "./screens/Home";
 import { LocaleConfig } from "react-native-calendars";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -43,11 +42,11 @@ SplashScreen.setOptions({
 export type RootStackParamList = {
   Login: undefined;
   Register?: {
-    id: RouteId;
+    id: number;
   };
   ChatList: undefined;
   Chat: {
-    id: RouteId;
+    id: number;
   };
   Webview: undefined;
   Home: undefined;

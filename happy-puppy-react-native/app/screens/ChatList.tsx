@@ -4,7 +4,6 @@ import Footer from "../components/shared/Footer";
 import ChatInfo from "../components/chatList/ChatInfo";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "../App";
-import { RouteId } from "../types/route";
 import { ChatResponse } from "../services/chat/types";
 import { useEffect, useState } from "react";
 import { getMyChat } from "../services/chat/chat";
@@ -28,7 +27,7 @@ const ChatListPage = () => {
     })();
   }, []);
 
-  const handleEnterChat = (roomId: RouteId) => {
+  const handleEnterChat = (roomId: number) => {
     navigation.navigate("Chat", { id: roomId });
   };
 

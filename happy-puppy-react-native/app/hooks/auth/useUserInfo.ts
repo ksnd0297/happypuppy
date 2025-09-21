@@ -22,7 +22,12 @@ const useUserInfo = () => {
   useEffect(() => {
     (async () => {
       try {
-        if (await getUserInfoStorage()) return;
+        const storageUserInfo = await getUserInfoStorage();
+
+        if (storageUserInfo) {
+          setUserInfo(storageUserInfo);
+          return;
+        }
 
         const isLoggedIn = await isLogined();
 
