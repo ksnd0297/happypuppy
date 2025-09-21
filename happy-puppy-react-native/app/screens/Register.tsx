@@ -124,7 +124,6 @@ const RegisterPage = () => {
         appUserId: id,
         ageType: data.age as AgeType,
         phoneNumber: data.phone,
-        showPhoneNumber: true,
         address: data.address as Region,
         introduce: data.introduce,
         gender: data.gender as Gender,
