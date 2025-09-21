@@ -2,20 +2,30 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 import Text from "../shared/Text";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { RootStackNavigationProp } from "@/app/App";
+import { RootStackNavigationProp } from "@/app/RootStack";
+import { ChatMemberResponse } from "@/app/services/chat/types";
 
-const dogImage = require("@/app/assets/dog.png");
+type Props = {
+  memberList?: ChatMemberResponse[];
+};
 
-const ChatPeople = () => {
+const ChatPeople = (props: Props) => {
+  const { memberList } = props;
+
   const navigation = useNavigation<RootStackNavigationProp>();
 
   return (
     <View style={styles.chatPeopleContainer}>
       <ScrollView style={styles.chatPeopleScrollContainer} contentContainerStyle={styles.chatPeopleContentContainer}>
-        {[...Array(10)].map((_, i) => (
-          <Pressable key={i} style={styles.personContainer} onPress={() => navigation.navigate("Register", { id: i + 1 })}>
-            <Image source={dogImage} style={styles.personImage} />
-            <Text bold>조이</Text>
+        {memberList?.map((member, index) => (
+          <Pressable key={index} style={styles.personContainer} onPress={() => navigation.navigate("Register", { id: member.userId })}>
+            <Image
+              source={{
+                uri: member.profileImageUrl,
+              }}
+              style={styles.personImage}
+            />
+            <Text bold>{member.nickname}</Text>
           </Pressable>
         ))}
       </ScrollView>

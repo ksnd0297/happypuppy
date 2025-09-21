@@ -22,7 +22,7 @@ const AppointmentImage = () => {
     });
 
     if (result?.assets?.[0]) {
-      const response = await ImageResizer.createResizedImage(result.assets[0].uri, 300, 300, "JPEG", 75);
+      const response = await ImageResizer.createResizedImage(result.assets[0].uri, 500, 500, "JPEG", 100);
 
       onChange(response.uri);
     }

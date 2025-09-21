@@ -15,7 +15,8 @@ import { S3 } from "../utils/aws/s3";
 import { postChat } from "../services/chat/chat";
 import { Buffer } from "buffer";
 import { useNavigation } from "@react-navigation/native";
-import { RootStackNavigationProp } from "../App";
+import { RootStackNavigationProp } from "../RootStack";
+import CloseButton from "../components/shared/CloseButton";
 
 const AppointmentPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -51,9 +52,7 @@ const AppointmentPage = () => {
 
       const { Location } = promise;
 
-      const {
-        data: { chatId },
-      } = await postChat({
+      const { chatId } = await postChat({
         imageUrl: Location,
         name: data.title,
         userId: id,
@@ -61,7 +60,7 @@ const AppointmentPage = () => {
         meetTime: data.time,
         placeId: 1,
         introduce: data.introduce,
-        tags: [data.tag],
+        tags: data.tag,
       });
 
       navigation.navigate("Chat", { id: chatId });
@@ -75,6 +74,7 @@ const AppointmentPage = () => {
   return (
     <FormProvider {...form}>
       <View style={styles.container}>
+        <CloseButton onPress={() => navigation.goBack()} />
         <View style={styles.imageContainer}>
           <AppointmentImage />
         </View>

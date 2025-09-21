@@ -21,6 +21,8 @@ type Props = {
 
   gray?: boolean;
   white?: boolean;
+
+  bottom?: boolean;
 };
 
 const Text = (props: Props) => {
@@ -82,5 +84,10 @@ const styles = StyleSheet.create({
 
   lh24: {
     lineHeight: 24,
+  },
+
+  bottom: {
+    textAlignVertical: "bottom",
+    alignSelf: "flex-end",
   },
 });

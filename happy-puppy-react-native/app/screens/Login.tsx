@@ -1,10 +1,10 @@
 import { isLogined, login, me } from "@react-native-kakao/user";
 import { useNavigation } from "@react-navigation/native";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { RootStackNavigationProp } from "../App";
 import { useEffect } from "react";
 import { getUsersCheck } from "../services/users/users";
 import useUserInfo from "../hooks/auth/useUserInfo";
+import { RootStackNavigationProp } from "../RootStack";
 
 const happyPuppyImg = require("@/app/assets/happypuppy.png");
 const kakaoLoginImg = require("@/app/assets/kakao-login.png");

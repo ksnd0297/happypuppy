@@ -4,81 +4,78 @@ import ChatTitle from "../components/chat/ChatTitle";
 import ChatDescription from "../components/chat/ChatDescription";
 import ChatPeople from "../components/chat/ChatPeople";
 import ChatButton from "../components/chat/ChatButton";
-import ChatCloseButton from "../components/chat/ChatCloseButton";
 import ChatImage from "../components/chat/ChatImage";
 import { useEffect, useState } from "react";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { chatJoin, chatLeave, getChatMembers, getMyChat } from "../services/chat/chat";
-import { me } from "@react-native-kakao/user";
-import { getUsers, getUsersCheck } from "../services/users/users";
-import { ChatResponse } from "../services/chat/types";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { chatJoin, chatLeave } from "../services/chat/chat";
+import { RootStackParamList } from "../RootStack";
+import useChatDetail from "../hooks/chat/useChatDetail";
+import useChatMembers from "../hooks/chat/useChatMembers";
+import useUserInfo from "../hooks/auth/useUserInfo";
+import CloseButton from "../components/shared/CloseButton";
 
 const SNAP_POINTS = ["55%", "80%"];
 
 const ChatPage = () => {
-  const route = useRoute();
-  const { id: chatId } = route.params as { id: number };
-
-  const [chatInfo, setChatInfo] = useState<ChatResponse>();
-  const [isJoined, setIsJoined] = useState(false);
+  const { params } = useRoute<RouteProp<RootStackParamList, "Chat">>();
+  const { id: chatId } = params;
 
   const navigation = useNavigation();
 
-  useEffect(() => {
-    if (!chatId) return;
+  const { userInfo, isLoading } = useUserInfo();
 
-    (async () => {
-      const { id: appUserId } = await me();
+  const { data: chatInfo } = useChatDetail({
+    chatId,
+    options: {
+      enabled: !!chatId,
+    },
+  });
 
-      const { userId } = await getUsersCheck({ appUserId });
+  const { data: memberList } = useChatMembers({
+    chatId,
+    options: {
+      enabled: !!chatId,
+    },
+  });
 
-      // TODO : 방 상세 조회 API 로 변경
-      const { data: myChatList } = await getMyChat({ userId });
-
-      // TODO : 500 에러 해결 필요
-      const { data: chatMembers } = await getChatMembers({ chatId });
-
-      setIsJoined(chatMembers.some((member) => member.userId === userId));
-
-      setChatInfo(myChatList[0]);
-    })();
-  }, [chatId]);
+  const [isJoined, setIsJoined] = useState(false);
 
   const handleClickChatButton = async () => {
-    const { id: appUserId } = await me();
+    if (!userInfo?.userId) return;
 
-    const { userId } = await getUsersCheck({ appUserId });
-
-    const { id } = await getUsers({
-      id: userId,
-    });
+    const params = {
+      userId: userInfo.userId,
+      chatId,
+    };
 
     if (isJoined) {
-      await chatLeave({
-        userId: id,
-        chatId,
-      });
+      await chatLeave(params);
 
       setIsJoined(false);
     } else {
-      await chatJoin({
-        userId: id,
-        chatId,
-      });
+      await chatJoin(params);
 
-      setIsJoined(false);
+      setIsJoined(true);
     }
   };
 
+  useEffect(() => {
+    if (!memberList || isLoading) return;
+
+    if (memberList.find((value) => value.userId === userInfo?.userId)) {
+      setIsJoined(true);
+    }
+  }, [memberList, isLoading]);
+
   return (
     <View style={styles.container}>
-      <ChatCloseButton onPress={() => navigation.goBack()} />
+      <CloseButton onPress={() => navigation.goBack()} />
       <ChatImage chatImageUrl={chatInfo?.imageUrl || ""} />
       <BottomSheet snapPoints={SNAP_POINTS} animateOnMount={false} index={0} enableDynamicSizing={false} backgroundStyle={styles.bottomSheet}>
         <BottomSheetView style={styles.contentContainer}>
-          <ChatTitle title={chatInfo?.name || ""} date="동천역 · 25. 05. 17. (토) 18:00" />
-          <ChatDescription description={chatInfo?.introduce || ""} tags={chatInfo?.tags?.[0] || ""} />
-          <ChatPeople />
+          <ChatTitle chatInfo={chatInfo} />
+          <ChatDescription description={chatInfo?.introduce || ""} tags={chatInfo?.tags || ""} />
+          <ChatPeople memberList={memberList} />
         </BottomSheetView>
       </BottomSheet>
       <ChatButton isJoined={isJoined} onPress={handleClickChatButton} />

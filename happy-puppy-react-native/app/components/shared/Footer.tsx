@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 import Icon from "./Icon";
 import Text from "./Text";
 import { useNavigation } from "@react-navigation/native";
-import { RootStackNavigationProp } from "@/app/App";
+import { RootStackNavigationProp } from "@/app/RootStack";
 
 const Footer = () => {
   const navigation = useNavigation<RootStackNavigationProp>();

@@ -1,63 +1,42 @@
 import { Pressable, StyleSheet, View } from "react-native";
-import Footer from "../components/shared/Footer";
 import HomeImage from "../components/home/HomeImage";
 import Text from "../components/shared/Text";
 import Divider from "../components/shared/Divider";
 import { Calendar } from "react-native-calendars";
-import { useEffect, useState } from "react";
-import { UserResponse } from "../services/users/types";
-import { me } from "@react-native-kakao/user";
-import { getUsers, getUsersCheck } from "../services/users/users";
-import { useNavigation } from "@react-navigation/native";
-import { RootStackNavigationProp } from "../App";
-import { getMyChat } from "../services/chat/chat";
-import { ChatResponse } from "../services/chat/types";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../RootStack";
+import useUserInfo from "../hooks/auth/useUserInfo";
+import useGetUser from "../hooks/useGetUser";
+import useMyChat from "../hooks/chat/useMyChat";
+import Container from "../components/Container";
 
 const HomePage = () => {
-  const { navigate } = useNavigation<RootStackNavigationProp>();
+  const { navigate } = useNavigation<NavigationProp<RootStackParamList, "Home">>();
 
-  const [info, setInfo] = useState<UserResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { userInfo } = useUserInfo();
+  const { userId } = userInfo || {};
 
-  const [mySchedule, setMySchedule] = useState<ChatResponse[]>([]);
+  const { data: userData, isLoading } = useGetUser({
+    id: userId,
+    options: {
+      enabled: !!userId,
+      refetchOnMount: true,
+    },
+  });
 
-  const markedDates = mySchedule.reduce<Record<string, { marked: boolean; dotColor: string }>>((acc, cur) => {
+  const { data: myChatList } = useMyChat({
+    userId: userId,
+  });
+
+  const markedDates = myChatList?.reduce<Record<string, { marked: boolean; dotColor: string }>>((acc, cur) => {
     acc[cur.meetDate] = { marked: true, dotColor: "#FF4141" };
     return acc;
   }, {});
 
-  useEffect(() => {
-    (async () => {
-      const { id } = await me();
-
-      const { userId } = await getUsersCheck({
-        appUserId: id,
-      });
-
-      const data = await getUsers({
-        id: userId,
-      });
-
-      setInfo(data);
-
-      setIsLoading(false);
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (!info) return;
-
-    (async () => {
-      const { data } = await getMyChat({ userId: info.id });
-
-      setMySchedule(data);
-    })();
-  }, [info]);
-
   const handleNavigationInfo = () => {
-    if (!info?.id) return;
+    if (!userId) return;
 
-    navigate("Register", { id: info.id });
+    navigate("Register", { id: userId });
   };
 
   const handleNavigationNotice = () => {};
@@ -69,8 +48,8 @@ const HomePage = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>{info && <HomeImage title={info?.nickname} uri={info?.profileImageUrl} handlePress={handleNavigationInfo} />}</View>
+    <Container>
+      <View style={styles.imageContainer}>{userData && <HomeImage title={userData?.nickname} uri={userData?.profileImageUrl} handlePress={handleNavigationInfo} />}</View>
       <View style={styles.homeContainer}>
         <View style={styles.calendarContainer}>
           <View style={styles.calendarWrapper}>
@@ -99,8 +78,7 @@ const HomePage = () => {
           </View>
         </View>
       </View>
-      <Footer />
-    </View>
+    </Container>
   );
 };
 
@@ -126,7 +104,7 @@ const styles = StyleSheet.create({
   },
 
   homeContainer: {
-    flex: 0.55,
+    flex: 0.65,
   },
 
   calendarContainer: {
@@ -134,6 +112,8 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
     justifyContent: "center",
+
+    paddingTop: 20,
   },
   calendarWrapper: {
     flex: 1,
