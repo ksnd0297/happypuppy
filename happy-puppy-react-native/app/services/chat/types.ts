@@ -6,7 +6,7 @@ export type PostChatParams = {
   meetTime: string;
   imageUrl?: string;
   introduce?: string;
-  tags?: string[];
+  tags?: string;
 };
 
 export type CreateChatResponse = {
@@ -38,7 +38,7 @@ export type ChatResponse = {
   meetAt: string;
   imageUrl?: string;
   introduce?: string;
-  tags?: string[];
+  tags?: string;
 };
 export type GetChatsParams = {
   placeId: number;
@@ -82,6 +82,21 @@ enum PlaceType {
   TRAVEL = "TRAVEL",
   ENTRUST_MANAGEMENT = "ENTRUST_MANAGEMENT",
   CAFE = "CAFE",
+}
+
+export enum KORPlaceType {
+  PARK = "공원",
+  HOSPITAL = "병원",
+  PHARMACY = "약국",
+  CULTURE_CENTER = "문화센터",
+  ART_MUSEUM = "미술관",
+  BEAUTY = "뷰티샵 / 미용",
+  MUSEUM = "박물관",
+  SUPPLIES = "용품점 / 상점",
+  RESTAURANT = "음식점",
+  TRAVEL = "여행사 / 관광",
+  ENTRUST_MANAGEMENT = "위탁 관리",
+  CAFE = "카페",
 }
 
 export type ChatDetailResponse = {

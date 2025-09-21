@@ -1,5 +1,4 @@
 import { Pressable, StyleSheet, View } from "react-native";
-import Footer from "../components/shared/Footer";
 import HomeImage from "../components/home/HomeImage";
 import Text from "../components/shared/Text";
 import Divider from "../components/shared/Divider";
@@ -9,6 +8,7 @@ import { RootStackParamList } from "../RootStack";
 import useUserInfo from "../hooks/auth/useUserInfo";
 import useGetUser from "../hooks/useGetUser";
 import useMyChat from "../hooks/chat/useMyChat";
+import Container from "../components/Container";
 
 const HomePage = () => {
   const { navigate } = useNavigation<NavigationProp<RootStackParamList, "Home">>();
@@ -48,7 +48,7 @@ const HomePage = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <Container>
       <View style={styles.imageContainer}>{userData && <HomeImage title={userData?.nickname} uri={userData?.profileImageUrl} handlePress={handleNavigationInfo} />}</View>
       <View style={styles.homeContainer}>
         <View style={styles.calendarContainer}>
@@ -78,8 +78,7 @@ const HomePage = () => {
           </View>
         </View>
       </View>
-      <Footer />
-    </View>
+    </Container>
   );
 };
 
@@ -105,7 +104,7 @@ const styles = StyleSheet.create({
   },
 
   homeContainer: {
-    flex: 0.55,
+    flex: 0.65,
   },
 
   calendarContainer: {
@@ -113,6 +112,8 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
     justifyContent: "center",
+
+    paddingTop: 20,
   },
   calendarWrapper: {
     flex: 1,

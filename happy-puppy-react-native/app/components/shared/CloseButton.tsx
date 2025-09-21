@@ -6,7 +6,7 @@ type Props = {
   onPress: () => void;
 };
 
-const ChatCloseButton = (props: Props) => {
+const CloseButton = (props: Props) => {
   const { onPress } = props;
 
   return (
@@ -16,7 +16,7 @@ const ChatCloseButton = (props: Props) => {
   );
 };
 
-export default ChatCloseButton;
+export default CloseButton;
 
 const styles = StyleSheet.create({
   closeButtonContainer: {
@@ -29,5 +29,6 @@ const styles = StyleSheet.create({
   closeButton: {
     width: 24,
     height: 24,
+    borderColor: "black",
   },
 });

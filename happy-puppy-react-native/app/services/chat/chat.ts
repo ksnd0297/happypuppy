@@ -27,5 +27,5 @@ export async function getChatMembers(params: GetChatMembersParams): Promise<Chat
 }
 
 export function getChatDetail(params: GetChatDetailParams): Promise<ChatDetailResponse> {
-  return api.get(`${API_HOST}/chat/${params.chatId}`);
+  return api.get(`${API_HOST}/chats/${params.chatId}`);
 }

@@ -1,11 +1,11 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import Text from "../components/shared/Text";
-import Footer from "../components/shared/Footer";
 import ChatInfo from "../components/chatList/ChatInfo";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "../RootStack";
 import useUserInfo from "../hooks/auth/useUserInfo";
 import useMyChat from "../hooks/chat/useMyChat";
+import Container from "../components/Container";
 
 const ChatListPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -19,7 +19,7 @@ const ChatListPage = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <Container>
       <View style={styles.titleContainer}>
         <Text xxxlarge bold>
           약속 목록
@@ -31,13 +31,12 @@ const ChatListPage = () => {
             {chatList?.map((chat, index) => {
               const { id, meetAt, imageUrl, name, tags } = chat;
 
-              return <ChatInfo key={index} roomId={id} promiseDateTime={meetAt} roomImage={imageUrl} title={name} handleEnterChat={handleEnterChat} tags={tags?.[0]} />;
+              return <ChatInfo key={index} roomId={id} promiseDateTime={meetAt} roomImage={imageUrl} title={name} handleEnterChat={handleEnterChat} tags={tags} />;
             })}
           </>
         </ScrollView>
       </View>
-      <Footer />
-    </View>
+    </Container>
   );
 };
 
