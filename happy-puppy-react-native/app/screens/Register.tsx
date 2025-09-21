@@ -68,7 +68,7 @@ const RegisterPage = () => {
         setIsMe(true);
       }
 
-      form.reset({ ...data });
+      form.reset({ ...data, phone: data.phoneNumber, age: data.ageType });
     })();
   }, [id]);
 
@@ -102,19 +102,23 @@ const RegisterPage = () => {
     }
 
     if (editMode) {
+      const { data: userInfo } = await getUsersCheck({ appUserId: id });
+      const { userId } = userInfo || {};
+
       await putUsers({
-        id,
+        id: userId,
         params: {
           nickname: data.nickname,
           ageType: data.age as AgeType,
           phoneNumber: data.phone,
-          showPhoneNumber: true,
           address: data.address as Region,
           introduce: data.introduce,
           gender: data.gender as Gender,
           profileImageUrl,
         },
       });
+
+      navigation.goBack();
       return;
     }
 

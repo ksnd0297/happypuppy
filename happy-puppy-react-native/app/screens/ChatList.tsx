@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
 
   chatListContainer: {
-    flex: 0.95,
+    flex: 0.85,
 
     padding: 10,
 
