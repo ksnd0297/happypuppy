@@ -21,6 +21,9 @@ import Phone from "../components/register/Phone";
 import Sex from "../components/register/Sex";
 import { me } from "@react-native-kakao/user";
 import { useEffect, useState } from "react";
+import useDisclosure from "../hooks/useDisclosure";
+
+import ReportModal from "../components/register/ReportModal";
 
 const RegisterPage = () => {
   const { params } = useRoute();
@@ -30,6 +33,8 @@ const RegisterPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const [isMe, setIsMe] = useState(false);
+
+  const { isOpen, handleOpen, handleClose } = useDisclosure();
 
   // * 회원가입 모드
   const registerMode = id === undefined;
@@ -119,7 +124,6 @@ const RegisterPage = () => {
         appUserId: id,
         ageType: data.age as AgeType,
         phoneNumber: data.phone,
-        showPhoneNumber: true,
         address: data.address as Region,
         introduce: data.introduce,
         gender: data.gender as Gender,
@@ -133,52 +137,55 @@ const RegisterPage = () => {
   const disabled = form.formState.isSubmitting;
 
   return (
-    <FormProvider {...form}>
-      <View style={styles.container}>
-        <View style={styles.imageArea}>
-          <RepresentativeImage />
-        </View>
-        <View style={styles.formArea}>
-          <Nickname />
-          <Phone />
-          <View style={{ flexDirection: "row", gap: 10 }}>
-            <Sex />
-            <Age />
+    <>
+      <FormProvider {...form}>
+        <View style={styles.container}>
+          <View style={styles.imageArea}>
+            <RepresentativeImage />
           </View>
-          <Address />
-          <Introduce />
+          <View style={styles.formArea}>
+            <Nickname />
+            <Phone />
+            <View style={{ flexDirection: "row", gap: 10 }}>
+              <Sex />
+              <Age />
+            </View>
+            <Address />
+            <Introduce />
+          </View>
+          <View style={{ ...styles.buttonArea }}>
+            <>
+              {viewMode && (
+                <>
+                  <Button small buttonType={ButtonType.TYPE1} onPress={navigation.goBack} disabled={disabled}>
+                    뒤로가기
+                  </Button>
+                  <Button small buttonType={ButtonType.TYPE2} onPress={handleOpen} disabled={disabled}>
+                    신고하기
+                  </Button>
+                </>
+              )}
+              {registerMode && (
+                <Button buttonType={ButtonType.TYPE1} onPress={handleSubmit} disabled={disabled}>
+                  입장하기
+                </Button>
+              )}
+              {editMode && (
+                <>
+                  <Button small buttonType={ButtonType.TYPE2} onPress={navigation.goBack} disabled={disabled}>
+                    뒤로가기
+                  </Button>
+                  <Button small buttonType={ButtonType.TYPE1} onPress={handleSubmit} disabled={disabled}>
+                    수정하기
+                  </Button>
+                </>
+              )}
+            </>
+          </View>
         </View>
-        <View style={{ ...styles.buttonArea }}>
-          <>
-            {viewMode && (
-              <>
-                <Button small buttonType={ButtonType.TYPE1} onPress={navigation.goBack} disabled={disabled}>
-                  뒤로가기
-                </Button>
-                <Button small buttonType={ButtonType.TYPE2} onPress={navigation.goBack} disabled={disabled}>
-                  신고하기
-                </Button>
-              </>
-            )}
-            {registerMode && (
-              <Button buttonType={ButtonType.TYPE1} onPress={handleSubmit} disabled={disabled}>
-                입장하기
-              </Button>
-            )}
-            {editMode && (
-              <>
-                <Button small buttonType={ButtonType.TYPE2} onPress={navigation.goBack} disabled={disabled}>
-                  뒤로가기
-                </Button>
-                <Button small buttonType={ButtonType.TYPE1} onPress={handleSubmit} disabled={disabled}>
-                  수정하기
-                </Button>
-              </>
-            )}
-          </>
-        </View>
-      </View>
-    </FormProvider>
+      </FormProvider>
+      <ReportModal isOpen={isOpen} handleClose={handleClose} />
+    </>
   );
 };
 
@@ -200,7 +207,7 @@ const styles = StyleSheet.create({
   },
 
   formArea: {
-    flex: 0.6,
+    flex: 0.65,
 
     justifyContent: "space-around",
     alignItems: "center",

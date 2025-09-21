@@ -21,7 +21,7 @@ const Sex = () => {
     name: REGISTER_FORM_PATH.GENDER,
   });
 
-  return <Select editable={!disabled} value={value} onChangeText={onChange} selectType={SelectType.TYPE2} label="성별" data={OPTION_LIST} onChange={({ value }) => onChange(value)} placeholder="성별" />;
+  return <Select editable={!disabled} value={value} selectType={SelectType.TYPE2} label="성별" data={OPTION_LIST} onChange={({ value }) => onChange(value)} placeholder="성별" />;
 };
 
 export default Sex;
