@@ -1,11 +1,10 @@
-import { isLogined, me } from "@react-native-kakao/user";
+import { isLogined, login, me } from "@react-native-kakao/user";
 import { useNavigation } from "@react-navigation/native";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { RootStackNavigationProp } from "../App";
-import useAuth, { KAKAO_TOKEN_KEY } from "../hooks/auth/useAuth";
 import { useEffect } from "react";
-import { removeItem } from "../utils/storage/storage";
 import { getUsersCheck } from "../services/users/users";
+import useUserInfo from "../hooks/auth/useUserInfo";
 
 const happyPuppyImg = require("@/app/assets/happypuppy.png");
 const kakaoLoginImg = require("@/app/assets/kakao-login.png");
@@ -13,77 +12,54 @@ const kakaoLoginImg = require("@/app/assets/kakao-login.png");
 const LoginPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
 
-  const { token, handleLogin, isLoading } = useAuth();
+  const { setUserInfo } = useUserInfo();
 
   const handleKakaoLogin = async () => {
-    try {
-      const isLoggedIn = await isLogined();
+    const isLoggedIn = await isLogined();
 
-      if (!isLoggedIn) {
-        await handleLogin();
-      }
+    if (!isLoggedIn) {
+      await login();
+    }
 
-      const userInfo = await me();
+    const { id: appUserId } = await me();
 
-      const { id } = userInfo;
+    const response = await getUsersCheck({
+      appUserId,
+    });
 
-      const { isMember } = await getUsersCheck({
-        appUserId: id,
-      });
+    const { isMember } = response;
 
-      // * 회원가입이 되어있는 경우
-      if (isMember) {
-        navigation.navigate("Home");
-      }
-      // * 회원가입이 되어있지 않은 경우
-      else {
-        navigation.navigate("Register");
-      }
-    } catch (error) {
-      console.error("Kakao login failed:", error);
+    // * 회원가입이 되어있는 경우
+    if (isMember) {
+      navigation.navigate("Home");
+      setUserInfo(response);
+    }
+    // * 회원가입이 되어있지 않은 경우
+    else {
+      navigation.navigate("Register");
     }
   };
 
   useEffect(() => {
-    if (isLoading || !token) return;
+    (async () => {
+      const isLoggedIn = await isLogined();
 
-    const { accessToken, refreshToken, refreshTokenExpiresAt } = token;
+      if (!isLoggedIn) return;
 
-    const isRefreshTokenValid = refreshToken && new Date(refreshTokenExpiresAt * 1000).getTime() > new Date().getTime();
+      const { id: appUserId } = await me();
 
-    // * Access Token 이 존재하고 Refresh Token 이 만료되지 않은 경우
-    if (accessToken && isRefreshTokenValid) {
-      (async () => {
-        const isLoggedIn = await isLogined();
+      const response = await getUsersCheck({
+        appUserId,
+      });
 
-        if (!isLoggedIn) {
-          removeItem(KAKAO_TOKEN_KEY);
-          return;
-        }
+      const { isMember } = response;
 
-        const userInfo = await me();
-        const { id } = userInfo;
-
-        const { isMember } = await getUsersCheck({
-          appUserId: id,
-        });
-
-        // * 회원가입이 되어있는 경우
-        if (isMember) {
-          navigation.navigate("Home");
-        }
-        // * 회원가입이 되어있지 않은 경우
-        else {
-          navigation.navigate("Register");
-        }
-      })();
-
-      return;
-    } else {
-      // * Access Token 이 존재하지 않거나 Refresh Token 이 만료된 경우
-      removeItem(KAKAO_TOKEN_KEY);
-    }
-  }, [isLoading]);
+      if (isMember) {
+        navigation.navigate("Home");
+        setUserInfo(response);
+      }
+    })();
+  }, []);
 
   return (
     <View style={styles.container}>
