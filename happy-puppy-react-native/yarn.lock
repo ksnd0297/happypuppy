@@ -2454,6 +2454,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.89.0":
+  version: 5.89.0
+  resolution: "@tanstack/query-core@npm:5.89.0"
+  checksum: 10/52895f3b869563a1ab1a5449c721ca7edda492c4903ea2a95b38a72b8e05e3d515df519ff3a93ee7dee27bab6abd7ae498439334e9dcbf7126e1e6874bef4d26
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.89.0":
+  version: 5.89.0
+  resolution: "@tanstack/react-query@npm:5.89.0"
+  dependencies:
+    "@tanstack/query-core": "npm:5.89.0"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10/8c3f81ede098325e3cfa8803bf5647c159fc7dde23f81b347a36e12366164f58a349be3e7d6f68ece6208ddeb09947f3e26091161579ffdcc2e62baae8fa25d0
+  languageName: node
+  linkType: hard
+
 "@types/babel__core@npm:^7.1.14":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
@@ -5010,6 +5028,7 @@ __metadata:
     "@react-native-kakao/user": "npm:^2.4.0"
     "@react-navigation/native": "npm:^7.1.13"
     "@react-navigation/native-stack": "npm:^7.3.18"
+    "@tanstack/react-query": "npm:^5.89.0"
     "@types/react": "npm:~19.0.10"
     "@types/react-dom": "npm:^19"
     "@types/react-native-web": "npm:^0"

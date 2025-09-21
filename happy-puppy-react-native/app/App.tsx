@@ -17,6 +17,9 @@ import { LocaleConfig } from "react-native-calendars";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import AppointmentPage from "./screens/Appointment";
 import Toast from "react-native-toast-message";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 LocaleConfig.locales["ko"] = {
   monthNames: ["01월", "02월", "03월", "04월", "05월", "06월", "07월", "08월", "09월", "10월", "11월", "12월"],
@@ -80,30 +83,32 @@ export default function App() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: "#FCF5EE",
-          paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-          paddingBottom: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-        }}
-      >
-        <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-          <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Login" component={LoginPage} />
-              <Stack.Screen name="ChatList" component={ChatListPage} />
-              <Stack.Screen name="Register" component={RegisterPage} />
-              <Stack.Screen name="Home" component={HomePage} />
-              <Stack.Screen name="Appointment" component={AppointmentPage} />
-              <Stack.Screen name="Chat" component={ChatPage} />
-              <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </View>
-      </SafeAreaView>
-      <Toast />
-    </GestureHandlerRootView>
+    <QueryClientProvider client={queryClient}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <SafeAreaView
+          style={{
+            flex: 1,
+            backgroundColor: "#FCF5EE",
+            paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+            paddingBottom: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+          }}
+        >
+          <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+            <NavigationContainer>
+              <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Login" component={LoginPage} />
+                <Stack.Screen name="ChatList" component={ChatListPage} />
+                <Stack.Screen name="Register" component={RegisterPage} />
+                <Stack.Screen name="Home" component={HomePage} />
+                <Stack.Screen name="Appointment" component={AppointmentPage} />
+                <Stack.Screen name="Chat" component={ChatPage} />
+                <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </View>
+        </SafeAreaView>
+        <Toast />
+      </GestureHandlerRootView>
+    </QueryClientProvider>
   );
 }
