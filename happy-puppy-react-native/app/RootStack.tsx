@@ -30,13 +30,13 @@ const RootStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
         <Stack.Screen name="Home" component={HomePage} />
         <Stack.Screen name="Appointment" component={AppointmentPage} />
         <Stack.Screen name="ChatList" component={ChatListPage} />
         <Stack.Screen name="Login" component={LoginPage} />
         <Stack.Screen name="Register" component={RegisterPage} />
         <Stack.Screen name="Chat" component={ChatPage} />
-        <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
