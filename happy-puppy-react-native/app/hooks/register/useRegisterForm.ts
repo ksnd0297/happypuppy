@@ -106,6 +106,7 @@ const useRegisterForm = () => {
 
       navigation.goBack();
     } else if (mode === REGISTER_MODE.REGISTER) {
+      console.log("CALL");
       const userInfo = await me();
 
       const { id: appUserId } = userInfo;

@@ -4,7 +4,7 @@ import Nickname from "../components/register/Nickname";
 import Age from "../components/register/Age";
 import Address from "../components/register/Address";
 import Introduce from "../components/register/Introduce";
-import { FormProvider } from "react-hook-form";
+import { FormProvider, useWatch } from "react-hook-form";
 
 import Phone from "../components/register/Phone";
 import Sex from "../components/register/Sex";
@@ -15,13 +15,34 @@ import ReportModal from "../components/register/ReportModal";
 import RegisterButton from "../components/register/RegisterButton";
 import { REGISTER_MODE } from "../enums/register";
 import useRegisterForm from "../hooks/register/useRegisterForm";
+import TermModal from "../components/TermModal";
 
 const RegisterPage = () => {
-  const { isOpen, handleOpen, handleClose } = useDisclosure();
+  const reportModalDisclosure = useDisclosure();
+  const termModalDisclosure = useDisclosure();
 
   const { form, mode, handleSubmit } = useRegisterForm();
 
-  const disabled = form.formState.isSubmitting;
+  const { nickname } = useWatch({
+    control: form.control,
+  });
+
+  const isAllFieldsFilled = !!nickname;
+  const disabled = !isAllFieldsFilled || form.formState.isSubmitting;
+
+  const handleClick = () => {
+    if (mode === REGISTER_MODE.VIEW) {
+      return reportModalDisclosure.handleOpen();
+    }
+
+    if (mode === REGISTER_MODE.REGISTER) {
+      return termModalDisclosure.handleOpen();
+    }
+
+    if (mode === REGISTER_MODE.EDIT) {
+      return handleSubmit();
+    }
+  };
 
   return (
     <>
@@ -41,11 +62,12 @@ const RegisterPage = () => {
             <Introduce />
           </View>
           <View style={{ ...styles.buttonArea }}>
-            <RegisterButton disabled={disabled} mode={mode} handleClick={mode === REGISTER_MODE.VIEW ? handleOpen : handleSubmit} />
+            <RegisterButton disabled={disabled} mode={mode} handleClick={handleClick} />
           </View>
         </View>
       </FormProvider>
-      <ReportModal isOpen={isOpen} handleClose={handleClose} />
+      <ReportModal isOpen={reportModalDisclosure.isOpen} handleClose={reportModalDisclosure.handleClose} />
+      <TermModal isOpen={termModalDisclosure.isOpen} handleClose={termModalDisclosure.handleClose} handleSubmit={handleSubmit} isSubmitting={form.formState.isSubmitting} />
     </>
   );
 };

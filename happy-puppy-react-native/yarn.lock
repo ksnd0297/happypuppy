@@ -1628,6 +1628,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@freakycoder/react-native-bounceable@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@freakycoder/react-native-bounceable@npm:1.0.3"
+  checksum: 10/ec2051965b01ccc3d5027b2d1f33910f160812974fe0cbbe777c6139fb97a556ca7a19da871c0ac108554775981428f6fea7ada0b74e4811e0b4704586d4f1d2
+  languageName: node
+  linkType: hard
+
 "@gorhom/bottom-sheet@npm:^5":
   version: 5.2.4
   resolution: "@gorhom/bottom-sheet@npm:5.2.4"
@@ -5049,6 +5056,7 @@ __metadata:
     react-dom: "npm:19.0.0"
     react-hook-form: "npm:^7.58.1"
     react-native: "npm:0.79.6"
+    react-native-bouncy-checkbox: "npm:^4.1.2"
     react-native-calendars: "npm:^1.1313.0"
     react-native-date-picker: "npm:5.0.12"
     react-native-dotenv: "npm:^3.4.11"
@@ -7482,6 +7490,15 @@ __metadata:
   version: 19.1.0
   resolution: "react-is@npm:19.1.0"
   checksum: 10/4aceca94492032a19411138bf68c6ca7dce4abee7ae6c7f23db9291d2dff14d6a643717b176ef9a151e8cdf6a2b71fdbc59fd998328e086a6f752512304a252b
+  languageName: node
+  linkType: hard
+
+"react-native-bouncy-checkbox@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "react-native-bouncy-checkbox@npm:4.1.2"
+  dependencies:
+    "@freakycoder/react-native-bounceable": "npm:^1.0.3"
+  checksum: 10/b1de0fb3603256f0809cf131a8ca64d1708b399bedabbab9a145965da3557ce104d3551cfa56d7685fe0f02f1ae4195dbfe087e75ef775de8e05ddd1c32ab14c
   languageName: node
   linkType: hard
 

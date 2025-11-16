@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from "react-native";
+import { Linking, Pressable, StyleSheet, View } from "react-native";
 import HomeImage from "../components/home/HomeImage";
 import Text from "../components/shared/Text";
 import Divider from "../components/shared/Divider";
@@ -9,6 +9,7 @@ import useUserInfo from "../hooks/auth/useUserInfo";
 import useGetUser from "../hooks/useGetUser";
 import useMyChat from "../hooks/chat/useMyChat";
 import Container from "../components/Container";
+import { NOTICE_URL } from "../constants/shared/url";
 
 const HomePage = () => {
   const { navigate } = useNavigation<NavigationProp<RootStackParamList, "Home">>();
@@ -39,9 +40,13 @@ const HomePage = () => {
     navigate("Register", { id: userId });
   };
 
-  const handleNavigationNotice = () => {};
+  const handleNavigationNotice = () => {
+    Linking.openURL(NOTICE_URL);
+  };
 
-  const handleNavigationSetting = () => {};
+  const handleNavigationSetting = () => {
+    navigate("UsageInfo");
+  };
 
   if (isLoading) {
     return <></>;

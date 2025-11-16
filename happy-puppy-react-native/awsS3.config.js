@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+ 
 module.exports = {
   region: process.env.S3_REGION,
   bucket: process.env.S3_BUCKET,

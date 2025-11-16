@@ -21,8 +21,13 @@ type Props = {
 
   gray?: boolean;
   white?: boolean;
+  blue?: boolean;
 
+  top?: boolean;
+  center?: boolean;
   bottom?: boolean;
+
+  numberOfLines?: number;
 };
 
 const Text = (props: Props) => {
@@ -38,7 +43,11 @@ const Text = (props: Props) => {
     }
   });
 
-  return <RNText style={style}>{children}</RNText>;
+  return (
+    <RNText style={style} numberOfLines={props.numberOfLines}>
+      {children}
+    </RNText>
+  );
 };
 
 export default Text;
@@ -84,6 +93,16 @@ const styles = StyleSheet.create({
 
   lh24: {
     lineHeight: 24,
+  },
+
+  top: {
+    textAlignVertical: "top",
+    alignSelf: "flex-start",
+  },
+
+  center: {
+    textAlignVertical: "center",
+    alignSelf: "center",
   },
 
   bottom: {
