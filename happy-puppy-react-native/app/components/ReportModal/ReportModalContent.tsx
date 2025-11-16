@@ -4,23 +4,31 @@ import Select, { SelectType } from "../shared/Select";
 import Textarea, { TextAreaType } from "../shared/Textarea";
 import { useController, useForm } from "react-hook-form";
 import { REPORT_FORM_DEFAULT_VALUES, REPORT_FORM_PATH } from "@/app/constants/register/form";
+import useReport from "@/app/hooks/reoprt/useReport";
+import { ReportType } from "@/app/services/report/types";
+import useUserInfo from "@/app/hooks/auth/useUserInfo";
+import Toast from "react-native-toast-message";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { RootStackParamList } from "@/app/RootStack";
+import { isReportReason } from "@/app/utils/report/check";
 
+// TODO : 혐오 발언, 자리비움, 욕설, 부정적인 태도로 분류 필요
 const OPTION_LIST = [
   {
     label: "부정적인 태도",
-    value: "a",
+    value: ReportType.HARASSMENT,
   },
   {
     label: "욕설",
-    value: "b",
+    value: ReportType.HARASSMENT,
   },
   {
     label: "자리비움",
-    value: "c",
+    value: ReportType.HARASSMENT,
   },
   {
     label: "혐오 발언",
-    value: "d",
+    value: ReportType.HARASSMENT,
   },
 ];
 
@@ -31,22 +39,51 @@ type Props = {
 const ReportModalContent = (props: Props) => {
   const { handleClose } = props;
 
+  const route = useRoute<RouteProp<RootStackParamList, "Register">>();
+  const { params } = route;
+  const { id: accuserId } = params || {};
+
   const form = useForm({
     defaultValues: REPORT_FORM_DEFAULT_VALUES,
   });
 
-  const handleSubmit = form.handleSubmit(
-    (value) => {
+  const { userInfo } = useUserInfo();
+
+  const { mutateAsync } = useReport();
+
+  const handleSubmit = form.handleSubmit(async (value) => {
+    const { userId: reporterId } = userInfo || {};
+
+    if (!reporterId) throw new Error("신고자의 유저ID를 찾을 수 없습니다.");
+
+    if (!accuserId) throw new Error("피신고자의 유저ID를 찾을 수 없습니다.");
+
+    const reportType = isReportReason(value.reportReason) ? value.reportReason : "";
+
+    if (!reportType) throw new Error("유효하지 않은 신고 사유입니다.");
+    console.log("CALL");
+
+    try {
+      await mutateAsync({
+        reporter: reporterId,
+        accuser: accuserId,
+        reasonType: reportType,
+        reason: value.reportText,
+      });
+
       handleClose();
 
-      // TODO : 신고 API 부착
-      return value;
-    },
-    (error) => {
-      console.log("error : ", error);
-      // TODO : 신고 토스트 노출
+      Toast.show({
+        type: "success",
+        text1: "신고가 접수되었습니다.",
+      });
+    } catch {
+      Toast.show({
+        type: "error",
+        text1: "신고 접수에 실패했습니다. 다시 시도해 주세요.",
+      });
     }
-  );
+  });
 
   const {
     field: { value: reportReasonValue, onChange: handleChangeReportReason },
@@ -69,7 +106,17 @@ const ReportModalContent = (props: Props) => {
     <View style={styles.container}>
       <View style={styles.bodyContainer}>
         <View style={styles.reportContainer}>
-          <Select essential onChange={handleChangeReportReason} value={reportReasonValue} selectType={SelectType.TYPE1} label="신고사유" placeholder="신고 사유를 선택해 주세요" data={OPTION_LIST} />
+          <Select
+            essential
+            onChange={(v) => {
+              handleChangeReportReason(v.value);
+            }}
+            value={reportReasonValue}
+            selectType={SelectType.TYPE1}
+            label="신고사유"
+            placeholder="신고 사유를 선택해 주세요"
+            data={OPTION_LIST}
+          />
           <Textarea value={reportTextValue} onChangeText={handleChangeReportText} inputType={TextAreaType.TYPE2} placeholder="신고 이유를 작성해 주세요" />
         </View>
       </View>
