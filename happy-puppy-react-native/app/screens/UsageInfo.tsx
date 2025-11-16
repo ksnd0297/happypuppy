@@ -4,6 +4,9 @@ import Text from "../components/shared/Text";
 import { logout, unlink } from "@react-native-kakao/user";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../RootStack";
+import useWithdraw from "../hooks/auth/useWithdraw";
+import useUserInfo from "../hooks/auth/useUserInfo";
+import Toast from "react-native-toast-message";
 
 const Divider = ({ width, color }: { width: DimensionValue; color: string }) => {
   return <View style={{ height: 1, width: width, backgroundColor: color }} />;
@@ -11,6 +14,10 @@ const Divider = ({ width, color }: { width: DimensionValue; color: string }) => 
 
 const UsageInfoPage = () => {
   const { reset } = useNavigation<NavigationProp<RootStackParamList, "UsageInfo">>();
+
+  const { mutateAsync } = useWithdraw();
+  const { userInfo } = useUserInfo();
+  const { userId } = userInfo || {};
 
   const handleClickRequire = () => {
     Linking.openURL("https://forms.gle/DSwEbZuNh8h55SUS6");
@@ -35,12 +42,26 @@ const UsageInfoPage = () => {
         onPress: async () => {
           await unlink();
 
-          // TODO : 회원탈퇴 로직 필요
+          if (!userId) throw new Error("회원탈퇴 할 유저ID를 찾을 수 없습니다.");
 
-          reset({
-            index: 0,
-            routes: [{ name: "Login" }],
-          });
+          try {
+            await mutateAsync(userId);
+
+            Toast.show({
+              type: "success",
+              text1: "회원탈퇴가 완료되었습니다.",
+            });
+
+            reset({
+              index: 0,
+              routes: [{ name: "Login" }],
+            });
+          } catch {
+            Toast.show({
+              type: "error",
+              text1: "회원탈퇴가 실패했습니다. 다시 시도해주세요.",
+            });
+          }
         },
       },
     ]);
@@ -54,32 +75,32 @@ const UsageInfoPage = () => {
         </View>
         <Divider width="100%" color="black" />
         <View style={styles.listContainer}>
-          <View style={styles.list}>
+          <Pressable style={styles.list} onPress={handleClickRequire}>
             <View style={styles.text}>
               <Text medium>문의하기</Text>
             </View>
-            <Pressable style={styles.button} onPress={handleClickRequire}>
+            <View style={styles.button}>
               <Text large>{">"}</Text>
-            </Pressable>
-          </View>
+            </View>
+          </Pressable>
           <Divider width="90%" color="#cccccc" />
-          <View style={styles.list}>
+          <Pressable style={styles.list} onPress={handleClickLogout}>
             <View style={styles.text}>
               <Text medium>로그아웃</Text>
             </View>
-            <Pressable style={styles.button} onPress={handleClickLogout}>
+            <View style={styles.button}>
               <Text large>{">"}</Text>
-            </Pressable>
-          </View>
+            </View>
+          </Pressable>
           <Divider width="90%" color="#cccccc" />
-          <View style={styles.list}>
+          <Pressable style={styles.list} onPress={handleClickUnlink}>
             <View style={styles.text}>
               <Text medium>회원탈퇴</Text>
             </View>
-            <Pressable style={styles.button} onPress={handleClickUnlink}>
+            <View style={styles.button}>
               <Text large>{">"}</Text>
-            </Pressable>
-          </View>
+            </View>
+          </Pressable>
           <Divider width="90%" color="#cccccc" />
         </View>
       </View>

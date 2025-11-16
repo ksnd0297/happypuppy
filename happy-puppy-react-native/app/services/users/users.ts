@@ -19,3 +19,9 @@ export function getUsersCheck(params: GetUsersCheckParams): Promise<UserCheckRes
 export function putUsers(params: UpdateUserRequest): Promise<UserResponse> {
   return api.put(`${API_HOST}/users/${params.id}`, params.params);
 }
+
+export function withdrawUsers(userId: number): Promise<void> {
+  return api.post(`${API_HOST}/users:withdraw`, {
+    userId,
+  });
+}
