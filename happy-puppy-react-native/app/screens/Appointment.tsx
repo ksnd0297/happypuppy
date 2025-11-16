@@ -14,12 +14,15 @@ import awsS3Config from "@/awsS3.config";
 import { S3 } from "../utils/aws/s3";
 import { postChat } from "../services/chat/chat";
 import { Buffer } from "buffer";
-import { useNavigation } from "@react-navigation/native";
-import { RootStackNavigationProp } from "../RootStack";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { RootStackNavigationProp, RootStackParamList } from "../RootStack";
 import CloseButton from "../components/shared/CloseButton";
 
 const AppointmentPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
+
+  const { params } = useRoute<RouteProp<RootStackParamList, "Appointment">>();
+  const { id: placeId } = params;
 
   const form = useForm({
     defaultValues: APPOINTMENT_FORM_DEFAULT_VALUES,
@@ -58,12 +61,12 @@ const AppointmentPage = () => {
         userId: id,
         meetDate: data.date,
         meetTime: data.time,
-        placeId: 1,
+        placeId,
         introduce: data.introduce,
         tags: data.tag,
       });
 
-      navigation.navigate("Chat", { id: chatId });
+      navigation.replace("Chat", { id: chatId });
     } catch (error) {
       console.error("error : ", error);
     }

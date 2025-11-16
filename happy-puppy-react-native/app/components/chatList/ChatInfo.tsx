@@ -32,7 +32,11 @@ const ChatInfo = (props: Props) => {
               {title}
             </Text>
           </View>
-          {tags && <Text gray>{tags}</Text>}
+          {tags && (
+            <Text gray numberOfLines={1}>
+              {tags}
+            </Text>
+          )}
           <Text gray small>
             {format(promiseDateTime, "yy. MM. dd. (E) HH:MM", { locale: ko })}
           </Text>

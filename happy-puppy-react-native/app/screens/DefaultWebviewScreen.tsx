@@ -1,22 +1,25 @@
-/* eslint-disable no-case-declarations */
-/* eslint-disable no-fallthrough */
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, Alert, SafeAreaView, TouchableWithoutFeedback, TextInput, Keyboard } from "react-native";
+import { StyleSheet, SafeAreaView, TouchableWithoutFeedback, TextInput, Keyboard } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
-import * as Location from "expo-location";
+
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import SearchInput from "../components/map/SearchInput";
 import Modal from "../components/modal/Modal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import useGetPlace from "../hooks/place/useGetPlace";
+import { sendLocationToWebView } from "../utils/webview/location";
+import { getLocation } from "../utils/device/location";
+import { PlaceResponse } from "../services/place/types";
+import Container from "../components/Container";
+import useLocation from "../hooks/map/useLocation";
 
-interface Coordinate {
+export interface Coordinate {
   latitude: number;
   longitude: number;
 }
+
 export interface PlaceInfo extends Coordinate {
   id: number;
-  title: string;
-  imageUrl: string;
+  name: string;
 }
 
 const DefaultWebviewScreen = () => {
@@ -24,126 +27,106 @@ const DefaultWebviewScreen = () => {
   const inputRef = useRef<TextInput>(null);
   const modalRef = useRef<BottomSheetModal>(null);
 
-  const [selectedPlace, setSelectedPlace] = useState<PlaceInfo>();
-  const [placeList, setPlaceList] = useState<PlaceInfo[]>([]);
-  const [query, setQuery] = useState("");
+  const [selectedPlace, setSelectedPlace] = useState<PlaceResponse>();
   const insets = useSafeAreaInsets(); // 안전 영역 정보 가져오기
 
-  // 위치 조회
-  const getLocation = async () => {
-    try {
-      // 위치 권한 요청
-      const { status } = await Location.requestForegroundPermissionsAsync();
+  const { location, handleChangeLocation } = useLocation();
 
-      if (status === "granted") {
-        // 빠른 위치 조회 (getLastKnownPositionAsync)
-        const fastLocation = await Location.getLastKnownPositionAsync();
+  const { data: placeList } = useGetPlace({
+    location,
+  });
 
-        // 빠른 위치가 있으면 먼저 반환
-        if (fastLocation) {
-          sendLocationToWebView(fastLocation); // 빠른 위치 정보 전달
-        }
+  useEffect(() => {
+    if (!placeList) return;
 
-        // 정확한 위치 조회 (getCurrentPositionAsync)
-        const accurateLocation = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.High, // 높은 정확도로 위치 조회
-        });
-        sendLocationToWebView(accurateLocation); // 정확한 위치 정보 전달
-      } else {
-        Alert.alert("위치 권한이 필요합니다", "위치 정보를 사용하려면 권한을 허용해야 합니다.");
-      }
-    } catch (error) {
-      console.error("위치 조회 중 오류 발생:", error);
-      Alert.alert("위치 조회 실패", "위치를 가져오는 데 실패했습니다.");
-    }
-  };
+    if (!webViewRef.current) return;
 
-  // WebView에 위치 정보 전달
-  const sendLocationToWebView = (location: Location.LocationObject) => {
-    if (webViewRef.current) {
-      // 위치 정보를 웹뷰로 전달
-      console.log("웹뷰에 전달", JSON.stringify(location.coords), webViewRef.current.postMessage);
-      webViewRef.current.injectJavaScript(`
-        if (window.receiveLocation) {
-          window.receiveLocation(${JSON.stringify(location.coords)});
-        }
-      `);
-    }
-  };
+    webViewRef.current.postMessage(
+      "" +
+        JSON.stringify({
+          type: "PLACE",
+          data: placeList,
+        })
+    );
+  }, [placeList]);
 
-  const getPlace = () => {
-    // TODO: 위치 조회 필요, 현재 더미 데이터
-    const placeList: PlaceInfo[] = [
-      {
-        id: 1,
-        latitude: 37.5665,
-        longitude: 126.978,
-        title: "서울 시청",
-        imageUrl: "https://picsum.photos/id/237/200/200",
-      },
-      {
-        id: 2,
-        latitude: 37.5665,
-        longitude: 126.973,
-        title: "서울 시청2",
-        imageUrl: "https://picsum.photos/id/237/200/200",
-      },
-      {
-        id: 3,
-        latitude: 37.566,
-        longitude: 126.973,
-        title: "서울 시청2",
-        imageUrl: "https://picsum.photos/id/237/200/200",
-      },
-    ];
-
-    setPlaceList(placeList);
-
-    if (webViewRef.current) {
-      // 위치 정보를 웹뷰로 전달
-
-      console.log("웹뷰에 전달", JSON.stringify(placeList), webViewRef.current.postMessage);
-      webViewRef.current.injectJavaScript(`
-        if (window.receivePlaceList) {
-          window.receivePlaceList(${JSON.stringify(placeList)});
-        }
-      `);
-    }
-  };
-
-  // 웹뷰에서 메시지를 받았을 때 처리하는 함수
-  const onMessage = (event: WebViewMessageEvent) => {
+  const onMessage = async (event: WebViewMessageEvent) => {
     const message = event.nativeEvent.data;
-    console.log("웹뷰에서 받은 메시지:", message);
 
     const { type, ...messageProps } = JSON.parse(message);
 
     switch (type) {
-      case "locationRequest":
-        getLocation();
+      case "LOCATION": {
+        console.log("LOCATION");
+
+        const { latitude, longitude } = messageProps.data;
+
+        console.log("latitude : ", latitude);
+        console.log("longitude : ", longitude);
+
+        if (latitude && longitude) {
+          handleChangeLocation({
+            latitude,
+            longitude,
+          });
+        }
         return;
-      case "init":
-        // TODO: 위치 조회 + 장소 조회 후 전달 필요
-        getPlace();
-      case "selectPlace":
-        const { place } = messageProps;
+      }
+      case "MY_AROUND": {
+        console.log("MY_AROUND");
+        const location = await getLocation();
+
+        if (location) {
+          if (webViewRef.current) {
+            sendLocationToWebView({
+              webViewRef: webViewRef.current,
+              ...location,
+            });
+
+            handleChangeLocation(location);
+          }
+        }
+        return;
+      }
+      case "INIT": {
+        console.log("INIT");
+        const location = await getLocation();
+
+        if (location) {
+          if (webViewRef.current) {
+            sendLocationToWebView({
+              webViewRef: webViewRef.current,
+              ...location,
+            });
+
+            handleChangeLocation(location);
+          }
+        }
+        return;
+      }
+      case "SELECTED_PLACE": {
+        const { data } = messageProps;
         //TODO: 테스트용 임시 모달 오픈 로직
-        console.log("selectPlace", place, place?.id);
-        if (place?.id) {
-          setSelectedPlace(placeList.find(({ id }) => id === place.id));
+        if (data.id && !!placeList) {
+          setSelectedPlace(placeList.find(({ id }) => id === data.id));
           modalRef.current?.present();
         }
         return;
+      }
     }
   };
 
-  const handleSearch = () => {
-    inputRef.current?.blur();
-    console.log("search query", query);
-  };
+  const handleCloseModal = () => {
+    if (!webViewRef.current) return;
 
-  const handleChangeQuery = (text: string) => {
-    setQuery(text);
+    webViewRef.current.postMessage(
+      "" +
+        JSON.stringify({
+          type: "UN_PIN",
+        })
+    );
+
+    setSelectedPlace(undefined);
   };
 
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
@@ -158,38 +141,33 @@ const DefaultWebviewScreen = () => {
   }, []);
 
   return (
-    <TouchableWithoutFeedback
-      disabled={!isKeyboardVisible}
-      onPress={() => {
-        inputRef.current?.blur();
-        Keyboard.dismiss();
-      }}
-    >
-      <SafeAreaView style={styles.container}>
-        <WebView
-          source={{ uri: "https://happy-puppy-react.vercel.app" }}
-          style={[styles.webview, { marginTop: insets.top }]}
-          ref={webViewRef}
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          allowFileAccess={true}
-          originWhitelist={["*"]}
-          onMessage={onMessage}
-        />
-        <SearchInput ref={inputRef} query={query} onChangeQuery={handleChangeQuery} onSubmit={handleSearch} />
-        <Modal ref={modalRef} selectedPlace={selectedPlace} />
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
+    <>
+      <Container>
+        <TouchableWithoutFeedback
+          disabled={!isKeyboardVisible}
+          onPress={() => {
+            inputRef.current?.blur();
+            Keyboard.dismiss();
+          }}
+        >
+          <SafeAreaView style={styles.container}>
+            <WebView source={{ uri: "http://10.0.2.2:3000" }} style={[styles.webview, { marginTop: insets.top }]} ref={webViewRef} onMessage={onMessage} webviewDebuggingEnabled={true} />
+          </SafeAreaView>
+        </TouchableWithoutFeedback>
+      </Container>
+      <Modal ref={modalRef} selectedPlace={selectedPlace} handleCloseModal={handleCloseModal} />
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#FCF5EE",
   },
   webview: {
     flex: 1, // 웹뷰가 화면을 꽉 채우도록 설정
+    backgroundColor: "#FCF5EE",
   },
 });
 

@@ -15,28 +15,32 @@ const LoginPage = () => {
   const { setUserInfo } = useUserInfo();
 
   const handleKakaoLogin = async () => {
-    const isLoggedIn = await isLogined();
+    try {
+      const isLoggedIn = await isLogined();
 
-    if (!isLoggedIn) {
+      if (!isLoggedIn) {
+        await login();
+      }
+
+      const { id: appUserId } = await me();
+
+      const response = await getUsersCheck({
+        appUserId,
+      });
+
+      const { isMember } = response;
+
+      // * 회원가입이 되어있는 경우
+      if (isMember) {
+        navigation.navigate("Home");
+        setUserInfo(response);
+      }
+      // * 회원가입이 되어있지 않은 경우
+      else {
+        navigation.navigate("Register");
+      }
+    } catch {
       await login();
-    }
-
-    const { id: appUserId } = await me();
-
-    const response = await getUsersCheck({
-      appUserId,
-    });
-
-    const { isMember } = response;
-
-    // * 회원가입이 되어있는 경우
-    if (isMember) {
-      navigation.navigate("Home");
-      setUserInfo(response);
-    }
-    // * 회원가입이 되어있지 않은 경우
-    else {
-      navigation.navigate("Register");
     }
   };
 
