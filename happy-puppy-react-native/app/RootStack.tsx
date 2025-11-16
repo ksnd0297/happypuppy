@@ -36,8 +36,8 @@ const RootStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Inspection" component={InspectionPage} />
         <Stack.Screen name="Login" component={LoginPage} />
+
         <Stack.Screen name="Register" component={RegisterPage} />
         <Stack.Screen name="Home" component={HomePage} />
         <Stack.Screen name="UsageInfo" component={UsageInfoPage} />
@@ -52,6 +52,8 @@ const RootStack = () => {
         />
         <Stack.Screen name="ChatList" component={ChatListPage} />
         <Stack.Screen name="Chat" component={ChatPage} />
+
+        <Stack.Screen name="Inspection" component={InspectionPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
