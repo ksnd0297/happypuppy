@@ -13,6 +13,7 @@ import { me } from "@react-native-kakao/user";
 import awsS3Config from "@/awsS3.config";
 import { S3 } from "@/app/utils/aws/s3";
 import { RootStackParamList } from "@/app/RootStack";
+import Toast from "react-native-toast-message";
 
 const getMode = ({ id, isMe }: { id?: number; isMe: boolean }) => {
   if (id === undefined) return REGISTER_MODE.REGISTER;
@@ -104,9 +105,11 @@ const useRegisterForm = () => {
         });
       }
 
+      Toast.show({
+        text1: "내 정보가 수정됐어요",
+      });
       navigation.goBack();
     } else if (mode === REGISTER_MODE.REGISTER) {
-      console.log("CALL");
       const userInfo = await me();
 
       const { id: appUserId } = userInfo;

@@ -3,7 +3,7 @@ import Input from "../shared/Input";
 import { REGISTER_FORM_PATH } from "@/app/constants/register/form";
 
 const MIN_LENGTH = 2;
-const MAX_LENGTH = 10;
+const MAX_LENGTH = 15;
 
 const Nickname = () => {
   const {
