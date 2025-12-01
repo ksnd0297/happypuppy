@@ -32,7 +32,7 @@ const Footer = () => {
         <Pressable onPress={handleNavigationChatList}>
           <Icon source={require("@/app/assets/icon/bottom-message.png")}>
             <Text small bold>
-              채팅
+              약속
             </Text>
           </Icon>
         </Pressable>
@@ -57,10 +57,7 @@ const styles = StyleSheet.create({
   footerWrapper: {
     flex: 1,
 
-    backgroundColor: "#FBE8E7",
-
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
+    backgroundColor: "#FFEAEE",
 
     flexDirection: "row",
     justifyContent: "space-around",

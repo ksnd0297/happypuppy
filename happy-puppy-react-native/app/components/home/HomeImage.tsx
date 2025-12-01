@@ -24,8 +24,8 @@ export default HomeImage;
 
 const styles = StyleSheet.create({
   imageContainer: {
-    width: 200,
-    height: 200,
+    width: 160,
+    height: 160,
     borderWidth: 0.5,
     borderColor: "#D9D9D9",
     borderRadius: 100,

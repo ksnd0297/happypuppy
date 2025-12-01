@@ -101,7 +101,6 @@ const UsageInfoPage = () => {
               <Text large>{">"}</Text>
             </View>
           </Pressable>
-          <Divider width="90%" color="#cccccc" />
         </View>
       </View>
     </Container>

@@ -24,6 +24,8 @@ const LoginPage = () => {
 
       const { id: appUserId } = await me();
 
+      console.log("appUserId : ", appUserId);
+
       const response = await getUsersCheck({
         appUserId,
       });
@@ -51,6 +53,8 @@ const LoginPage = () => {
       if (!isLoggedIn) return;
 
       const { id: appUserId } = await me();
+
+      console.log("appUserId : ", appUserId);
 
       const response = await getUsersCheck({
         appUserId,

@@ -9,11 +9,12 @@ type Props = {
   roomImage?: string;
   title: string;
   tags?: string;
+  introduce?: string;
   handleEnterChat: (id: number) => void;
 };
 
 const ChatInfo = (props: Props) => {
-  const { roomId, promiseDateTime, roomImage, title, tags, handleEnterChat } = props;
+  const { roomId, promiseDateTime, roomImage, title, tags, handleEnterChat, introduce } = props;
 
   return (
     <Pressable onPress={() => handleEnterChat(roomId)}>
@@ -28,18 +29,19 @@ const ChatInfo = (props: Props) => {
         </View>
         <View style={styles.chatInfoWrapper}>
           <View style={styles.chatInfoTitleWrapper}>
-            <Text large bold>
+            <Text bold medium>
               {title}
             </Text>
           </View>
+          <Text small>{format(promiseDateTime, "yy. MM. dd. (E) HH:MM", { locale: ko })}</Text>
+          <Text small numberOfLines={1}>
+            {introduce}
+          </Text>
           {tags && (
-            <Text gray numberOfLines={1}>
+            <Text small gray numberOfLines={1}>
               {tags}
             </Text>
           )}
-          <Text gray small>
-            {format(promiseDateTime, "yy. MM. dd. (E) HH:MM", { locale: ko })}
-          </Text>
         </View>
       </View>
     </Pressable>
@@ -52,23 +54,31 @@ const styles = StyleSheet.create({
   chatInfoContainer: {
     flexDirection: "row",
     height: 80,
+
+    alignItems: "center",
+
+    width: "100%",
   },
 
   chatInfoImageWrapper: {
     flex: 0.2,
     justifyContent: "center",
     alignItems: "center",
-  },
-  chatInfoImage: {
+
     width: 60,
     height: 60,
-    borderWidth: 1,
-    borderRadius: 25,
+  },
+  chatInfoImage: {
+    width: 55,
+    height: 55,
+    backgroundColor: "white",
+
+    borderRadius: 50,
   },
 
   chatInfoWrapper: {
     flex: 0.7,
-    gap: 2,
+    gap: 5,
     justifyContent: "center",
   },
   chatInfoTitleWrapper: {
