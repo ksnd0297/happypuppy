@@ -57,12 +57,7 @@ const DefaultWebviewScreen = () => {
 
     switch (type) {
       case "LOCATION": {
-        console.log("LOCATION");
-
         const { latitude, longitude } = messageProps.data;
-
-        console.log("latitude : ", latitude);
-        console.log("longitude : ", longitude);
 
         if (latitude && longitude) {
           handleChangeLocation({
@@ -73,7 +68,6 @@ const DefaultWebviewScreen = () => {
         return;
       }
       case "MY_AROUND": {
-        console.log("MY_AROUND");
         const location = await getLocation();
 
         if (location) {
@@ -89,7 +83,6 @@ const DefaultWebviewScreen = () => {
         return;
       }
       case "INIT": {
-        console.log("INIT");
         const location = await getLocation();
 
         if (location) {
@@ -106,7 +99,7 @@ const DefaultWebviewScreen = () => {
       }
       case "SELECTED_PLACE": {
         const { data } = messageProps;
-        //TODO: 테스트용 임시 모달 오픈 로직
+
         if (data.id && !!placeList) {
           setSelectedPlace(placeList.find(({ id }) => id === data.id));
           modalRef.current?.present();
@@ -151,7 +144,7 @@ const DefaultWebviewScreen = () => {
           }}
         >
           <SafeAreaView style={styles.container}>
-            <WebView source={{ uri: "http://10.0.2.2:3000" }} style={[styles.webview, { marginTop: insets.top }]} ref={webViewRef} onMessage={onMessage} webviewDebuggingEnabled={true} />
+            <WebView source={{ uri: "https://happy-puppy-web.vercel.app/" }} style={[styles.webview, { marginTop: insets.top }]} ref={webViewRef} onMessage={onMessage} webviewDebuggingEnabled={true} />
           </SafeAreaView>
         </TouchableWithoutFeedback>
       </Container>
