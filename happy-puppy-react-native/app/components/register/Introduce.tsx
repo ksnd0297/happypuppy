@@ -2,7 +2,7 @@ import { useController } from "react-hook-form";
 import Textarea from "../shared/Textarea";
 import { REGISTER_FORM_PATH } from "@/app/constants/register/form";
 
-const MAX_LENGTH = 20;
+const MAX_LENGTH = 30;
 
 const Introduce = () => {
   const {
@@ -18,7 +18,7 @@ const Introduce = () => {
     },
   });
 
-  return <Textarea editable={!disabled} value={value} onChangeText={onChange} isError={!!error?.message} label="한 줄 소개" placeholder="나는 리트리버를 키우는 애견인이에요." maxLength={30} />;
+  return <Textarea editable={!disabled} value={value} onChangeText={onChange} isError={!!error?.message} label="한 줄 소개" placeholder="나는 리트리버를 키우는 애견인이에요." maxLength={MAX_LENGTH} />;
 };
 
 export default Introduce;

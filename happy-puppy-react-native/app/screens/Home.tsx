@@ -25,6 +25,11 @@ const HomePage = () => {
     },
   });
 
+  console.log("userInfo : ", userInfo);
+  console.log("userId : ", userId);
+  console.log("userData : ", userData);
+  console.log("isLoading : ", isLoading);
+
   const { data: myChatList } = useMyChat({
     userId: userId,
   });
@@ -65,19 +70,19 @@ const HomePage = () => {
           <View style={styles.bottomButtonWrapper}>
             <Pressable style={styles.bottomButton} onPress={handleNavigationInfo}>
               <View>
-                <Text bold>내 정보 수정</Text>
+                <Text>내 정보 수정</Text>
               </View>
             </Pressable>
             <Divider color="#FCF5EE" />
             <Pressable style={styles.bottomButton} onPress={handleNavigationNotice}>
               <View>
-                <Text bold>공지사항</Text>
+                <Text>공지사항</Text>
               </View>
             </Pressable>
             <Divider color="#FCF5EE" />
             <Pressable style={styles.bottomButton} onPress={handleNavigationSetting}>
               <View>
-                <Text bold>이용관리</Text>
+                <Text>이용관리</Text>
               </View>
             </Pressable>
           </View>
@@ -105,7 +110,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
 
-    gap: 8,
+    gap: 12,
   },
 
   homeContainer: {
@@ -136,10 +141,10 @@ const styles = StyleSheet.create({
   },
 
   bottomButtonWrapper: {
-    flex: 0.4,
+    flex: 0.35,
     width: "80%",
 
-    backgroundColor: "#F7DDDE",
+    backgroundColor: "#FFEAEE",
 
     borderRadius: 10,
 

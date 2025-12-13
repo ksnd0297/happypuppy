@@ -6,7 +6,7 @@ export default function App() {
   return (
     <Layout>
       <RootStack />
-      <Toast />
+      <Toast position="bottom" />
     </Layout>
   );
 }

@@ -3,7 +3,7 @@ import { getUsers } from "../services/users/users";
 import { UseQueryOptions } from "../types/base";
 import { UserResponse } from "../services/users/types";
 
-const getUserQueryKey = (id?: number) => ["getUser", id];
+const getUserQueryKey = (id?: number) => ["getUser", id || null];
 const getUserQueryFn = (id: number) => getUsers({ id });
 
 type Props = {

@@ -5,8 +5,9 @@ import { logout, unlink } from "@react-native-kakao/user";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../RootStack";
 import useWithdraw from "../hooks/auth/useWithdraw";
-import useUserInfo from "../hooks/auth/useUserInfo";
+import useUserInfo, { USER_INFO } from "../hooks/auth/useUserInfo";
 import Toast from "react-native-toast-message";
+import { removeItem } from "../utils/storage/storage";
 
 const Divider = ({ width, color }: { width: DimensionValue; color: string }) => {
   return <View style={{ height: 1, width: width, backgroundColor: color }} />;
@@ -25,6 +26,8 @@ const UsageInfoPage = () => {
 
   const handleClickLogout = async () => {
     await logout();
+
+    removeItem(USER_INFO);
 
     reset({
       index: 0,
@@ -46,6 +49,8 @@ const UsageInfoPage = () => {
 
           try {
             await mutateAsync(userId);
+
+            removeItem(USER_INFO);
 
             Toast.show({
               type: "success",
@@ -101,7 +106,6 @@ const UsageInfoPage = () => {
               <Text large>{">"}</Text>
             </View>
           </Pressable>
-          <Divider width="90%" color="#cccccc" />
         </View>
       </View>
     </Container>

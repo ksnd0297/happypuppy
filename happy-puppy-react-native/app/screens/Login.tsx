@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { getUsersCheck } from "../services/users/users";
 import useUserInfo from "../hooks/auth/useUserInfo";
 import { RootStackNavigationProp } from "../RootStack";
+import useCheckMember from "../hooks/auth/useCheckMember";
 
 const happyPuppyImg = require("@/app/assets/happypuppy.png");
 const kakaoLoginImg = require("@/app/assets/kakao-login.png");
@@ -13,6 +14,8 @@ const LoginPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const { setUserInfo } = useUserInfo();
+
+  const { mutateAsync } = useCheckMember();
 
   const handleKakaoLogin = async () => {
     try {
@@ -24,16 +27,16 @@ const LoginPage = () => {
 
       const { id: appUserId } = await me();
 
-      const response = await getUsersCheck({
+      const response = await mutateAsync({
         appUserId,
       });
 
-      const { isMember } = response;
+      const { isMember, userId } = response;
 
       // * 회원가입이 되어있는 경우
       if (isMember) {
         navigation.navigate("Home");
-        setUserInfo(response);
+        setUserInfo({ isMember, userId });
       }
       // * 회원가입이 되어있지 않은 경우
       else {
@@ -52,9 +55,13 @@ const LoginPage = () => {
 
       const { id: appUserId } = await me();
 
+      console.log("appUserId : ", appUserId);
+
       const response = await getUsersCheck({
         appUserId,
       });
+
+      console.log("response : ", response);
 
       const { isMember } = response;
 
