@@ -14,6 +14,7 @@ import awsS3Config from "@/awsS3.config";
 import { S3 } from "@/app/utils/aws/s3";
 import { RootStackParamList } from "@/app/RootStack";
 import Toast from "react-native-toast-message";
+import { Buffer } from "buffer";
 
 const getMode = ({ id, isMe }: { id?: number; isMe: boolean }) => {
   if (id === undefined) return REGISTER_MODE.REGISTER;
@@ -40,7 +41,7 @@ const useRegisterForm = () => {
     disabled: mode === REGISTER_MODE.VIEW,
   });
 
-  const { data, isFetching, refetch } = useGetUser({
+  const { data, isFetching } = useGetUser({
     id,
     options: {
       enabled: !!id,
@@ -54,7 +55,7 @@ const useRegisterForm = () => {
       setIsMe(true);
     }
 
-    form.reset({ ...data, phone: data?.phoneNumber, age: data?.ageType });
+    form.reset(data);
   }, [isFetching, isUserInfoLoading]);
 
   const handleSubmit = form.handleSubmit(async (data) => {
@@ -95,12 +96,12 @@ const useRegisterForm = () => {
           id: userId,
           params: {
             nickname: data.nickname,
-            ageType: data.age as AgeType,
-            phoneNumber: data.phone,
-            address: data.address as Region,
-            introduce: data.introduce,
-            gender: data.gender as Gender,
-            profileImageUrl,
+            ageType: (data.age || undefined) as AgeType | undefined,
+            phoneNumber: data.phone || undefined,
+            address: (data.address || undefined) as Region | undefined,
+            introduce: data.introduce || undefined,
+            gender: (data.gender || undefined) as Gender | undefined,
+            profileImageUrl: data.profileImageUrl || undefined,
           },
         });
       }
@@ -117,18 +118,16 @@ const useRegisterForm = () => {
       await postUsers({
         nickname: data.nickname,
         appUserId,
-        ageType: data.age as AgeType,
-        phoneNumber: data.phone,
-        address: data.address as Region,
-        introduce: data.introduce,
-        gender: data.gender as Gender,
-        profileImageUrl,
+        ageType: (data.age || undefined) as AgeType | undefined,
+        phoneNumber: data.phone || undefined,
+        address: (data.address || undefined) as Region | undefined,
+        introduce: data.introduce || undefined,
+        gender: (data.gender || undefined) as Gender | undefined,
+        profileImageUrl: data.profileImageUrl || undefined,
       });
 
       navigation.navigate("Home");
     }
-
-    refetch();
   });
 
   return { form, mode, handleSubmit };

@@ -40,7 +40,7 @@ export type UserRegisterRequest = {
   introduce?: string;
   nickname: string;
   phoneNumber?: string;
-  profileImageUrl: string;
+  profileImageUrl?: string;
   showPhoneNumber?: boolean;
 };
 
@@ -80,7 +80,7 @@ export type UpdateUserRequest = {
     address?: Region;
     ageType?: AgeType;
     gender?: Gender;
-    introduce: string;
+    introduce?: string;
     phoneNumber?: string;
     showPhoneNumber?: boolean;
   };

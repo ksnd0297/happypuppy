@@ -16,7 +16,7 @@ const ChatListPage = () => {
 
   const { data, refetch, isLoading } = useMyChat({ userId: userInfo?.userId });
 
-  const umComingAppointment = data.filter((value) => differenceInDays(new Date(value.meetAt), new Date()) < 7);
+  const umComingAppointment = data?.filter((value) => differenceInDays(new Date(value.meetAt), new Date()) < 7);
 
   const handleEnterChat = (roomId: number) => {
     navigation.navigate("Chat", { id: roomId });
@@ -68,7 +68,7 @@ const ChatListPage = () => {
         <Text large>다가오는 약속</Text>
         <View style={styles.upComingContainer}>
           <ScrollView horizontal contentContainerStyle={{ gap: 15 }}>
-            {umComingAppointment.map((value) => (
+            {umComingAppointment?.map((value) => (
               <Pressable style={styles.upComingWrapper} key={value.id}>
                 <View style={styles.upComingImage} />
                 <Text small numberOfLines={1}>

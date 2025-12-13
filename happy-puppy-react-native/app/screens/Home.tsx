@@ -25,6 +25,11 @@ const HomePage = () => {
     },
   });
 
+  console.log("userInfo : ", userInfo);
+  console.log("userId : ", userId);
+  console.log("userData : ", userData);
+  console.log("isLoading : ", isLoading);
+
   const { data: myChatList } = useMyChat({
     userId: userId,
   });
