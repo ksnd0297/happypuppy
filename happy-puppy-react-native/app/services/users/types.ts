@@ -65,9 +65,17 @@ export type GetUsersCheckParams = {
   appUserId: number;
 };
 
+export enum CheckMemberStatus {
+  JOIN = "JOIN",
+  UNREGISTERED = "UNREGISTERED",
+  BLOCK = "BLOCK",
+  WITHDRAW = "WITHDRAW",
+}
+
 export type UserCheckResponse = {
-  userId: number;
+  userId?: number;
   isMember: boolean;
+  status?: CheckMemberStatus;
 };
 
 export type UpdateUserRequest = {

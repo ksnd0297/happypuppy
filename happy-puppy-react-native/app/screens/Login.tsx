@@ -6,6 +6,7 @@ import { getUsersCheck } from "../services/users/users";
 import useUserInfo from "../hooks/auth/useUserInfo";
 import { RootStackNavigationProp } from "../RootStack";
 import useCheckMember from "../hooks/auth/useCheckMember";
+import { CheckMemberStatus } from "../services/users/types";
 
 const happyPuppyImg = require("@/app/assets/happypuppy.png");
 const kakaoLoginImg = require("@/app/assets/kakao-login.png");
@@ -31,15 +32,15 @@ const LoginPage = () => {
         appUserId,
       });
 
-      const { isMember, userId } = response;
+      const { status } = response;
 
       // * 회원가입이 되어있는 경우
-      if (isMember) {
+      if (status === CheckMemberStatus.JOIN) {
         navigation.navigate("Home");
-        setUserInfo({ isMember, userId });
+        setUserInfo(response);
       }
       // * 회원가입이 되어있지 않은 경우
-      else {
+      else if (status === CheckMemberStatus.UNREGISTERED || status === CheckMemberStatus.WITHDRAW) {
         navigation.navigate("Register");
       }
     } catch {
@@ -55,17 +56,13 @@ const LoginPage = () => {
 
       const { id: appUserId } = await me();
 
-      console.log("appUserId : ", appUserId);
-
       const response = await getUsersCheck({
         appUserId,
       });
 
-      console.log("response : ", response);
+      const { status } = response;
 
-      const { isMember } = response;
-
-      if (isMember) {
+      if (status === CheckMemberStatus.JOIN) {
         navigation.navigate("Home");
         setUserInfo(response);
       }
