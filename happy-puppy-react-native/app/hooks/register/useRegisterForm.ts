@@ -1,4 +1,4 @@
-import { REGISTER_FROM_DEFAULT_VALUES } from "@/app/constants/register/form";
+import { REGISTER_FROM_DEFAULT_VALUES, RegisterForm } from "@/app/constants/register/form";
 import { ON_SUBMIT } from "@/app/constants/shared/form";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -6,15 +6,11 @@ import useUserInfo from "../auth/useUserInfo";
 import useGetUser from "../useGetUser";
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { REGISTER_MODE } from "@/app/enums/register";
-import RNFS from "react-native-fs";
 import { postUsers, putUsers } from "@/app/services/users/users";
-import { AgeType, Gender, Region } from "@/app/services/users/types";
 import { me } from "@react-native-kakao/user";
-import awsS3Config from "@/awsS3.config";
-import { S3 } from "@/app/utils/aws/s3";
+import { uploadImage } from "@/app/utils/aws/s3";
 import { RootStackParamList } from "@/app/RootStack";
 import Toast from "react-native-toast-message";
-import { Buffer } from "buffer";
 
 const getMode = ({ id, isMe }: { id?: number; isMe: boolean }) => {
   if (id === undefined) return REGISTER_MODE.REGISTER;
@@ -34,7 +30,7 @@ const useRegisterForm = () => {
 
   const { userInfo, isLoading: isUserInfoLoading } = useUserInfo();
 
-  const form = useForm({
+  const form = useForm<RegisterForm>({
     defaultValues: REGISTER_FROM_DEFAULT_VALUES,
     mode: ON_SUBMIT,
     reValidateMode: ON_SUBMIT,
@@ -59,74 +55,62 @@ const useRegisterForm = () => {
   }, [isFetching, isUserInfoLoading]);
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    let profileImageUrl = data.profileImageUrl;
+    if (form.formState.isLoading) return;
+
+    const { profileImageUrl, nickname } = data;
 
     // * 닉네임(필수 필드), 대표 이미지가 있고, 변경된 적이 있는 경우에만 S3 업로드 후 값 변경
 
-    const isNeedImageUpload = !!data.nickname && !!profileImageUrl && form.getFieldState("profileImageUrl").isDirty;
+    const isNeedImageUpload = !!nickname && !!profileImageUrl && form.getFieldState("profileImageUrl").isDirty;
 
-    if (isNeedImageUpload) {
-      const fileData = await RNFS.readFile(profileImageUrl, "base64");
-
-      const formData = Buffer.from(fileData, "base64");
-
-      const imageName = data.nickname + "image.jpg";
-
-      const params = {
-        Bucket: awsS3Config.bucket,
-        Key: imageName,
-        Body: formData,
-        ContentType: "image/jpeg",
-      };
-
-      const image = S3.upload(params);
-
-      const promise = await image.promise();
-
-      const { Location } = promise;
-
-      profileImageUrl = Location;
-    }
+    const image = isNeedImageUpload ? await uploadImage(profileImageUrl, nickname) : profileImageUrl;
 
     if (mode === REGISTER_MODE.EDIT) {
       const { userId } = userInfo || {};
+      try {
+        if (userId) {
+          await putUsers({
+            id: userId,
+            params: {
+              nickname: data.nickname ?? "",
+              ageType: data.ageType ?? undefined,
+              phoneNumber: data.phoneNumber ?? undefined,
+              address: data.address ?? undefined,
+              introduce: data.introduce ?? undefined,
+              gender: data.gender ?? undefined,
+              profileImageUrl: image ?? undefined,
+            },
+          });
+        }
 
-      if (userId) {
-        await putUsers({
-          id: userId,
-          params: {
-            nickname: data.nickname,
-            ageType: (data.age || undefined) as AgeType | undefined,
-            phoneNumber: data.phone || undefined,
-            address: (data.address || undefined) as Region | undefined,
-            introduce: data.introduce || undefined,
-            gender: (data.gender || undefined) as Gender | undefined,
-            profileImageUrl: data.profileImageUrl || undefined,
-          },
+        Toast.show({
+          text1: "내 정보가 수정됐어요",
         });
+        navigation.goBack();
+      } catch (error) {
+        console.log("회원정보 수정이 실패했습니다.", error);
       }
-
-      Toast.show({
-        text1: "내 정보가 수정됐어요",
-      });
-      navigation.goBack();
     } else if (mode === REGISTER_MODE.REGISTER) {
       const userInfo = await me();
 
       const { id: appUserId } = userInfo;
 
-      await postUsers({
-        nickname: data.nickname,
-        appUserId,
-        ageType: (data.age || undefined) as AgeType | undefined,
-        phoneNumber: data.phone || undefined,
-        address: (data.address || undefined) as Region | undefined,
-        introduce: data.introduce || undefined,
-        gender: (data.gender || undefined) as Gender | undefined,
-        profileImageUrl: data.profileImageUrl || undefined,
-      });
+      try {
+        await postUsers({
+          appUserId,
+          nickname: data.nickname ?? "",
+          ageType: data.ageType ?? undefined,
+          phoneNumber: data.phoneNumber ?? undefined,
+          address: data.address ?? undefined,
+          introduce: data.introduce ?? undefined,
+          gender: data.gender ?? undefined,
+          profileImageUrl: image ?? undefined,
+        });
 
-      navigation.navigate("Home");
+        navigation.navigate("Home");
+      } catch (error) {
+        console.log("회원가입이 실패했습니다. : ", error);
+      }
     }
   });
 

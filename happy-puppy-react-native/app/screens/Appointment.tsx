@@ -68,7 +68,7 @@ const AppointmentPage = () => {
 
       navigation.replace("Chat", { id: chatId });
     } catch (error) {
-      console.error("error : ", error);
+      console.error("약속 생성에 실패했습니다. : ", error);
     }
   });
 
@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFC4D0",
 
     alignItems: "center",
-    justifyContent: "center",
+
+    paddingTop: 15,
   },
 });

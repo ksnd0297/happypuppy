@@ -52,7 +52,7 @@ const Modal = forwardRef<BottomSheetModal, Props>((props, ref) => {
     if (data.length === 0) {
       return (
         <>
-          <Text bold>현재 만들어진 악쇽이 없어요</Text>
+          <Text bold>현재 만들어진 악속이 없어요</Text>
           <Text bold>처음으로 약속을 만들어 보세요</Text>
         </>
       );
@@ -102,7 +102,7 @@ const Modal = forwardRef<BottomSheetModal, Props>((props, ref) => {
           <View style={{ flex: 0.7, width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{productList()}</View>
           <View style={{ flex: 0.15, width: "100%" }}>
             <Pressable style={styles.buttonContainer} onPress={() => handleCreateAppointment(selectedPlace?.id)}>
-              <Text large bold>
+              <Text medium bold>
                 약속 만들기
               </Text>
             </Pressable>

@@ -33,15 +33,14 @@ export enum AgeType {
 }
 
 export type UserRegisterRequest = {
-  address?: Region;
-  ageType?: AgeType;
-  appUserId: number;
-  gender?: Gender;
-  introduce?: string;
   nickname: string;
-  phoneNumber?: string;
   profileImageUrl?: string;
-  showPhoneNumber?: boolean;
+  gender?: Gender;
+  ageType?: AgeType;
+  address?: Region;
+  introduce?: string;
+  phoneNumber?: string;
+  appUserId: number;
 };
 
 export type UserResponse = {
@@ -90,6 +89,5 @@ export type UpdateUserRequest = {
     gender?: Gender;
     introduce?: string;
     phoneNumber?: string;
-    showPhoneNumber?: boolean;
   };
 };

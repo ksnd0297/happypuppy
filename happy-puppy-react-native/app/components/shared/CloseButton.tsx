@@ -30,5 +30,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderColor: "black",
+
+    filter: "brightness(0)",
   },
 });

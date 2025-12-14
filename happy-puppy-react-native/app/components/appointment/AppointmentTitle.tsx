@@ -33,7 +33,7 @@ export default AppointmentTitle;
 const styles = StyleSheet.create({
   container: {
     width: "80%",
-    height: 40,
+    height: 50,
 
     borderBottomWidth: 2,
 

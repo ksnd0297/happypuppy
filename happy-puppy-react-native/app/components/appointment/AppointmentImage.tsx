@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   imageArea: {
     width: 200,
     height: 200,
-    borderRadius: 25,
+    borderRadius: 100,
 
     justifyContent: "center",
     alignItems: "center",
@@ -63,12 +63,15 @@ const styles = StyleSheet.create({
   IMAGE: {
     width: "100%",
     height: "100%",
-    borderRadius: 25,
+
+    borderRadius: 100,
   },
   PLACEHOLDER: {
     width: 80,
     height: 80,
     resizeMode: "contain",
+
+    borderRadius: 100,
   },
 
   textArea: {

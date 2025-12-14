@@ -1,17 +1,29 @@
+import { AgeType, Gender, Region } from "@/app/services/users/types";
+
+export type RegisterForm = {
+  nickname: string | null;
+  profileImageUrl: string | null;
+  gender: Gender | null;
+  ageType: AgeType | null;
+  address: Region | null;
+  introduce: string | null;
+  phoneNumber: string | null;
+};
+
 export const REGISTER_FROM_DEFAULT_VALUES = {
-  profileImageUrl: "",
-  phone: "",
-  nickname: "",
-  age: "",
-  address: "",
-  introduce: "",
-  gender: "",
+  profileImageUrl: null,
+  phoneNumber: null,
+  nickname: null,
+  age: null,
+  address: null,
+  introduce: null,
+  gender: null,
 };
 
 export const REGISTER_FORM_PATH = {
   IMAGE_URL: "profileImageUrl",
   NICKNAME: "nickname",
-  PHONE: "phone",
+  PHONE: "phoneNumber",
   AGE: "age",
   ADDRESS: "address",
   INTRODUCE: "introduce",
