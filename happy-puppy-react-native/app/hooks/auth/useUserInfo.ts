@@ -1,34 +1,15 @@
 import { UserCheckResponse } from "@/app/services/users/types";
 import { getUsersCheck } from "@/app/services/users/users";
-import { getItem, setItem } from "@/app/utils/storage/storage";
 import { isLogined, me } from "@react-native-kakao/user";
 import { useEffect, useState } from "react";
-
-export const USER_INFO = "userInfo";
 
 const useUserInfo = () => {
   const [userInfo, setUserInfo] = useState<UserCheckResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const setUserInfoStorage = (props: UserCheckResponse) => {
-    setUserInfo(props);
-    setItem(USER_INFO, props);
-  };
-
-  const getUserInfoStorage = async () => {
-    return await getItem<UserCheckResponse>(USER_INFO);
-  };
-
   useEffect(() => {
     (async () => {
       try {
-        const storageUserInfo = await getUserInfoStorage();
-
-        if (storageUserInfo) {
-          setUserInfo(storageUserInfo);
-          return;
-        }
-
         const isLoggedIn = await isLogined();
 
         if (!isLoggedIn) return;
@@ -48,7 +29,7 @@ const useUserInfo = () => {
     })();
   }, []);
 
-  return { userInfo, isLoading, setUserInfo: setUserInfoStorage };
+  return { userInfo, isLoading };
 };
 
 export default useUserInfo;
