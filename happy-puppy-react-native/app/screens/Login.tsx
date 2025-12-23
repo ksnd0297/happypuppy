@@ -1,11 +1,12 @@
 import { isLogined, login, me } from "@react-native-kakao/user";
 import { useNavigation } from "@react-navigation/native";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { useEffect } from "react";
 import { getUsersCheck } from "../services/users/users";
 import { RootStackNavigationProp } from "../RootStack";
 import useCheckMember from "../hooks/auth/useCheckMember";
 import { CheckMemberStatus } from "../services/users/types";
+import Text from "../components/shared/Text";
 
 const happyPuppyImg = require("@/app/assets/happypuppy.png");
 const kakaoLoginImg = require("@/app/assets/kakao-login.png");
@@ -19,8 +20,6 @@ const LoginPage = () => {
     try {
       const isLoggedIn = await isLogined();
 
-      console.log("isLoggedIn : ", isLoggedIn);
-
       if (!isLoggedIn) {
         await login();
       }
@@ -32,8 +31,6 @@ const LoginPage = () => {
       });
 
       const { status } = response;
-
-      console.log("status : ", status);
 
       // * 회원가입이 되어있는 경우
       if (status === CheckMemberStatus.JOIN) {
@@ -64,8 +61,6 @@ const LoginPage = () => {
 
         const { status } = response;
 
-        console.log("status : ", status);
-
         if (status === CheckMemberStatus.JOIN) {
           navigation.navigate("Home");
         }
@@ -82,7 +77,7 @@ const LoginPage = () => {
       </View>
       <View style={styles.bottomArea}>
         <View style={styles.captionArea}>
-          <Text style={styles.caption}>당신의 반려견의 친구를 만들어주세요</Text>
+          <Text bold>당신의 반려견의 친구를 만들어주세요</Text>
         </View>
         <View style={styles.buttonArea}>
           <Pressable onPress={handleKakaoLogin}>

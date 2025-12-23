@@ -8,7 +8,7 @@ export enum LabelType {
 
 export type LabelProps = {
   essential?: boolean;
-  label?: string;
+  label?: string | React.ReactNode;
   labelType?: LabelType;
 };
 

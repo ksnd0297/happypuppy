@@ -1,9 +1,11 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import Label from "../shared/Label";
 import { useController, useFormContext } from "react-hook-form";
 import { REGISTER_FORM_PATH } from "@/app/constants/register/form";
 import ImageResizer from "@bam.tech/react-native-image-resizer";
+import Text from "../shared/Text";
+
+const xCircle = require("@/app/assets/icon/x-circle.png");
 
 const cameraImg = require("@/app/assets/camera.png");
 
@@ -12,13 +14,9 @@ const RepresentativeImage = () => {
 
   const {
     field: { value, onChange, disabled },
-    fieldState: { error },
   } = useController({
     name: REGISTER_FORM_PATH.IMAGE_URL,
   });
-
-  const isError = !!error?.message;
-  const errorMessage = error?.message;
 
   const pickImage = async () => {
     if (disabled) return;
@@ -44,8 +42,9 @@ const RepresentativeImage = () => {
 
   const imageStyles = {
     ...IMAGE_STYLE["DEFAULT"],
-    ...(isError && IMAGE_STYLE["ERROR"]),
   };
+
+  const hasImage = !!value;
 
   return (
     <>
@@ -54,8 +53,16 @@ const RepresentativeImage = () => {
           <Image source={value ? { uri: value } : cameraImg} style={value ? IMAGE_STYLE.IMAGE : IMAGE_STYLE.PLACEHOLDER} />
         </View>
       </Pressable>
-      <Label label="강아지 사진" />
-      <View>{isError && !!errorMessage && <Text style={{ color: "red", fontSize: 12 }}>{errorMessage}</Text>}</View>
+      <View style={{ flexDirection: "row", gap: 4 }}>
+        <View style={{ width: 80, alignItems: "center", justifyContent: "center" }}>
+          <Text medium>강아지 사진</Text>
+        </View>
+        {hasImage && (
+          <Pressable style={{ width: 20, height: 20, alignItems: "center", justifyContent: "center" }} onPress={() => onChange("")}>
+            <Image source={xCircle} style={{ width: 20, height: 20 }} resizeMode="contain" />
+          </Pressable>
+        )}
+      </View>
     </>
   );
 };

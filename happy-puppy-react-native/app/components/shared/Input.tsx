@@ -14,7 +14,7 @@ type Props = {
   inputType?: InputType;
   isError?: boolean;
   errorMessage?: string;
-  label?: string;
+  label?: string | React.ReactNode;
   labelType?: LabelType;
   disabled?: boolean;
 } & TextInput["props"];
