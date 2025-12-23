@@ -9,14 +9,12 @@ import { FormProvider, useForm } from "react-hook-form";
 import { APPOINTMENT_FORM_DEFAULT_VALUES } from "../constants/appointment/form";
 import { ON_SUBMIT } from "../constants/shared/form";
 import { me } from "@react-native-kakao/user";
-import RNFS from "react-native-fs";
-import awsS3Config from "@/awsS3.config";
-import { S3 } from "../utils/aws/s3";
+import { uploadImage } from "../utils/aws/s3";
 import { postChat } from "../services/chat/chat";
-import { Buffer } from "buffer";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { RootStackNavigationProp, RootStackParamList } from "../RootStack";
 import CloseButton from "../components/shared/CloseButton";
+import { getUsersCheck } from "../services/users/users";
 
 const AppointmentPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -36,29 +34,16 @@ const AppointmentPage = () => {
     try {
       const { id } = await me();
 
-      const fileData = await RNFS.readFile(imageUrl, "base64");
+      const { userId } = await getUsersCheck({ appUserId: id });
 
-      const formData = Buffer.from(fileData, "base64");
+      if (!userId) throw new Error("유저 정보를 불러오지 못했습니다.");
 
-      const imageName = data.title + "image.jpg";
-
-      const params = {
-        Bucket: awsS3Config.bucket,
-        Key: imageName,
-        Body: formData,
-        ContentType: "image/jpeg",
-      };
-
-      const image = S3.upload(params);
-
-      const promise = await image.promise();
-
-      const { Location } = promise;
+      const image = imageUrl ? await uploadImage(imageUrl, data.title) : imageUrl;
 
       const { chatId } = await postChat({
-        imageUrl: Location,
+        imageUrl: image,
         name: data.title,
-        userId: id,
+        userId,
         meetDate: data.date,
         meetTime: data.time,
         placeId,

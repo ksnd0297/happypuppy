@@ -11,7 +11,7 @@ const ChatImage = (props: Props) => {
     <View style={styles.imageContainer}>
       <Image
         source={{
-          uri: chatImageUrl,
+          uri: chatImageUrl ? chatImageUrl : undefined,
         }}
         style={styles.image}
       />

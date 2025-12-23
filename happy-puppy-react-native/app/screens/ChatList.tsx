@@ -1,4 +1,4 @@
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import Text from "../components/shared/Text";
 import ChatInfo from "../components/chatList/ChatInfo";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -69,8 +69,15 @@ const ChatListPage = () => {
         <View style={styles.upComingContainer}>
           <ScrollView horizontal contentContainerStyle={{ gap: 15 }}>
             {umComingAppointment?.map((value) => (
-              <Pressable style={styles.upComingWrapper} key={value.id}>
-                <View style={styles.upComingImage} />
+              <Pressable style={styles.upComingWrapper} key={value.id} onPress={() => handleEnterChat(value.id)}>
+                <View style={styles.upComingImage}>
+                  <Image
+                    source={{
+                      uri: value.imageUrl ? value.imageUrl : undefined,
+                    }}
+                    style={styles.chatInfoImage}
+                  />
+                </View>
                 <Text small numberOfLines={1}>
                   {value.name}
                 </Text>
@@ -120,6 +127,14 @@ const styles = StyleSheet.create({
     width: 55,
     height: 55,
     backgroundColor: "white",
+    borderRadius: 50,
+  },
+
+  chatInfoImage: {
+    width: 55,
+    height: 55,
+    backgroundColor: "white",
+
     borderRadius: 50,
   },
 

@@ -31,7 +31,7 @@ const ChatPage = () => {
     },
   });
 
-  const { data: memberList } = useChatMembers({
+  const { data: memberList, refetch } = useChatMembers({
     chatId,
     options: {
       enabled: !!chatId,
@@ -57,6 +57,8 @@ const ChatPage = () => {
 
       setIsJoined(true);
     }
+
+    refetch();
   };
 
   useEffect(() => {
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
 
   contentContainer: {
     flex: 1,
-    paddingTop: 36,
+    paddingTop: 25,
 
     paddingLeft: 20,
     paddingRight: 20,

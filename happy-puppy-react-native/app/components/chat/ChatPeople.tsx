@@ -38,7 +38,7 @@ export default ChatPeople;
 const styles = StyleSheet.create({
   chatPeopleContainer: {
     flex: 0.6,
-    width: "70%",
+    width: "90%",
     borderRadius: 15,
     backgroundColor: "#FBE8E7",
     padding: 20,

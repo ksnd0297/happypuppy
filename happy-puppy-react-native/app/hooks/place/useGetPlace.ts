@@ -17,7 +17,7 @@ const useGetPlace = (props: Props) => {
     queryKey: [location],
     queryFn: enabled
       ? async () => {
-          const response = getPlace({ latitude: latitude.toString(), longitude: longitude.toString(), radius: 1000000 });
+          const response = getPlace({ latitude: latitude.toString(), longitude: longitude.toString(), radius: 1000 });
           return response;
         }
       : skipToken,

@@ -11,10 +11,10 @@ const ChatDescription = (props: Props) => {
 
   return (
     <View style={styles.chatDescriptionContainer}>
-      <View style={styles.description}>
+      <View>
         <Text lh24>{description}</Text>
       </View>
-      <View style={styles.tags}>
+      <View>
         <Text small gray>
           {tags}
         </Text>
@@ -27,23 +27,12 @@ export default ChatDescription;
 
 const styles = StyleSheet.create({
   chatDescriptionContainer: {
-    flex: 0.25,
+    flex: 0.15,
 
     width: "100%",
-    backgroundColor: "#FBE8E7",
 
     borderRadius: 15,
 
-    paddingLeft: 20,
-
-    paddingBottom: 14,
     paddingTop: 12,
-  },
-
-  description: {
-    flex: 0.85,
-  },
-  tags: {
-    flex: 0.15,
   },
 });

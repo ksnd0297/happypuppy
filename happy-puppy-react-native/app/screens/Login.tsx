@@ -19,6 +19,8 @@ const LoginPage = () => {
     try {
       const isLoggedIn = await isLogined();
 
+      console.log("isLoggedIn : ", isLoggedIn);
+
       if (!isLoggedIn) {
         await login();
       }
@@ -31,6 +33,8 @@ const LoginPage = () => {
 
       const { status } = response;
 
+      console.log("status : ", status);
+
       // * 회원가입이 되어있는 경우
       if (status === CheckMemberStatus.JOIN) {
         navigation.navigate("Home");
@@ -39,27 +43,34 @@ const LoginPage = () => {
       else if (status === CheckMemberStatus.UNREGISTERED || status === CheckMemberStatus.WITHDRAW) {
         navigation.navigate("Register");
       }
-    } catch {
+    } catch (error) {
+      console.log("로그인에 실패했습니다. ", error);
       await login();
     }
   };
 
   useEffect(() => {
     (async () => {
-      const isLoggedIn = await isLogined();
+      try {
+        const isLoggedIn = await isLogined();
 
-      if (!isLoggedIn) return;
+        if (!isLoggedIn) return;
 
-      const { id: appUserId } = await me();
+        const { id: appUserId } = await me();
 
-      const response = await getUsersCheck({
-        appUserId,
-      });
+        const response = await getUsersCheck({
+          appUserId,
+        });
 
-      const { status } = response;
+        const { status } = response;
 
-      if (status === CheckMemberStatus.JOIN) {
-        navigation.navigate("Home");
+        console.log("status : ", status);
+
+        if (status === CheckMemberStatus.JOIN) {
+          navigation.navigate("Home");
+        }
+      } catch (error) {
+        console.log("자동 로그인에 실패했습니다. ", error);
       }
     })();
   }, []);

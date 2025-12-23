@@ -22,7 +22,7 @@ const ChatInfo = (props: Props) => {
         <View style={styles.chatInfoImageWrapper}>
           <Image
             source={{
-              uri: roomImage,
+              uri: roomImage ? roomImage : undefined,
             }}
             style={styles.chatInfoImage}
           />
