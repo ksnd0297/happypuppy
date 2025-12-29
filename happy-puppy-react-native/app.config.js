@@ -1,13 +1,19 @@
- 
+import "dotenv/config";
+
 export default () => ({
   expo: {
-    name: "happy-puppy-react-native",
-    slug: "happy-puppy-react-native",
+    name: "happypuppy",
+    slug: "happypuppy",
     version: "1.0.0",
     orientation: "portrait",
     icon: "app/assets/icon.png",
     userInterfaceStyle: "light",
     newArchEnabled: true,
+    extra: {
+      eas: {
+        projectId: "674a2f12-31e0-43a1-a247-afeb00d92362",
+      },
+    },
     splash: {
       image: "app/assets/happypuppy.png",
       resizeMode: "contain",
@@ -28,11 +34,6 @@ export default () => ({
     web: {
       favicon: "./app/assets/favicon.png",
     },
-    extra: {
-      eas: {
-        projectId: "19a26513-df06-4590-833b-44eefd713ed0",
-      },
-    },
     plugins: [
       [
         "expo-build-properties",
@@ -45,7 +46,7 @@ export default () => ({
       [
         "@react-native-kakao/core",
         {
-          nativeAppKey: process.env.KAKAO_NATIVE_APP_KEY || "",
+          nativeAppKey: "8088bb107c6bf6a5698dc6efc0f8b083" || "",
           android: {
             authCodeHandlerActivity: true,
           },
