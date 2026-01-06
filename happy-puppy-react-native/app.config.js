@@ -1,5 +1,3 @@
-import "dotenv/config";
-
 export default () => ({
   expo: {
     name: "happypuppy",
@@ -34,6 +32,11 @@ export default () => ({
     web: {
       favicon: "./app/assets/favicon.png",
     },
+    extra: {
+      eas: {
+        projectId: "674a2f12-31e0-43a1-a247-afeb00d92362",
+      },
+    },
     plugins: [
       [
         "expo-build-properties",
@@ -46,7 +49,7 @@ export default () => ({
       [
         "@react-native-kakao/core",
         {
-          nativeAppKey: "8088bb107c6bf6a5698dc6efc0f8b083" || "",
+          nativeAppKey: "8088bb107c6bf6a5698dc6efc0f8b083",
           android: {
             authCodeHandlerActivity: true,
           },

@@ -35,7 +35,7 @@
     "react-dom": "19.0.0",
     "react-hook-form": "^7.58.1",
     "react-native": "0.79.6",
-    "react-native-bouncy-checkbox": "^4.1.2",
+    "react-native-bouncy-checkbox": "4.1.2",
     "react-native-calendars": "^1.1313.0",
     "react-native-date-picker": "5.0.12",
     "react-native-dotenv": "^3.4.11",
