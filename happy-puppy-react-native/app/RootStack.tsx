@@ -34,8 +34,10 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const RootStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
       <Stack.Screen name="Login" component={LoginPage} />
+
+      <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
+
       <Stack.Screen name="Home" component={HomePage} />
 
       <Stack.Screen name="Register" component={RegisterPage} />
