@@ -32,4 +32,5 @@ export type PlaceResponse = {
   hompage?: string;
   offDays?: string;
   operationTime?: string;
+  chatCount: number;
 };
