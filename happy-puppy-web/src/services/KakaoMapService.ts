@@ -3,10 +3,13 @@ import {KakaoMapOptions} from '@mapTypes/kakaoMaps';
 import {KakaoMap, KakaoMapPosition} from '@mapTypes/kakaoMap';
 import type {Marker} from '@mapTypes/marker';
 import type {MarkerImage} from '@mapTypes/markerImage';
-import {toast} from 'react-toastify';
 
-const DEFAULT_MARKER_IMAGE = '/emptyPin.svg';
-const DEFAULT_SELECTED_MARKER_IMAGE = '/fullPin.svg';
+const GREEN_MARKER_IMAGE = '/emptyGreenPin.svg';
+const GREEN_SELECTED_MARKER_IMAGE = '/fullGreenPin.svg';
+
+const YELLOW_MARKER_IMAGE = '/emptyYellowPin.svg';
+const YELLOW_SELECTED_MARKER_IMAGE = '/fullYellowPin.svg';
+
 const DEFAULT_MARKER_IMAGE_WIDTH = 24;
 const DEFAULT_MARKER_IMAGE_HEIGHT = 35;
 
@@ -25,12 +28,20 @@ type MarkerImageInfo = {
 };
 
 enum Place {
-  DEFAULT,
+  GREEN,
+  YELLOW,
 }
 
 const MARKER_IMAGES: Record<Place, MarkerImageInfo> = {
-  [Place.DEFAULT]: {
-    url: DEFAULT_MARKER_IMAGE,
+  [Place.GREEN]: {
+    url: GREEN_MARKER_IMAGE,
+    size: {
+      width: DEFAULT_MARKER_IMAGE_WIDTH,
+      height: DEFAULT_MARKER_IMAGE_HEIGHT,
+    },
+  },
+  [Place.YELLOW]: {
+    url: YELLOW_MARKER_IMAGE,
     size: {
       width: DEFAULT_MARKER_IMAGE_WIDTH,
       height: DEFAULT_MARKER_IMAGE_HEIGHT,
@@ -39,8 +50,15 @@ const MARKER_IMAGES: Record<Place, MarkerImageInfo> = {
 };
 
 const SELECTED_MARKER_IMAGES: Record<Place, MarkerImageInfo> = {
-  [Place.DEFAULT]: {
-    url: DEFAULT_SELECTED_MARKER_IMAGE,
+  [Place.GREEN]: {
+    url: GREEN_SELECTED_MARKER_IMAGE,
+    size: {
+      width: DEFAULT_MARKER_IMAGE_WIDTH,
+      height: DEFAULT_MARKER_IMAGE_HEIGHT,
+    },
+  },
+  [Place.YELLOW]: {
+    url: YELLOW_SELECTED_MARKER_IMAGE,
     size: {
       width: DEFAULT_MARKER_IMAGE_WIDTH,
       height: DEFAULT_MARKER_IMAGE_HEIGHT,
@@ -118,7 +136,7 @@ export class KakaoMapService {
       const imageInfo = SELECTED_MARKER_IMAGES[placeType];
       const {url, size} = imageInfo;
       const markerImage = new window.kakao.maps.MarkerImage(
-        DEFAULT_SELECTED_MARKER_IMAGE,
+        SELECTED_MARKER_IMAGES[placeType].url,
         new window.kakao.maps.Size(size.width, size.height),
       );
       this.selectedMarkerImages.set(placeType, markerImage);
@@ -162,8 +180,15 @@ export class KakaoMapService {
   private createMarkerPair = (place: KakaoMapPlaceInfo<PlaceResponse>) => {
     const position = new window.kakao.maps.LatLng(place.latitude, place.longitude);
 
+    const chatCount = place.place.chatCount;
+
+    let placeType = Place.GREEN;
+
+    if (chatCount >= 3) {
+      placeType = Place.YELLOW;
+    }
+
     // TODO: 장소별 구분 필요하면 바꿔야함
-    const placeType = Place.DEFAULT;
 
     // 기본 상태 마커 생성
     const defaultMarker = new window.kakao.maps.Marker({
