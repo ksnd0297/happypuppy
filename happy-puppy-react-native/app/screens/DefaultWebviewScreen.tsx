@@ -145,7 +145,7 @@ const DefaultWebviewScreen = () => {
         >
           <SafeAreaView style={styles.container}>
             <WebView
-              source={{ uri: "http://10.0.2.2:3000" }}
+              source={{ uri: "https://happy-puppy-web.vercel.app/" }}
               style={[styles.webview, { marginTop: insets.top }]}
               ref={webViewRef}
               onMessage={onMessage}
