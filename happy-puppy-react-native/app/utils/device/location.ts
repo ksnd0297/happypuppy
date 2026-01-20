@@ -8,12 +8,28 @@ export const getLocation = async () => {
   };
 
   try {
-    const { status } = await Location.requestForegroundPermissionsAsync();
+    console.log("RRRRR");
+    const { status } = await Location.getForegroundPermissionsAsync();
+    console.log("status : ", status);
 
     if (status === Location.PermissionStatus.DENIED) {
-      Alert.alert("위치 권한이 필요합니다", "위치 정보를 사용하려면 권한을 허용해야 합니다.");
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status === Location.PermissionStatus.DENIED) {
+        Alert.alert("위치 권한이 필요합니다", "위치 정보를 사용하려면 권한을 허용해야 합니다.");
 
-      return DEFAULT_LOCATION;
+        return DEFAULT_LOCATION;
+      } else {
+        const accurateLocation = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.BestForNavigation,
+        });
+
+        if (accurateLocation) {
+          const { coords } = accurateLocation;
+          const { latitude, longitude } = coords;
+
+          return { latitude, longitude };
+        }
+      }
     }
 
     if (status === Location.PermissionStatus.GRANTED) {

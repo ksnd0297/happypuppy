@@ -46,7 +46,7 @@ const DefaultWebviewScreen = () => {
         JSON.stringify({
           type: "PLACE",
           data: placeList,
-        })
+        }),
     );
   }, [placeList]);
 
@@ -83,7 +83,10 @@ const DefaultWebviewScreen = () => {
         return;
       }
       case "INIT": {
+        console.log("CALL");
         const location = await getLocation();
+
+        console.log("location :", location);
 
         if (location) {
           if (webViewRef.current) {
@@ -116,7 +119,7 @@ const DefaultWebviewScreen = () => {
       "" +
         JSON.stringify({
           type: "UN_PIN",
-        })
+        }),
     );
 
     setSelectedPlace(undefined);
@@ -144,7 +147,13 @@ const DefaultWebviewScreen = () => {
           }}
         >
           <SafeAreaView style={styles.container}>
-            <WebView source={{ uri: "https://happy-puppy-web.vercel.app/" }} style={[styles.webview, { marginTop: insets.top }]} ref={webViewRef} onMessage={onMessage} webviewDebuggingEnabled={true} />
+            <WebView
+              source={{ uri: "http://10.0.2.2:3000" }}
+              style={[styles.webview, { marginTop: insets.top }]}
+              ref={webViewRef}
+              onMessage={onMessage}
+              webviewDebuggingEnabled={true}
+            />
           </SafeAreaView>
         </TouchableWithoutFeedback>
       </Container>
