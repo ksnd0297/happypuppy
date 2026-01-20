@@ -8,9 +8,7 @@ export const getLocation = async () => {
   };
 
   try {
-    console.log("RRRRR");
     const { status } = await Location.getForegroundPermissionsAsync();
-    console.log("status : ", status);
 
     if (status === Location.PermissionStatus.DENIED) {
       const { status } = await Location.requestForegroundPermissionsAsync();

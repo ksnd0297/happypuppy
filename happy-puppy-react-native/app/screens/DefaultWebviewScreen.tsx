@@ -83,10 +83,7 @@ const DefaultWebviewScreen = () => {
         return;
       }
       case "INIT": {
-        console.log("CALL");
         const location = await getLocation();
-
-        console.log("location :", location);
 
         if (location) {
           if (webViewRef.current) {

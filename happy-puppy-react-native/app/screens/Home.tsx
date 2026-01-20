@@ -25,11 +25,6 @@ const HomePage = () => {
     },
   });
 
-  console.log("userInfo : ", userInfo);
-  console.log("userId : ", userId);
-  console.log("userData : ", userData);
-  console.log("isLoading : ", isLoading);
-
   const { data: myChatList } = useMyChat({
     userId: userId,
   });
@@ -59,11 +54,20 @@ const HomePage = () => {
 
   return (
     <Container>
-      <View style={styles.imageContainer}>{userData && <HomeImage title={userData?.nickname} uri={userData?.profileImageUrl} handlePress={handleNavigationInfo} />}</View>
+      <View style={styles.imageContainer}>
+        {userData && (
+          <HomeImage title={userData?.nickname} uri={userData?.profileImageUrl} handlePress={handleNavigationInfo} />
+        )}
+      </View>
       <View style={styles.homeContainer}>
         <View style={styles.calendarContainer}>
           <View style={styles.calendarWrapper}>
-            <Calendar hideArrows={true} style={styles.calendar} disableAllTouchEventsForDisabledDays={true} markedDates={markedDates} />
+            <Calendar
+              hideArrows={true}
+              style={styles.calendar}
+              disableAllTouchEventsForDisabledDays={true}
+              markedDates={markedDates}
+            />
           </View>
         </View>
         <View style={styles.bottomButtonContainer}>

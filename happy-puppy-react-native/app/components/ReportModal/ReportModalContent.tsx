@@ -61,7 +61,6 @@ const ReportModalContent = (props: Props) => {
     const reportType = isReportReason(value.reportReason) ? value.reportReason : "";
 
     if (!reportType) throw new Error("유효하지 않은 신고 사유입니다.");
-    console.log("CALL");
 
     try {
       await mutateAsync({
@@ -117,7 +116,12 @@ const ReportModalContent = (props: Props) => {
             placeholder="신고 사유를 선택해 주세요"
             data={OPTION_LIST}
           />
-          <Textarea value={reportTextValue} onChangeText={handleChangeReportText} inputType={TextAreaType.TYPE2} placeholder="신고 이유를 작성해 주세요" />
+          <Textarea
+            value={reportTextValue}
+            onChangeText={handleChangeReportText}
+            inputType={TextAreaType.TYPE2}
+            placeholder="신고 이유를 작성해 주세요"
+          />
         </View>
       </View>
       <View style={styles.buttonContainer}>
