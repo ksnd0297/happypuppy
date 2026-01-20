@@ -188,8 +188,6 @@ export class KakaoMapService {
       placeType = Place.YELLOW;
     }
 
-    // TODO: 장소별 구분 필요하면 바꿔야함
-
     // 기본 상태 마커 생성
     const defaultMarker = new window.kakao.maps.Marker({
       position,
