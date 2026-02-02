@@ -67,11 +67,9 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   PLACEHOLDER: {
-    width: 80,
-    height: 80,
+    width: 50,
+    height: 50,
     resizeMode: "contain",
-
-    borderRadius: 100,
   },
 
   textArea: {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, SafeAreaView, TouchableWithoutFeedback, TextInput, Keyboard } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 
@@ -11,6 +11,7 @@ import { getLocation } from "../utils/device/location";
 import { PlaceResponse } from "../services/place/types";
 import Container from "../components/Container";
 import useLocation from "../hooks/map/useLocation";
+import { useFocusEffect } from "@react-navigation/native";
 
 export interface Coordinate {
   latitude: number;
@@ -32,9 +33,17 @@ const DefaultWebviewScreen = () => {
 
   const { location, handleChangeLocation } = useLocation();
 
-  const { data: placeList } = useGetPlace({
+  const { data: placeList, refetch } = useGetPlace({
     location,
   });
+
+  useFocusEffect(
+    useCallback(() => {
+      if (location) {
+        refetch();
+      }
+    }, [location]),
+  );
 
   useEffect(() => {
     if (!placeList) return;
