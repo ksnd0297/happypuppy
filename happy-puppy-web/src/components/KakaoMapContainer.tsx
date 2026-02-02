@@ -5,8 +5,6 @@ import {KakaoMapPosition} from '@mapTypes/kakaoMap';
 import Loading from './Loading';
 
 type Props<T> = {
-  isLoading: boolean;
-  setIsLoading: (value: boolean) => void;
   center?: KakaoMapPosition;
   placeList: KakaoMapPlaceInfo<T>[];
   event: string;
@@ -16,11 +14,12 @@ type Props<T> = {
 const KakaoMapContainer = <T extends PlaceResponse>({
   center,
   placeList,
-  isLoading,
-  setIsLoading,
+
   event,
   handleResetEvent,
 }: Props<T>) => {
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const kakaoKey = process.env.REACT_APP_KAKAO_JS_KEY;
 

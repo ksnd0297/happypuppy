@@ -13,8 +13,6 @@ export type PlaceInfo = {
 };
 
 const Home = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
   // TODO: 네이티브에서 받는 형태로 변경 필요
   const [centerPosition, setCenterPosition] = useState<KakaoMapPosition>();
   const [placeList, setPlaceList] = useState<PlaceResponse[]>([]);
@@ -84,8 +82,6 @@ const Home = () => {
       <KakaoMapContainer
         center={centerPosition}
         placeList={kakaoPlaceList}
-        isLoading={isLoading}
-        setIsLoading={setIsLoading}
         event={event}
         handleResetEvent={handleResetEvent}
       />
