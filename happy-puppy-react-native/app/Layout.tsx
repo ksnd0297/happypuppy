@@ -2,7 +2,7 @@ import { initializeKakaoSDK } from "@react-native-kakao/core";
 import { useCallback, useEffect } from "react";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { KAKAO_NATIVE_APP_KEY } from "@env";
+import { EXPO_PUBLIC_KAKAO_NATIVE_APP_KEY } from "@env";
 import { LocaleConfig } from "react-native-calendars";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Dimensions, SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
@@ -36,7 +36,7 @@ type Props = {
 
 const Layout = (props: Props) => {
   useEffect(() => {
-    initializeKakaoSDK(KAKAO_NATIVE_APP_KEY);
+    initializeKakaoSDK(EXPO_PUBLIC_KAKAO_NATIVE_APP_KEY);
   }, []);
 
   const [fontsLoaded] = Font.useFonts({

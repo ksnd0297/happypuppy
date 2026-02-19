@@ -7,6 +7,7 @@ import { RootStackNavigationProp } from "../RootStack";
 import useCheckMember from "../hooks/auth/useCheckMember";
 import { CheckMemberStatus } from "../services/users/types";
 import Text from "../components/shared/Text";
+import Toast from "react-native-toast-message";
 
 const happyPuppyImg = require("@/app/assets/happypuppy.png");
 const kakaoLoginImg = require("@/app/assets/kakao-login.png");
@@ -24,13 +25,28 @@ const LoginPage = () => {
         await login();
       }
 
+      Toast.show({
+        type: "success",
+        text1: `로그인 성공`,
+      });
+
       const { id: appUserId } = await me();
+
+      Toast.show({
+        type: "success",
+        text1: `${appUserId}`,
+      });
 
       const response = await mutateAsync({
         appUserId,
       });
 
       const { status } = response;
+
+      Toast.show({
+        type: "success",
+        text1: `상태 확인`,
+      });
 
       // * 회원가입이 되어있는 경우
       if (status === CheckMemberStatus.JOIN) {
