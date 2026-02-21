@@ -1,7 +1,7 @@
 export default () => ({
   expo: {
     name: "해피퍼피",
-    slug: "해피퍼피",
+    slug: "happypuppy",
     version: "1.0.0",
     orientation: "portrait",
     icon: "app/assets/icon.png",
