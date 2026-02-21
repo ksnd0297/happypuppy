@@ -1,14 +1,16 @@
 import { initializeKakaoSDK } from "@react-native-kakao/core";
-import { useCallback, useEffect } from "react";
+import { ReactNode, useCallback, useEffect } from "react";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { EXPO_PUBLIC_KAKAO_NATIVE_APP_KEY } from "@env";
 import { LocaleConfig } from "react-native-calendars";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Dimensions, SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Maintenance from "./screens/Maintenance";
 import { NavigationContainer } from "@react-navigation/native";
+import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 LocaleConfig.locales["ko"] = {
   monthNames: ["01월", "02월", "03월", "04월", "05월", "06월", "07월", "08월", "09월", "10월", "11월", "12월"],
@@ -59,32 +61,40 @@ const Layout = (props: Props) => {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <NavigationContainer>
-        <SafeAreaView style={styles.container}>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-              <Maintenance>{props.children}</Maintenance>
-            </View>
-          </GestureHandlerRootView>
-        </SafeAreaView>
-      </NavigationContainer>
-    </QueryClientProvider>
+    <SafeAreaProvider>
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer>
+          <SafeAreaView style={{ flex: 1 }}>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <Container onLayoutRootView={onLayoutRootView}>
+                <Maintenance>{props.children}</Maintenance>
+              </Container>
+            </GestureHandlerRootView>
+          </SafeAreaView>
+        </NavigationContainer>
+      </QueryClientProvider>
+    </SafeAreaProvider>
   );
 };
 
 export default Layout;
 
-const SCREEN_HEIGHT = Dimensions.get("screen").height; // device height
-const STATUS_BAR_HEIGHT = StatusBar.currentHeight || 24;
-const WINDOW_HEIGHT = Dimensions.get("window").height;
-const BOTTOM_NAVIGATION_BAR_HEIGHT = SCREEN_HEIGHT - WINDOW_HEIGHT;
+type ContainerProps = {
+  children: ReactNode;
+  onLayoutRootView: () => void;
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FCF5EE",
-    paddingTop: STATUS_BAR_HEIGHT,
-    paddingBottom: BOTTOM_NAVIGATION_BAR_HEIGHT,
-  },
-});
+const Container = (props: ContainerProps) => {
+  const insets = useSafeAreaInsets();
+
+  return (
+    <KeyboardAwareScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
+      <View
+        style={{ flex: 1, backgroundColor: "#FCF5EE", paddingTop: insets.top, paddingBottom: insets.bottom }}
+        onLayout={props.onLayoutRootView}
+      >
+        {props.children}
+      </View>
+    </KeyboardAwareScrollView>
+  );
+};

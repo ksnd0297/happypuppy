@@ -6,7 +6,7 @@ import { RootStackNavigationProp } from "../RootStack";
 import useUserInfo from "../hooks/auth/useUserInfo";
 import useMyChat from "../hooks/chat/useMyChat";
 import Container from "../components/Container";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { differenceInDays, format } from "date-fns";
 
 const ChatListPage = () => {
@@ -27,10 +27,10 @@ const ChatListPage = () => {
       if (userInfo?.userId) {
         refetch();
       }
-    }, [])
+    }, []),
   );
 
-  const chatList = () => {
+  const chatList = useMemo(() => {
     if (!data || isLoading) {
       return (
         <View style={{ flex: 1, alignItems: "center", paddingTop: 10, justifyContent: "center" }}>
@@ -50,14 +50,25 @@ const ChatListPage = () => {
 
     return (
       <ScrollView contentContainerStyle={{ gap: 15 }}>
-        {data?.map((chat, index) => {
-          const { id, meetAt, imageUrl, name, tags, introduce } = chat;
+        {data?.map((chat) => {
+          const { chatId, meetAt, imageUrl, name, tags, introduce } = chat;
 
-          return <ChatInfo key={index} roomId={id} promiseDateTime={meetAt} roomImage={imageUrl} title={name} handleEnterChat={handleEnterChat} tags={tags} introduce={introduce} />;
+          return (
+            <ChatInfo
+              key={chatId}
+              roomId={chatId}
+              promiseDateTime={meetAt}
+              roomImage={imageUrl}
+              title={name}
+              handleEnterChat={handleEnterChat}
+              tags={tags}
+              introduce={introduce}
+            />
+          );
         })}
       </ScrollView>
     );
-  };
+  }, [data, isLoading]);
 
   return (
     <Container>
@@ -69,7 +80,11 @@ const ChatListPage = () => {
         <View style={styles.upComingContainer}>
           <ScrollView horizontal contentContainerStyle={{ gap: 15 }}>
             {umComingAppointment?.map((value) => (
-              <Pressable style={styles.upComingWrapper} key={value.id} onPress={() => handleEnterChat(value.id)}>
+              <Pressable
+                style={styles.upComingWrapper}
+                key={value.chatId}
+                onPress={() => handleEnterChat(value.chatId)}
+              >
                 <View style={styles.upComingImage}>
                   <Image
                     source={{
@@ -89,7 +104,7 @@ const ChatListPage = () => {
           </ScrollView>
         </View>
         <Text large>내 약속</Text>
-        <View style={styles.myAppointmentContainer}>{chatList()}</View>
+        <View style={styles.myAppointmentContainer}>{chatList}</View>
       </View>
     </Container>
   );

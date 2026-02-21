@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
 
   imageContainer: {
-    flex: 0.3,
+    flex: 0.2,
 
     alignItems: "center",
 
@@ -110,13 +110,13 @@ const styles = StyleSheet.create({
   },
 
   formContainer: {
-    flex: 0.6,
+    flex: 0.7,
 
-    paddingTop: 20,
+    paddingTop: 50,
 
     alignItems: "center",
 
-    gap: 30,
+    gap: 50,
   },
 
   buttonContainer: {
@@ -125,6 +125,6 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
 
-    paddingTop: 15,
+    paddingTop: 25,
   },
 });

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
 import Footer from "./shared/Footer";
 
 type Props = {
@@ -10,7 +10,9 @@ const Container = (props: Props) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.bodyContainer}>{children}</View>
+      <KeyboardAvoidingView behavior="padding" style={styles.bodyContainer}>
+        {children}
+      </KeyboardAvoidingView>
       <Footer />
     </View>
   );

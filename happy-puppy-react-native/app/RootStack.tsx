@@ -36,11 +36,11 @@ const RootStack = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={LoginPage} />
 
+      <Stack.Screen name="Register" component={RegisterPage} />
+
       <Stack.Screen name="Webview" component={DefaultWebviewScreen} />
 
       <Stack.Screen name="Home" component={HomePage} />
-
-      <Stack.Screen name="Register" component={RegisterPage} />
 
       <Stack.Screen
         name="Appointment"
