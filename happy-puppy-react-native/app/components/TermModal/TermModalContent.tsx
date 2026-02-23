@@ -10,9 +10,9 @@ type Props = {
 };
 
 const TERM = {
-  isOver14: {
+  isOver18: {
     isChecked: false,
-    text: "[필수] 만 14세 이상 회원입니다.",
+    text: "[필수] 만 18세 이상 회원입니다.",
   },
   agreedToPersonalInfo: {
     isChecked: false,
@@ -33,8 +33,8 @@ const TermModalContent = (props: Props) => {
 
   const handleAgreeAll = () => {
     setTerm({
-      isOver14: {
-        ...TERM["isOver14"],
+      isOver18: {
+        ...TERM["isOver18"],
         isChecked: !isAllAgreed,
       },
       agreedToPersonalInfo: {

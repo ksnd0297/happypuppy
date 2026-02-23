@@ -28,6 +28,8 @@ export default () => ({
       },
       edgeToEdgeEnabled: true,
       package: "com.happypuppy.app",
+      softwareKeyboardLayoutMode: "pan",
+      permissions: ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"],
     },
     web: {
       favicon: "./app/assets/favicon.png",
@@ -70,6 +72,12 @@ export default () => ({
           backgroundColor: "#FCF5EE",
           image: "./app/assets/happypuppy.png",
           imageWidth: 200,
+        },
+      ],
+      [
+        "expo-location",
+        {
+          locationAlwaysAndWhenInUsePermission: "Allow $(PRODUCT_NAME) to use your location.",
         },
       ],
     ],
