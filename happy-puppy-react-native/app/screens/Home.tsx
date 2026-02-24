@@ -74,19 +74,25 @@ const HomePage = () => {
           <View style={styles.bottomButtonWrapper}>
             <Pressable style={styles.bottomButton} onPress={handleNavigationInfo}>
               <View>
-                <Text>내 정보 수정</Text>
+                <Text bold small>
+                  내 정보 수정
+                </Text>
               </View>
             </Pressable>
             <Divider color="#FCF5EE" />
             <Pressable style={styles.bottomButton} onPress={handleNavigationNotice}>
               <View>
-                <Text>공지사항</Text>
+                <Text bold small>
+                  공지사항
+                </Text>
               </View>
             </Pressable>
             <Divider color="#FCF5EE" />
             <Pressable style={styles.bottomButton} onPress={handleNavigationSetting}>
               <View>
-                <Text>이용관리</Text>
+                <Text bold small>
+                  이용관리
+                </Text>
               </View>
             </Pressable>
           </View>
