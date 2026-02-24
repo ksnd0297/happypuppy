@@ -19,8 +19,8 @@ const UsageInfoPage = () => {
   const { userInfo } = useUserInfo();
   const { userId } = userInfo || {};
 
-  const handleClickRequire = () => {
-    Linking.openURL("https://forms.gle/DSwEbZuNh8h55SUS6");
+  const handleClickBrowser = (url: string) => {
+    Linking.openURL(url);
   };
 
   const handleClickLogout = async () => {
@@ -75,30 +75,58 @@ const UsageInfoPage = () => {
         </View>
         <Divider width="100%" color="black" />
         <View style={styles.listContainer}>
-          <Pressable style={styles.list} onPress={handleClickRequire}>
+          <Pressable style={styles.list} onPress={() => handleClickBrowser("https://forms.gle/DSwEbZuNh8h55SUS6")}>
             <View style={styles.text}>
               <Text medium>문의하기</Text>
             </View>
             <View style={styles.button}>
-              <Text large>{">"}</Text>
+              <Text medium>{">"}</Text>
             </View>
           </Pressable>
-          <Divider width="90%" color="#cccccc" />
           <Pressable style={styles.list} onPress={handleClickLogout}>
             <View style={styles.text}>
               <Text medium>로그아웃</Text>
             </View>
             <View style={styles.button}>
-              <Text large>{">"}</Text>
+              <Text medium>{">"}</Text>
             </View>
           </Pressable>
-          <Divider width="90%" color="#cccccc" />
           <Pressable style={styles.list} onPress={handleClickUnlink}>
             <View style={styles.text}>
               <Text medium>회원탈퇴</Text>
             </View>
             <View style={styles.button}>
-              <Text large>{">"}</Text>
+              <Text medium>{">"}</Text>
+            </View>
+          </Pressable>
+          <Pressable
+            style={styles.list}
+            onPress={() =>
+              handleClickBrowser(
+                "https://docs.google.com/document/d/1kfyf6kbN_vi2L5hv0HWtf0N8JoIBoa4TFaZ8i3GHK_g/edit?tab=t.0#heading=h.2k78hymo8r4l",
+              )
+            }
+          >
+            <View style={styles.text}>
+              <Text medium>이용약관</Text>
+            </View>
+            <View style={styles.button}>
+              <Text medium>{">"}</Text>
+            </View>
+          </Pressable>
+          <Pressable
+            style={styles.list}
+            onPress={() =>
+              handleClickBrowser(
+                "https://docs.google.com/document/d/14iTnAB2VEBYYz1GXQVukgBpkCuY8Y3XvKwmGZ2tIABQ/edit?tab=t.0#heading=h.25ed1rys5giv",
+              )
+            }
+          >
+            <View style={styles.text}>
+              <Text medium>개인정보 처리방침</Text>
+            </View>
+            <View style={styles.button}>
+              <Text medium>{">"}</Text>
             </View>
           </Pressable>
         </View>
