@@ -30,7 +30,7 @@ enum ChatStatus {
 }
 
 export type ChatResponse = {
-  id: number;
+  chatId: number;
   status: ChatStatus;
   name: string;
   meetDate: string;
@@ -40,6 +40,7 @@ export type ChatResponse = {
   introduce?: string;
   tags?: string;
 };
+
 export type GetChatsParams = {
   placeId: number;
 };

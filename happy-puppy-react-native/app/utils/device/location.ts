@@ -10,7 +10,7 @@ export const getLocation = async () => {
   try {
     const { status } = await Location.getForegroundPermissionsAsync();
 
-    if (status === Location.PermissionStatus.DENIED) {
+    if (status === Location.PermissionStatus.DENIED || status === Location.PermissionStatus.UNDETERMINED) {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status === Location.PermissionStatus.DENIED) {
         Alert.alert("위치 권한이 필요합니다", "위치 정보를 사용하려면 권한을 허용해야 합니다.");

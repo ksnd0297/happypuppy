@@ -15,6 +15,8 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { RootStackNavigationProp, RootStackParamList } from "../RootStack";
 import CloseButton from "../components/shared/CloseButton";
 import { getUsersCheck } from "../services/users/users";
+import { isAfter } from "date-fns";
+import Toast from "react-native-toast-message";
 
 const AppointmentPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -30,6 +32,15 @@ const AppointmentPage = () => {
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const { imageUrl } = data;
+    const appointmentDate = new Date(`${data.date}T${data.time}`);
+
+    if (isAfter(new Date(), appointmentDate)) {
+      Toast.show({
+        type: "error",
+        text1: "과거 시간으로 약속을 생성할 수 없습니다.",
+      });
+      return;
+    }
 
     try {
       const { id } = await me();
@@ -91,7 +102,7 @@ const styles = StyleSheet.create({
   },
 
   imageContainer: {
-    flex: 0.3,
+    flex: 0.2,
 
     alignItems: "center",
 
@@ -99,13 +110,13 @@ const styles = StyleSheet.create({
   },
 
   formContainer: {
-    flex: 0.6,
+    flex: 0.7,
 
-    paddingTop: 20,
+    paddingTop: 50,
 
     alignItems: "center",
 
-    gap: 30,
+    gap: 50,
   },
 
   buttonContainer: {
@@ -114,6 +125,6 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
 
-    paddingTop: 15,
+    paddingTop: 25,
   },
 });

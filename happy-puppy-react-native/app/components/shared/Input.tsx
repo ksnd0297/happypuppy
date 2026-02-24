@@ -20,7 +20,15 @@ type Props = {
 } & TextInput["props"];
 
 const Input = (props: Props) => {
-  const { essential, inputType = InputType.TYPE1, isError, errorMessage, label, labelType = LabelType.TYPE1, ...rest } = props;
+  const {
+    essential,
+    inputType = InputType.TYPE1,
+    isError,
+    errorMessage,
+    label,
+    labelType = LabelType.TYPE1,
+    ...rest
+  } = props;
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -43,7 +51,13 @@ const Input = (props: Props) => {
     <View>
       <View style={{ display: "flex", gap: 10 }}>
         <Label essential={essential} label={label} labelType={labelType} />
-        <TextInput onFocus={handleFocus} onBlur={handleBlur} style={inputStyle} placeholderTextColor="#808080" {...rest} />
+        <TextInput
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          style={[inputStyle]}
+          placeholderTextColor="#808080"
+          {...rest}
+        />
       </View>
       <View>{isError && !!errorMessage && <Text style={{ color: "red", fontSize: 12 }}>{errorMessage}</Text>}</View>
     </View>
@@ -63,6 +77,8 @@ const INPUT_STYLE = StyleSheet.create({
     paddingLeft: 10,
     verticalAlign: "top",
     fontFamily,
+
+    alignSelf: "center",
   },
 
   TYPE1: {

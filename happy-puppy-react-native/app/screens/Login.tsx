@@ -17,32 +17,27 @@ const LoginPage = () => {
   const { mutateAsync } = useCheckMember();
 
   const handleKakaoLogin = async () => {
-    try {
-      const isLoggedIn = await isLogined();
+    const isLoggedIn = await isLogined();
 
-      if (!isLoggedIn) {
-        await login();
-      }
-
-      const { id: appUserId } = await me();
-
-      const response = await mutateAsync({
-        appUserId,
-      });
-
-      const { status } = response;
-
-      // * 회원가입이 되어있는 경우
-      if (status === CheckMemberStatus.JOIN) {
-        navigation.navigate("Home");
-      }
-      // * 회원가입이 되어있지 않은 경우
-      else if (status === CheckMemberStatus.UNREGISTERED || status === CheckMemberStatus.WITHDRAW) {
-        navigation.navigate("Register");
-      }
-    } catch (error) {
-      console.log("로그인에 실패했습니다. ", error);
+    if (!isLoggedIn) {
       await login();
+    }
+
+    const { id: appUserId } = await me();
+
+    const response = await mutateAsync({
+      appUserId,
+    });
+
+    const { status } = response;
+
+    // * 회원가입이 되어있는 경우
+    if (status === CheckMemberStatus.JOIN) {
+      navigation.navigate("Home");
+    }
+    // * 회원가입이 되어있지 않은 경우
+    else if (status === CheckMemberStatus.UNREGISTERED || status === CheckMemberStatus.WITHDRAW) {
+      navigation.navigate("Register");
     }
   };
 

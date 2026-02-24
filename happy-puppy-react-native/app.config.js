@@ -1,10 +1,10 @@
 export default () => ({
   expo: {
-    name: "happypuppy",
+    name: "해피퍼피",
     slug: "happypuppy",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "app/assets/icon.png",
+    icon: "app/assets/default.png",
     userInterfaceStyle: "light",
     newArchEnabled: true,
     extra: {
@@ -28,6 +28,8 @@ export default () => ({
       },
       edgeToEdgeEnabled: true,
       package: "com.happypuppy.app",
+      softwareKeyboardLayoutMode: "pan",
+      permissions: ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"],
     },
     web: {
       favicon: "./app/assets/favicon.png",
@@ -70,6 +72,12 @@ export default () => ({
           backgroundColor: "#FCF5EE",
           image: "./app/assets/happypuppy.png",
           imageWidth: 200,
+        },
+      ],
+      [
+        "expo-location",
+        {
+          locationAlwaysAndWhenInUsePermission: "Allow $(PRODUCT_NAME) to use your location.",
         },
       ],
     ],

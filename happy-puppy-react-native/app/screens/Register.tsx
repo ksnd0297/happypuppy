@@ -67,7 +67,12 @@ const RegisterPage = () => {
         </View>
       </FormProvider>
       <ReportModal isOpen={reportModalDisclosure.isOpen} handleClose={reportModalDisclosure.handleClose} />
-      <TermModal isOpen={termModalDisclosure.isOpen} handleClose={termModalDisclosure.handleClose} handleSubmit={handleSubmit} isSubmitting={form.formState.isSubmitting} />
+      <TermModal
+        isOpen={termModalDisclosure.isOpen}
+        handleClose={termModalDisclosure.handleClose}
+        handleSubmit={handleSubmit}
+        isSubmitting={form.formState.isSubmitting}
+      />
     </>
   );
 };

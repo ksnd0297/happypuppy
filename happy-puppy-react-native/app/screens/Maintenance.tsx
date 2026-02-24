@@ -24,7 +24,7 @@ const Maintenance = (props: Props) => {
   useFocusEffect(
     useCallback(() => {
       refetch();
-    }, [])
+    }, []),
   );
 
   if (maintenance?.status === MaintenanceStatus.ON) {
@@ -34,7 +34,8 @@ const Maintenance = (props: Props) => {
           <Text large>현재 해피퍼피는 점검중 입니다</Text>
           <Text medium>점검 예정 시간</Text>
           <Text>
-            {format(maintenance.startDateTime, Format["yyyy년 MM월 dd일 hh시 mm분"])} ~ {format(maintenance.endDateTime, Format["yyyy년 MM월 dd일 hh시 mm분"])}
+            {format(maintenance.startDateTime, Format["yyyy년 MM월 dd일 hh시 mm분"])} ~{" "}
+            {format(maintenance.endDateTime, Format["yyyy년 MM월 dd일 hh시 mm분"])}
           </Text>
         </View>
       </View>

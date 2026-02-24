@@ -184,7 +184,7 @@ export class KakaoMapService {
 
     let placeType = Place.GREEN;
 
-    if (chatCount >= 3) {
+    if (chatCount >= 1) {
       placeType = Place.YELLOW;
     }
 

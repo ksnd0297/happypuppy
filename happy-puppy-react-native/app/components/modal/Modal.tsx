@@ -19,7 +19,9 @@ const SNAP_POINTS = ["60%"];
 
 const DOWN_INDEX = -1;
 
-const renderBackdrop = (props: BottomSheetDefaultBackdropProps) => <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />;
+const renderBackdrop = (props: BottomSheetDefaultBackdropProps) => (
+  <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />
+);
 
 const Modal = forwardRef<BottomSheetModal, Props>((props, ref) => {
   const { selectedPlace, handleCloseModal } = props;
@@ -60,9 +62,21 @@ const Modal = forwardRef<BottomSheetModal, Props>((props, ref) => {
 
     return (
       <ScrollView style={styles.listContainer} contentContainerStyle={{ gap: 15 }}>
-        {data.map((chat, index) => {
-          const { id, meetAt, imageUrl, name, introduce, tags } = chat;
-          return <ChatInfo key={index} roomId={id} promiseDateTime={meetAt} roomImage={imageUrl} title={name} handleEnterChat={handleEnterAppointment} introduce={introduce} tags={tags} />;
+        {data.map((chat) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const { id, meetAt, imageUrl, name, introduce, tags } = chat as any;
+          return (
+            <ChatInfo
+              key={id}
+              roomId={id}
+              promiseDateTime={meetAt}
+              roomImage={imageUrl}
+              title={name}
+              handleEnterChat={handleEnterAppointment}
+              introduce={introduce}
+              tags={tags}
+            />
+          );
         })}
       </ScrollView>
     );
@@ -99,7 +113,9 @@ const Modal = forwardRef<BottomSheetModal, Props>((props, ref) => {
               <Text bold>{selectedPlace?.roadAddress}</Text>
             </View>
           </View>
-          <View style={{ flex: 0.7, width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>{productList()}</View>
+          <View style={{ flex: 0.7, width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>
+            {productList()}
+          </View>
           <View style={{ flex: 0.15, width: "100%" }}>
             <Pressable style={styles.buttonContainer} onPress={() => handleCreateAppointment(selectedPlace?.id)}>
               <Text medium bold>

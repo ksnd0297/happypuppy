@@ -13,17 +13,11 @@
       "android": {
         "buildType": "apk"
       },
-      "node": "24.12.0",
-      "env": {
-        "KAKAO_NATIVE_APP_KEY": "$KAKAO_NATIVE_APP_KEY",
-        "S3_REGION": "$S3_REGION",
-        "S3_BUCKET": "$S3_BUCKET",
-        "S3_ACCESS_KEY_ID": "$S3_ACCESS_KEY_ID",
-        "S3_SECRET_ACCESS_KEY": "$S3_SECRET_ACCESS_KEY"
-      }
+      "node": "24.12.0"
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "node": "24.12.0"
     }
   },
   "submit": {

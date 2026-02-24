@@ -4,15 +4,21 @@ type Props = {
   chatImageUrl: string;
 };
 
+const defaultImage = require("@/app/assets/default.png");
+
 const ChatImage = (props: Props) => {
   const { chatImageUrl } = props;
 
   return (
     <View style={styles.imageContainer}>
       <Image
-        source={{
-          uri: chatImageUrl ? chatImageUrl : undefined,
-        }}
+        source={
+          chatImageUrl
+            ? {
+                uri: chatImageUrl,
+              }
+            : defaultImage
+        }
         style={styles.image}
       />
     </View>

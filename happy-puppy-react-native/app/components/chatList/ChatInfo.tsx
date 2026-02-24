@@ -13,6 +13,8 @@ type Props = {
   handleEnterChat: (id: number) => void;
 };
 
+const defaultImage = require("@/app/assets/default.png");
+
 const ChatInfo = (props: Props) => {
   const { roomId, promiseDateTime, roomImage, title, tags, handleEnterChat, introduce } = props;
 
@@ -21,9 +23,13 @@ const ChatInfo = (props: Props) => {
       <View style={styles.chatInfoContainer}>
         <View style={styles.chatInfoImageWrapper}>
           <Image
-            source={{
-              uri: roomImage ? roomImage : undefined,
-            }}
+            source={
+              roomImage
+                ? {
+                    uri: roomImage,
+                  }
+                : defaultImage
+            }
             style={styles.chatInfoImage}
           />
         </View>
@@ -65,15 +71,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
 
-    width: 60,
-    height: 60,
+    width: 70,
+    height: 70,
   },
   chatInfoImage: {
-    width: 55,
-    height: 55,
-    backgroundColor: "white",
+    width: 70,
+    height: 70,
 
     borderRadius: 50,
+
+    resizeMode: "cover",
   },
 
   chatInfoWrapper: {
