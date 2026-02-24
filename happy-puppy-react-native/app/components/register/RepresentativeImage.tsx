@@ -5,8 +5,6 @@ import { REGISTER_FORM_PATH } from "@/app/constants/register/form";
 import ImageResizer from "@bam.tech/react-native-image-resizer";
 import Text from "../shared/Text";
 
-const xCircle = require("@/app/assets/icon/x-circle.png");
-
 const cameraImg = require("@/app/assets/camera.png");
 
 const RepresentativeImage = () => {
@@ -44,8 +42,6 @@ const RepresentativeImage = () => {
     ...IMAGE_STYLE["DEFAULT"],
   };
 
-  const hasImage = !!value;
-
   return (
     <>
       <Pressable onPress={pickImage} style={IMAGE_STYLE["PRESSABLE"]}>
@@ -57,17 +53,9 @@ const RepresentativeImage = () => {
         </View>
       </Pressable>
       <View style={{ flexDirection: "row", gap: 4 }}>
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
           <Text medium>강아지 사진</Text>
         </View>
-        {hasImage && (
-          <Pressable
-            style={{ width: 20, height: 20, alignItems: "center", justifyContent: "center" }}
-            onPress={() => onChange("")}
-          >
-            <Image source={xCircle} style={{ width: 20, height: 20 }} resizeMode="contain" />
-          </Pressable>
-        )}
       </View>
     </>
   );
