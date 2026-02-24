@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   personImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 15,
+    width: 50,
+    height: 50,
+    borderRadius: 100,
   },
 });

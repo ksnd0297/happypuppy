@@ -3,13 +3,14 @@ import HomeImage from "../components/home/HomeImage";
 import Text from "../components/shared/Text";
 import Divider from "../components/shared/Divider";
 import { Calendar } from "react-native-calendars";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { NavigationProp, useFocusEffect, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../RootStack";
 import useUserInfo from "../hooks/auth/useUserInfo";
 import useGetUser from "../hooks/useGetUser";
 import useMyChat from "../hooks/chat/useMyChat";
 import Container from "../components/Container";
 import { NOTICE_URL } from "../constants/shared/url";
+import { useCallback } from "react";
 
 const HomePage = () => {
   const { navigate } = useNavigation<NavigationProp<RootStackParamList, "Home">>();
@@ -17,7 +18,11 @@ const HomePage = () => {
   const { userInfo } = useUserInfo();
   const { userId } = userInfo || {};
 
-  const { data: userData, isLoading } = useGetUser({
+  const {
+    data: userData,
+    isLoading,
+    refetch,
+  } = useGetUser({
     id: userId,
     options: {
       enabled: !!userId,
@@ -47,6 +52,12 @@ const HomePage = () => {
   const handleNavigationSetting = () => {
     navigate("UsageInfo");
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, []),
+  );
 
   if (isLoading) {
     return <></>;
