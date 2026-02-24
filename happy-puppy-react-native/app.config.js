@@ -4,7 +4,7 @@ export default () => ({
     slug: "happypuppy",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "app/assets/icon.png",
+    icon: "app/assets/default.png",
     userInterfaceStyle: "light",
     newArchEnabled: true,
     extra: {

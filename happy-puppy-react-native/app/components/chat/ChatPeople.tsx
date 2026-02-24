@@ -9,6 +9,8 @@ type Props = {
   memberList?: ChatMemberResponse[];
 };
 
+const defaultImage = require("@/app/assets/default.png");
+
 const ChatPeople = (props: Props) => {
   const { memberList } = props;
 
@@ -18,11 +20,19 @@ const ChatPeople = (props: Props) => {
     <View style={styles.chatPeopleContainer}>
       <ScrollView style={styles.chatPeopleScrollContainer} contentContainerStyle={styles.chatPeopleContentContainer}>
         {memberList?.map((member, index) => (
-          <Pressable key={index} style={styles.personContainer} onPress={() => navigation.navigate("Register", { id: member.userId })}>
+          <Pressable
+            key={index}
+            style={styles.personContainer}
+            onPress={() => navigation.navigate("Register", { id: member.userId })}
+          >
             <Image
-              source={{
-                uri: member.profileImageUrl,
-              }}
+              source={
+                member.profileImageUrl
+                  ? {
+                      uri: member.profileImageUrl,
+                    }
+                  : defaultImage
+              }
               style={styles.personImage}
             />
             <Text bold>{member.nickname}</Text>
@@ -58,8 +68,8 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   personImage: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
     borderRadius: 15,
   },
 });

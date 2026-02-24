@@ -63,11 +63,12 @@ const Modal = forwardRef<BottomSheetModal, Props>((props, ref) => {
     return (
       <ScrollView style={styles.listContainer} contentContainerStyle={{ gap: 15 }}>
         {data.map((chat) => {
-          const { chatId, meetAt, imageUrl, name, introduce, tags } = chat;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const { id, meetAt, imageUrl, name, introduce, tags } = chat as any;
           return (
             <ChatInfo
-              key={chatId}
-              roomId={chatId}
+              key={id}
+              roomId={id}
               promiseDateTime={meetAt}
               roomImage={imageUrl}
               title={name}

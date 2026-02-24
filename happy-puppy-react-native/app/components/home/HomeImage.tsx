@@ -7,13 +7,15 @@ type Props = {
   handlePress: () => void;
 };
 
+const defaultImage = require("@/app/assets/default.png");
+
 const HomeImage = (props: Props) => {
   const { title, uri, handlePress } = props;
 
   return (
     <>
       <Pressable style={styles.imageContainer} onPress={handlePress}>
-        <Image source={{ uri }} style={styles.image} />
+        <Image source={uri ? { uri: uri } : defaultImage} style={styles.image} />
       </Pressable>
       <Label label={title} />
     </>
@@ -26,8 +28,6 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: 160,
     height: 160,
-    borderWidth: 0.5,
-    borderColor: "#D9D9D9",
     borderRadius: 100,
 
     justifyContent: "center",
@@ -38,6 +38,5 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
-    borderRadius: 100,
   },
 });

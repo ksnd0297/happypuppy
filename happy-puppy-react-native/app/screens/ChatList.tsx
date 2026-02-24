@@ -9,6 +9,8 @@ import Container from "../components/Container";
 import { useCallback, useMemo } from "react";
 import { differenceInDays, format } from "date-fns";
 
+const defaultImage = require("@/app/assets/default.png");
+
 const ChatListPage = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
 
@@ -87,9 +89,13 @@ const ChatListPage = () => {
               >
                 <View style={styles.upComingImage}>
                   <Image
-                    source={{
-                      uri: value.imageUrl ? value.imageUrl : undefined,
-                    }}
+                    source={
+                      value.imageUrl
+                        ? {
+                            uri: value.imageUrl,
+                          }
+                        : defaultImage
+                    }
                     style={styles.chatInfoImage}
                   />
                 </View>
@@ -141,14 +147,12 @@ const styles = StyleSheet.create({
   upComingImage: {
     width: 55,
     height: 55,
-    backgroundColor: "white",
     borderRadius: 50,
   },
 
   chatInfoImage: {
     width: 55,
     height: 55,
-    backgroundColor: "white",
 
     borderRadius: 50,
   },
