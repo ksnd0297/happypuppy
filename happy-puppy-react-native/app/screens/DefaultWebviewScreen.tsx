@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { StyleSheet, SafeAreaView, TouchableWithoutFeedback, TextInput, Keyboard } from "react-native";
+import { StyleSheet, TouchableWithoutFeedback, TextInput, Keyboard } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Modal from "../components/modal/Modal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import useGetPlace from "../hooks/place/useGetPlace";
@@ -29,7 +28,6 @@ const DefaultWebviewScreen = () => {
   const modalRef = useRef<BottomSheetModal>(null);
 
   const [selectedPlace, setSelectedPlace] = useState<PlaceResponse>();
-  const insets = useSafeAreaInsets(); // 안전 영역 정보 가져오기
 
   const { location, handleChangeLocation } = useLocation();
 
@@ -152,15 +150,13 @@ const DefaultWebviewScreen = () => {
             Keyboard.dismiss();
           }}
         >
-          <SafeAreaView style={styles.container}>
-            <WebView
-              source={{ uri: "https://happy-puppy-web.vercel.app/" }}
-              style={[styles.webview, { marginTop: insets.top }]}
-              ref={webViewRef}
-              onMessage={onMessage}
-              webviewDebuggingEnabled={true}
-            />
-          </SafeAreaView>
+          <WebView
+            source={{ uri: "https://happy-puppy-web.vercel.app/" }}
+            style={[styles.webview]}
+            ref={webViewRef}
+            onMessage={onMessage}
+            webviewDebuggingEnabled={true}
+          />
         </TouchableWithoutFeedback>
       </Container>
       <Modal ref={modalRef} selectedPlace={selectedPlace} handleCloseModal={handleCloseModal} />
